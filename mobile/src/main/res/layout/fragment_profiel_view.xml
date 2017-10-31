@@ -1,0 +1,113 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.almurray.android.almurrayportal.profielViewFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:paddingTop="2dp"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/profileImage"
+            android:src="@drawable/back2"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/profileImage"
+            android:layout_marginTop="14dp"
+            android:text="1"
+            android:textAlignment="center"
+            android:textSize="18dp"
+            android:id="@+id/amigoDisplay"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/amigoDisplay"
+            android:layout_marginTop="-5dp"
+            android:text="Amigo Points"
+            android:textAlignment="center"
+            android:textSize="18dp"
+            android:id="@+id/amigoLabel"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/amigoLabel"
+            android:layout_marginTop="10dp"
+            android:text="1"
+            android:textAlignment="center"
+            android:textSize="18dp"
+            android:id="@+id/positivityDisplay"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/positivityDisplay"
+            android:layout_marginTop="-5dp"
+            android:text="Positivity Points"
+            android:textAlignment="center"
+            android:textSize="18dp"
+            android:id="@+id/positivityLabel"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/positivityLabel"
+            android:layout_marginTop="10dp"
+            android:text="Amigo Rank:"
+            android:textAlignment="center"
+            android:textSize="18dp"
+            android:id="@+id/amigoRankLabel"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/amigoRankLabel"
+            android:layout_marginTop="0dp"
+            android:text="Civilian"
+            android:textAlignment="center"
+            android:textSize="18dp"
+            android:id="@+id/amigoRank"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/amigoRank"
+            android:layout_marginTop="5dp"
+            android:text="Positivity Rank:"
+            android:textAlignment="center"
+            android:textSize="18dp"
+            android:id="@+id/positiveRankLabel"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/positiveRankLabel"
+            android:layout_marginTop="0dp"
+            android:text="Civilian"
+            android:textAlignment="center"
+            android:textSize="18dp"
+            android:id="@+id/positiveRank"/>
+
+    </RelativeLayout>
+
+</FrameLayout>

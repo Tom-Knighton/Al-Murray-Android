@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "919106675857",
+    "firebase_url": "https://al-murray.firebaseio.com",
+    "project_id": "al-murray",
+    "storage_bucket": "al-murray.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919106675857:android:1bc08f8a93b66f74",
+        "android_client_info": {
+          "package_name": "com.almurray.android.almurrayportal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "919106675857-p40pik6236trv6n3t9tq3da25ovorfs2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.almurray.android.almurrayportal",
+            "certificate_hash": "9b2cc03e2250a8f76498cccc636e88d2e73f2d89"
+          }
+        },
+        {
+          "client_id": "919106675857-0jg5b0n4j3h68vua11rji7asos7ajes4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-V3Olv_rBhydKcPjqAWMUrMgXOL5PPWE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "919106675857-mjulbhriv9shee0u7n9c8ibnqlro7p5p.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.aroundme.AlMurray"
+              }
+            },
+            {
+              "client_id": "919106675857-0jg5b0n4j3h68vua11rji7asos7ajes4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
