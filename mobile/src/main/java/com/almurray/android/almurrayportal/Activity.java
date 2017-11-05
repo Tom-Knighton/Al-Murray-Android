@@ -1,5 +1,6 @@
 package com.almurray.android.almurrayportal;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -11,7 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-public class Activity extends AppCompatActivity implements profileViewTab.OnFragmentInteractionListener, calendarFragment.OnFragmentInteractionListener{
+import com.google.firebase.auth.FirebaseAuth;
+
+public class Activity extends AppCompatActivity implements profileViewTab.OnFragmentInteractionListener, calendarFragment.OnFragmentInteractionListener, infoView.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,8 +22,9 @@ public class Activity extends AppCompatActivity implements profileViewTab.OnFrag
         setContentView(R.layout.activity_);
 
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tablayout);
-        tabLayout.addTab(tabLayout.newTab().setText("Profile"));
         tabLayout.addTab(tabLayout.newTab().setText("Calendar"));
+        tabLayout.addTab(tabLayout.newTab().setText("Profile"));
+        tabLayout.addTab(tabLayout.newTab().setText("Info"));
         tabLayout.setTabGravity(tabLayout.GRAVITY_FILL);
 
 
@@ -47,11 +51,20 @@ public class Activity extends AppCompatActivity implements profileViewTab.OnFrag
 
             }
         });
+
+        viewPager.setCurrentItem(1);
     }
 
 
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    public void onLogoutClick(View v) {
+        FirebaseAuth.getInstance().signOut();
+        Intent i = new Intent(Activity.this, Login.class);
+        finish();
+        startActivity(i);
     }
 }

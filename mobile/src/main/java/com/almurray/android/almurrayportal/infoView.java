@@ -1,44 +1,23 @@
 package com.almurray.android.almurrayportal;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.ConsoleMessage;
-import android.widget.TextView;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
-
-import java.io.Console;
-
-import javax.sql.StatementEvent;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link profileViewTab.OnFragmentInteractionListener} interface
+ * {@link infoView.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link profileViewTab#newInstance} factory method to
+ * Use the {@link infoView#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class profileViewTab extends Fragment {
+public class infoView extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -50,9 +29,7 @@ public class profileViewTab extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-    public profileViewTab() {
+    public infoView() {
         // Required empty public constructor
     }
 
@@ -62,19 +39,17 @@ public class profileViewTab extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment profileViewTab.
+     * @return A new instance of fragment infoView.
      */
     // TODO: Rename and change types and number of parameters
-    public static profileViewTab newInstance(String param1, String param2) {
-        profileViewTab fragment = new profileViewTab();
+    public static infoView newInstance(String param1, String param2) {
+        infoView fragment = new infoView();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,52 +58,21 @@ public class profileViewTab extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-        ValueEventListener eventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Long aPoints = dataSnapshot.child("AmigoPoints").getValue(Long.class);
-                TextView aT = (TextView)getView().findViewById(R.id.amigoPoints);
-                aT.setText(Long.toString(aPoints));
-
-                Long pPoints = dataSnapshot.child("pPoints").getValue(Long.class);
-                TextView pT = (TextView)getView().findViewById(R.id.pPoints);
-                pT.setText(Long.toString(pPoints));
-
-
-                String aRank = dataSnapshot.child("amigoRank").getValue(String.class);
-                TextView aRT = (TextView)getView().findViewById(R.id.aRank);
-                aRT.setText(aRank);
-
-                String pRank = dataSnapshot.child("rank").getValue(String.class);
-                TextView pRT = (TextView)getView().findViewById(R.id.pRank);
-                pRT.setText(pRank);
-
-
-                String urlTo = dataSnapshot.child("urToImage").getValue(String.class);
-                Context context = getContext();
-                de.hdodenhof.circleimageview.CircleImageView pI = getView().findViewById(R.id.profileView);
-                Picasso.with(context).load(urlTo).into(pI);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-        ref.addListenerForSingleValueEvent(eventListener);
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile_view_tab, container, false);
+        return inflater.inflate(R.layout.fragment_info_view, container, false);
     }
 
-
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -146,10 +90,6 @@ public class profileViewTab extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-
-
-
 
     /**
      * This interface must be implemented by activities that contain this

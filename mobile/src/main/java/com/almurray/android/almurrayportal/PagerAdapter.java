@@ -24,11 +24,14 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                profileViewTab tab1 = new profileViewTab();
+                calendarFragment tab1 = new calendarFragment();
                 return tab1;
             case 1:
-                calendarFragment tab2 = new calendarFragment();
+                profileViewTab tab2 = new profileViewTab();
                 return tab2;
+            case 2:
+                infoView tab3 = new infoView();
+                return tab3;
 
             default:
                 return null;
