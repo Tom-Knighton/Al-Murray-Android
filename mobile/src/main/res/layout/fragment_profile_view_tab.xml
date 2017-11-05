@@ -1,0 +1,109 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.almurray.android.almurrayportal.profileViewTab">
+
+    <!-- TODO: Update blank fragment layout -->
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:background="@drawable/back2">
+
+
+       <de.hdodenhof.circleimageview.CircleImageView
+
+           android:id="@+id/profileView"
+           android:layout_width="120dp"
+           android:layout_height="120dp"
+           android:layout_alignParentTop="true"
+           android:layout_centerHorizontal="true"
+           android:src="@drawable/back2"
+           android:layout_marginTop="10dp">
+
+
+       </de.hdodenhof.circleimageview.CircleImageView>
+
+       <TextView
+           android:id="@+id/amigoLabel"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:textSize="18sp"
+           android:layout_below="@+id/profileView"
+           android:text="Amigo Points:"
+           android:textAlignment="center"
+           android:layout_marginTop="10dp"
+           android:textColor="#ffffff"/>
+       <TextView
+           android:id="@+id/amigoPoints"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:textSize="22sp"
+           android:layout_below="@+id/amigoLabel"
+           android:text="1"
+           android:textAlignment="center"
+           android:layout_marginTop="0dp"
+           android:textColor="#ffffff"/>
+       <TextView
+           android:id="@+id/pLabel"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:textSize="18sp"
+           android:layout_below="@+id/amigoPoints"
+           android:text="Positivity Points:"
+           android:textAlignment="center"
+           android:layout_marginTop="10dp"
+           android:textColor="#ffffff"/>
+       <TextView
+           android:id="@+id/pPoints"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:textSize="22sp"
+           android:layout_below="@+id/pLabel"
+           android:text="1"
+           android:textAlignment="center"
+           android:layout_marginTop="0dp"
+           android:textColor="#ffffff"/>
+       <TextView
+           android:id="@+id/aRankLabel"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:textSize="18sp"
+           android:layout_below="@+id/pPoints"
+           android:text="Amigo Rank:"
+           android:textAlignment="center"
+           android:layout_marginTop="15dp"
+           android:textColor="#ffffff"/>
+       <TextView
+           android:id="@+id/aRank"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:textSize="22sp"
+           android:layout_below="@+id/aRankLabel"
+           android:text="Civilian"
+           android:textAlignment="center"
+           android:layout_marginTop="0dp"
+           android:textColor="#ffffff"/>
+       <TextView
+           android:id="@+id/pRankLabel"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:textSize="18sp"
+           android:layout_below="@+id/aRank"
+           android:text="Positivity Rank:"
+           android:textAlignment="center"
+           android:layout_marginTop="15dp"
+           android:textColor="#ffffff"/>
+       <TextView
+           android:id="@+id/pRank"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:textSize="22sp"
+           android:layout_below="@+id/pRankLabel"
+           android:text="Civilian"
+           android:textAlignment="center"
+           android:layout_marginTop="0dp"
+           android:textColor="#ffffff"/>
+   </RelativeLayout>
+
+</FrameLayout>

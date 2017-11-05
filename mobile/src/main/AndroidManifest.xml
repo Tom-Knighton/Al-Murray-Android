@@ -24,8 +24,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".mainTabbed"
-            android:label="@string/title_activity_main_tabbed"
+            android:name=".Activity"
+            android:label="@string/title_activity_"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

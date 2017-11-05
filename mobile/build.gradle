@@ -33,7 +33,11 @@ dependencies {
     implementation 'com.google.android.gms:play-services-wearable:11.0.4'
     implementation 'com.google.android.gms:play-services:11.0.4'
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
 }
+
+
 
 
 
