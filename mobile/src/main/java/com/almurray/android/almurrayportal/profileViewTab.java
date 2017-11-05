@@ -73,7 +73,7 @@ public class profileViewTab extends Fragment {
         return fragment;
     }
 
-    final String APoints = ref.push().getKey();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

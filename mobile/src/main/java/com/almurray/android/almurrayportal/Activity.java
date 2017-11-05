@@ -8,9 +8,10 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
-public class Activity extends AppCompatActivity implements profileViewTab.OnFragmentInteractionListener{
+public class Activity extends AppCompatActivity implements profileViewTab.OnFragmentInteractionListener, calendarFragment.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +20,10 @@ public class Activity extends AppCompatActivity implements profileViewTab.OnFrag
 
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tablayout);
         tabLayout.addTab(tabLayout.newTab().setText("Profile"));
+        tabLayout.addTab(tabLayout.newTab().setText("Calendar"));
         tabLayout.setTabGravity(tabLayout.GRAVITY_FILL);
+
+
 
         final ViewPager viewPager = (ViewPager)findViewById(R.id.pager);
         final PagerAdapter adapter =  new PagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
@@ -29,6 +33,8 @@ public class Activity extends AppCompatActivity implements profileViewTab.OnFrag
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                String hi = String.valueOf(tab.getPosition());
+                Log.d("TAG", hi);
             }
 
             @Override

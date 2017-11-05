@@ -35,6 +35,13 @@ public class Login extends AppCompatActivity {
         mButton = (Button) findViewById(R.id.signinbutton);
         mEmail = (EditText) findViewById(R.id.emailText);
         mPass = (EditText) findViewById(R.id.passwordText);
+
+        if (mAuth.getCurrentUser() != null) {
+            Intent i = new Intent(Login.this, Activity.class);
+            finish();
+            startActivity(i);
+
+        }
     }
 
     public void onLoginClick(View v) {

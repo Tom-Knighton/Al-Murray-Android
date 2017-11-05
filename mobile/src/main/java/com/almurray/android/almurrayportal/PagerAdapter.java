@@ -22,12 +22,23 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        calendarFragment tab1 = new calendarFragment();
-        return  tab1;
+        switch (position){
+            case 0:
+                profileViewTab tab1 = new profileViewTab();
+                return tab1;
+            case 1:
+                calendarFragment tab2 = new calendarFragment();
+                return tab2;
+
+            default:
+                return null;
+
+
+        }
     }
 
     @Override
     public int getCount() {
-        return 1;
+        return 2;
     }
 }

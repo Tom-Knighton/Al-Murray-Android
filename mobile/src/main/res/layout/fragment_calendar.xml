@@ -1,17 +1,141 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:agendaCalendar="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.almurray.android.almurrayportal.calendarFragment"
     android:background="@drawable/back2">
 
-    <CalendarView
-        android:id="@+id/calendar"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/tab1"
+        android:layout_height="wrap_content">
 
-    </CalendarView>
+        <com.makeramen.roundedimageview.RoundedImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/imageView1"
+            android:src="@android:color/holo_red_light"
+            android:scaleType="center"
+            android:layout_height="120dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            app:riv_corner_radius="30dip"
+            app:riv_border_width="0dip"
+            app:riv_border_color="#333333"
+            app:riv_mutate_background="true"
+            app:riv_tile_mode="repeat"
+            app:riv_oval="false" >
 
 
 
-</FrameLayout>
+
+        </com.makeramen.roundedimageview.RoundedImageView>
+
+        <TextView
+            android:id="@+id/treeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Melting of the Trees"
+            android:layout_marginTop="15dp"
+            android:textSize="15sp"
+            android:textColor="@android:color/white"
+            android:layout_centerHorizontal="true"
+            />
+        <TextView
+            android:id="@+id/treeDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/treeTitle"
+            android:text="20/11/17"
+            android:layout_marginTop="0dp"
+            android:textSize="10sp"
+            android:textColor="@android:color/white"
+            android:layout_centerHorizontal="true"
+            />
+        <TextView
+            android:id="@+id/treeInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/treeDate"
+            android:text="Celebration/mourning of the melting of the trees, remember to pray!"
+            android:layout_marginTop="0dp"
+            android:textSize="13sp"
+            android:paddingLeft="10dp"
+            android:textColor="@android:color/white"
+            android:layout_centerHorizontal="true"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/tab2"
+        android:layout_below="@+id/tab1"
+        android:layout_height="wrap_content">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/christmasTab"
+            android:src="@android:color/holo_orange_dark"
+            android:scaleType="center"
+            android:layout_height="120dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            app:riv_corner_radius="30dip"
+            app:riv_border_width="0dip"
+            app:riv_border_color="#333333"
+            app:riv_mutate_background="true"
+            app:riv_tile_mode="repeat"
+            app:riv_oval="false" >
+
+
+
+
+        </com.makeramen.roundedimageview.RoundedImageView>
+
+        <TextView
+            android:id="@+id/christmasTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Christmas Day"
+            android:layout_marginTop="15dp"
+            android:textSize="15sp"
+            android:textColor="@android:color/white"
+            android:layout_centerHorizontal="true"
+            />
+        <TextView
+            android:id="@+id/christmasDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/christmasTitle"
+            android:text="20/11/17"
+            android:layout_marginTop="0dp"
+            android:textSize="10sp"
+            android:textColor="@android:color/white"
+            android:layout_centerHorizontal="true"
+            />
+        <TextView
+            android:id="@+id/christmasInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/christmasDate"
+            android:text="The birth of Murrysus! Thank you Al Murray for blessing us with our presents this year."
+            android:layout_marginTop="0dp"
+            android:textSize="13sp"
+            android:paddingLeft="10dp"
+            android:textColor="@android:color/white"
+            android:layout_centerHorizontal="true"
+            />
+
+    </RelativeLayout>
+
+
+
+
+
+</RelativeLayout>
