@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.ContactsContract;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -52,6 +54,9 @@ public class profileViewTab extends Fragment {
 
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
+    FloatingActionButton refreshP;
+
+
     public profileViewTab() {
         // Required empty public constructor
     }
@@ -74,6 +79,29 @@ public class profileViewTab extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Handler handler = new Handler();
+
+
+        Runnable updater = new Runnable() {
+
+            public void run() {
+                refreshP = getView().findViewById(R.id.refreshP);
+                refreshP.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getStats();
+                        Log.d("TAG","HEJDIDJIDJI DFINWIEJNFIEFN DEJNFUEND");
+                    }
+                });
+
+            }
+        };
+
+        handler.post(updater);
+    }
 
 
     @Override
@@ -119,6 +147,44 @@ public class profileViewTab extends Fragment {
         ref.addListenerForSingleValueEvent(eventListener);
 
 
+
+
+    }
+
+    public void getStats() {
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long aPoints = dataSnapshot.child("AmigoPoints").getValue(Long.class);
+                TextView aT = (TextView)getView().findViewById(R.id.amigoPoints);
+                aT.setText(Long.toString(aPoints));
+
+                Long pPoints = dataSnapshot.child("pPoints").getValue(Long.class);
+                TextView pT = (TextView)getView().findViewById(R.id.pPoints);
+                pT.setText(Long.toString(pPoints));
+
+
+                String aRank = dataSnapshot.child("amigoRank").getValue(String.class);
+                TextView aRT = (TextView)getView().findViewById(R.id.aRank);
+                aRT.setText(aRank);
+
+                String pRank = dataSnapshot.child("rank").getValue(String.class);
+                TextView pRT = (TextView)getView().findViewById(R.id.pRank);
+                pRT.setText(pRank);
+
+
+                String urlTo = dataSnapshot.child("urToImage").getValue(String.class);
+                Context context = getContext();
+                de.hdodenhof.circleimageview.CircleImageView pI = getView().findViewById(R.id.profileView);
+                Picasso.with(context).load(urlTo).into(pI);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        ref.addListenerForSingleValueEvent(eventListener);
     }
 
     @Override
@@ -146,6 +212,12 @@ public class profileViewTab extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+    public void onRefresh(View v) {
+
+    }
+
+
 
 
 

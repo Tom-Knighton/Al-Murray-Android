@@ -27,11 +27,14 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 calendarFragment tab1 = new calendarFragment();
                 return tab1;
             case 1:
-                profileViewTab tab2 = new profileViewTab();
+                requestsTab tab2 = new requestsTab();
                 return tab2;
             case 2:
-                infoView tab3 = new infoView();
+                profileViewTab tab3 = new profileViewTab();
                 return tab3;
+            case 3:
+                infoView tab4 = new infoView();
+                return tab4;
 
             default:
                 return null;
@@ -42,6 +45,6 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 4;
     }
 }

@@ -9,15 +9,91 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/amigoismHeader"
-            android:text="AMIGO-ISM:"
-            android:textColor="@android:color/white"
-            android:textSize="22sp"
+            android:layout_height="wrap_content">
 
-            />
+
+            <TextView
+                android:id="@+id/amigoismLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="AMIGO-ISM:"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="22sp"/>
+            <TextView
+                android:id="@+id/amigoism"
+                android:layout_below="@+id/amigoismLabel"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Amigo-ism is the act of being an Amigo (noun: used to address or refer to a friend, chiefly in Spanish-speaking areas). Such acts include doing Amigo-y things, and following the Ten Commandments set by Al Murray. "
+                android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/amigoishLabel"
+                android:layout_below="@+id/amigoism"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="AMIGOISH:"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="22sp"/>
+            <TextView
+                android:id="@+id/amigoish"
+                android:layout_below="@+id/amigoishLabel"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Amigoish is the language used by Amigos (see above). Amigoish must be used in all designated Amigo chats and for amigo-designated conversations. Translating devices can be used. "
+                android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/positivityLabel"
+                android:layout_below="@+id/amigoish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="POSITIVITY:"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="22sp"/>
+            <TextView
+                android:id="@+id/positivity"
+                android:layout_below="@+id/positivityLabel"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="The act of being positive (adjective: constructive, optimistic, or confident). Everyone should at least make an attempt to be positive, if not always 100% positive. Breif moments of negativity should be allowed, on the basis that they are immediately corrected. Al Murray reccommends that at least a minimum of 27 hours a day are set aside to be positive. "
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/tenLabel"
+                android:layout_below="@+id/positivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TEN COMMANDMENTS:"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="22sp"/>
+            <TextView
+                android:id="@+id/ten"
+                android:layout_below="@+id/tenLabel"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1) Obey Al Murray at all times. \n2) Follow Al Murray at all times. \n3) N/A \n4) Adultery is bad but sometimes necessary \n5) Same with murder \n6) N/A \n7) Follow the Amigo code \n8) Maintain an amigo rating over 7 \n9) N/A  \n10) Rate this app 5 stars."
+                android:textSize="18sp"/>
+
+
+
+
+
+
+        </RelativeLayout>
+
 
 
 

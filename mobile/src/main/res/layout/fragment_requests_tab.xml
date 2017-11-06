@@ -1,0 +1,110 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.almurray.android.almurrayportal.requestsTab"
+    android:background="@drawable/back2">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+
+    <WebView
+        android:id="@+id/amigoPForm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible">
+    </WebView>
+    <WebView
+        android:id="@+id/amigoLForm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible">
+    </WebView>
+    <WebView
+        android:id="@+id/pPointForm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible">
+    </WebView>
+    <WebView
+        android:id="@+id/manualForm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible">
+    </WebView>
+    <WebView
+        android:id="@+id/tipForm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible">
+    </WebView>
+
+
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+
+
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+
+           <Button
+               android:id="@+id/amigoRequest"
+               style="@style/Widget.AppCompat.Button.Colored"
+               android:layout_width="match_parent"
+               android:layout_height="90dp"
+               android:layout_alignParentLeft="true"
+               android:layout_alignParentStart="true"
+               android:layout_alignParentTop="true"
+               android:onClick="onAPointRequest"
+               android:text="REQUEST AMIGO POINTS" />
+
+           <Button
+               android:id="@+id/loanRequest"
+               style="@style/Widget.AppCompat.Button.Colored"
+               android:layout_width="match_parent"
+               android:layout_height="90dp"
+               android:layout_below="@+id/amigoRequest"
+               android:onClick="onLoanRequest"
+               android:text="REQUEST AMIGO LOAN" />
+
+           <Button
+               android:id="@+id/posRequest"
+               style="@style/Widget.AppCompat.Button.Colored"
+               android:layout_width="match_parent"
+               android:layout_height="90dp"
+               android:layout_alignParentLeft="true"
+               android:layout_alignParentStart="true"
+               android:layout_below="@+id/loanRequest"
+               android:onClick="onPPointRequest"
+               android:text="REQUEST POSITIVITY POINTS" />
+
+           <Button
+               android:id="@+id/manualRequest"
+               style="@style/Widget.AppCompat.Button.Colored"
+               android:layout_width="match_parent"
+               android:layout_height="90dp"
+               android:layout_below="@id/posRequest"
+               android:onClick="onManualRequest"
+               android:text="REQUEST MANUAL REVIEW" />
+
+           <Button
+               android:id="@+id/tip"
+               style="@style/Widget.AppCompat.Button.Colored"
+               android:layout_width="match_parent"
+               android:layout_height="90dp"
+               android:layout_below="@id/manualRequest"
+               android:onClick="onTip"
+               android:text="PRIVATE CONFESSIONS" />
+
+
+       </RelativeLayout>
+   </ScrollView>
+
+
+
+
+
+</FrameLayout>
