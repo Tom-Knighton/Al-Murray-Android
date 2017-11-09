@@ -175,6 +175,10 @@ public class profileViewTab extends Fragment {
                     adminP.setVisibility(View.VISIBLE);
                 }
 
+                String reqCode = dataSnapshot.child("code").getValue(String.class);
+                prefsEditor.putString("reqCode", reqCode);
+                prefsEditor.commit();
+
 
             }
 

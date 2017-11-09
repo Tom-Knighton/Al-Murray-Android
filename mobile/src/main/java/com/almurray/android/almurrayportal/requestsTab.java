@@ -2,13 +2,17 @@ package com.almurray.android.almurrayportal;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 /**
@@ -52,6 +56,29 @@ public class requestsTab extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+    private TextView codeText;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Handler handler = new Handler();
+
+
+        Runnable updater = new Runnable() {
+
+            public void run() {
+                codeText = getView().findViewById(R.id.codeView);
+                SharedPreferences prefs = getContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor prefsEditor = prefs .edit();
+                codeText.setText("Your code is: "+prefs.getString("reqCode", ""));
+
+            }
+        };
+
+        handler.post(updater);
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
