@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.almurray.android.almurrayportal.listUsers"
+    android:background="@drawable/back2">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <Button
+                android:id="@+id/georgeViewButton"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:text="George Dodkins" />
+
+            <Button
+                android:id="@+id/joeViewButton"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_below="@+id/georgeViewButton"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:text="Joe Impett" />
+
+            <Button
+                android:id="@+id/nickViewButton"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_below="@+id/joeViewButton"
+
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:text="Nick Watts" />
+            <Button
+                android:id="@+id/samViewButton"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_below="@+id/nickViewButton"
+
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:text="Sam Cornwell" />
+            <Button
+                android:id="@+id/sethViewButton"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_below="@+id/samViewButton"
+
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:text="Seth Leigh-Kaufman" />
+            <Button
+                android:id="@+id/taylorViewButton"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_below="@+id/sethViewButton"
+
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:text="Taylor Pugh" />
+            <Button
+                android:id="@+id/tomViewButton"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_below="@+id/taylorViewButton"
+
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:text="Tom Knighton" />
+
+
+        </RelativeLayout>
+
+
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

@@ -2,18 +2,22 @@ package com.almurray.android.almurrayportal;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.webkit.ConsoleMessage;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,7 +58,10 @@ public class profileViewTab extends Fragment {
 
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
+
     FloatingActionButton refreshP;
+    FloatingActionButton adminP;
+    ImageView profilePic;
 
 
     public profileViewTab() {
@@ -93,7 +100,25 @@ public class profileViewTab extends Fragment {
                     @Override
                     public void onClick(View view) {
                         getStats();
-                        Log.d("TAG","HEJDIDJIDJI DFINWIEJNFIEFN DEJNFUEND");
+                    }
+                });
+
+                adminP = getView().findViewById(R.id.adminP);
+                adminP.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(getActivity(), AdminView.class);
+                        startActivity(i);
+                    }
+                });
+
+
+                profilePic = getView().findViewById(R.id.profileView);
+                profilePic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(getActivity(), profileView.class);
+                        startActivity(i);
                     }
                 });
 
@@ -102,6 +127,8 @@ public class profileViewTab extends Fragment {
 
         handler.post(updater);
     }
+
+
 
 
     @Override
@@ -115,13 +142,13 @@ public class profileViewTab extends Fragment {
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Long aPoints = dataSnapshot.child("AmigoPoints").getValue(Long.class);
+                String  aPoints = dataSnapshot.child("AmigoPoints").getValue(String.class);
                 TextView aT = (TextView)getView().findViewById(R.id.amigoPoints);
-                aT.setText(Long.toString(aPoints));
+                aT.setText(aPoints);
 
-                Long pPoints = dataSnapshot.child("pPoints").getValue(Long.class);
+                String  pPoints = dataSnapshot.child("pPoints").getValue(String.class);
                 TextView pT = (TextView)getView().findViewById(R.id.pPoints);
-                pT.setText(Long.toString(pPoints));
+                pT.setText(pPoints);
 
 
                 String aRank = dataSnapshot.child("amigoRank").getValue(String.class);
@@ -137,6 +164,18 @@ public class profileViewTab extends Fragment {
                 Context context = getContext();
                 de.hdodenhof.circleimageview.CircleImageView pI = getView().findViewById(R.id.profileView);
                 Picasso.with(context).load(urlTo).into(pI);
+
+                SharedPreferences prefs = getContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor prefsEditor = prefs .edit();
+                prefsEditor.putString("urlToImage", urlTo);
+                prefsEditor.commit();
+
+                Boolean adminB = dataSnapshot.child("admin").getValue(Boolean.class);
+                if(adminB == true) {
+                    adminP.setVisibility(View.VISIBLE);
+                }
+
+
             }
 
             @Override
@@ -152,16 +191,21 @@ public class profileViewTab extends Fragment {
     }
 
     public void getStats() {
+
+        final OvershootInterpolator interpolator = new OvershootInterpolator();
+
+        ViewCompat.animate(refreshP).rotation(refreshP.getRotation() + 1440f).withLayer().setDuration(4000).setInterpolator(interpolator).start();
+
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Long aPoints = dataSnapshot.child("AmigoPoints").getValue(Long.class);
+                String  aPoints = dataSnapshot.child("AmigoPoints").getValue(String.class);
                 TextView aT = (TextView)getView().findViewById(R.id.amigoPoints);
-                aT.setText(Long.toString(aPoints));
+                aT.setText(aPoints);
 
-                Long pPoints = dataSnapshot.child("pPoints").getValue(Long.class);
+                String  pPoints = dataSnapshot.child("pPoints").getValue(String .class);
                 TextView pT = (TextView)getView().findViewById(R.id.pPoints);
-                pT.setText(Long.toString(pPoints));
+                pT.setText(pPoints);
 
 
                 String aRank = dataSnapshot.child("amigoRank").getValue(String.class);
@@ -177,6 +221,11 @@ public class profileViewTab extends Fragment {
                 Context context = getContext();
                 de.hdodenhof.circleimageview.CircleImageView pI = getView().findViewById(R.id.profileView);
                 Picasso.with(context).load(urlTo).into(pI);
+
+                SharedPreferences prefs = getContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor prefsEditor = prefs .edit();
+                prefsEditor.putString("urlToImage", urlTo);
+                prefsEditor.commit();
             }
 
             @Override

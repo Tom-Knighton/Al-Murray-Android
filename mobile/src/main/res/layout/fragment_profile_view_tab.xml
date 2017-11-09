@@ -119,16 +119,28 @@
            android:text="Log Out" />
 
        <android.support.design.widget.FloatingActionButton
-           android:id="@+id/refreshP"
+       android:id="@+id/refreshP"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_alignParentEnd="true"
+       android:layout_alignParentRight="true"
+       android:layout_alignTop="@+id/profileView"
+       android:layout_gravity="right"
+       android:layout_marginEnd="21dp"
+       android:layout_marginRight="21dp"
+       android:src="@drawable/quantum_ic_refresh_white_24" />
+
+       <android.support.design.widget.FloatingActionButton
+           android:id="@+id/adminP"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:layout_alignParentEnd="true"
-           android:layout_alignParentRight="true"
-           android:layout_alignTop="@+id/profileView"
+           android:layout_alignLeft="@+id/refreshP"
+           android:layout_alignStart="@+id/refreshP"
+           android:layout_below="@+id/refreshP"
            android:layout_gravity="right"
-           android:layout_marginEnd="21dp"
-           android:layout_marginRight="21dp"
-           android:src="@drawable/quantum_ic_refresh_white_24" />
+           android:layout_marginTop="18dp"
+           android:src="@drawable/ic_settings"
+           android:visibility="invisible"/>
    </RelativeLayout>
 
 </FrameLayout>

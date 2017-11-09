@@ -1,20 +1,24 @@
 package com.almurray.android.almurrayportal;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.icu.text.IDNA;
+import android.media.Image;
 import android.media.session.PlaybackState;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -77,6 +82,10 @@ public class calendarFragment extends Fragment {
 
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("events");
 
+
+    private RoundedImageView treeEvent;
+    private RoundedImageView christmasEvent;
+
     @Override
     public void onResume() {
         super.onResume();
@@ -86,12 +95,58 @@ public class calendarFragment extends Fragment {
         Runnable updater = new Runnable() {
 
             public void run() {
+                treeEvent = getActivity().findViewById(R.id.imageView1);
+                christmasEvent = getActivity().findViewById(R.id.christmasTab);
+
+                treeEvent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        tab1Info();
+                    }
+                });
+
+                christmasEvent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        tab2Info();
+                    }
+                });
+
 
 
             }
         };
 
         handler.post(updater);
+    }
+
+
+    public void tab1Info() {
+        new AlertDialog.Builder(getContext())
+                .setTitle("The Melting of the Trees")
+                .setMessage("The Melting of the Trees is an event which marks the fall of Winter upon Al Murray's Universe. The exact date of the Melting can vary, however it is usually around the 22nd of November. During this several day-long event, the Trees, in an unspecified location, begin to scream in joy and melt for Al Murray. They melt into the Pond, and remain as such until Spring, when the trees unmelt into trees again, without any memory of the Melting. The Melting of the Trees is a staple of Murryanity.")
+                .setCancelable(false)
+                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                    }
+                }).show();
+    }
+
+    public void tab2Info() {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Christmas")
+                .setMessage("Christmas is that time of year when you gather your family round the festively decorated fireplace, get on your knees, and pray to Al Murray. For this is the day Al Murray was born, the day the legend of Murrysus was forever inscribed in the minds of mortals.")
+                .setCancelable(false)
+                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                    }
+                }).show();
     }
 
 
@@ -119,6 +174,10 @@ public class calendarFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_calendar, container, false);
+
+
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

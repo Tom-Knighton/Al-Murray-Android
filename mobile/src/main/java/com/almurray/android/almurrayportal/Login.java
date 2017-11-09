@@ -1,7 +1,9 @@
 package com.almurray.android.almurrayportal;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -46,34 +48,49 @@ public class Login extends AppCompatActivity {
 
     public void onLoginClick(View v) {
 
-        mAuth.signInWithEmailAndPassword(mEmail.getText().toString(), mPass.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            public void onComplete(@NonNull Task<AuthResult> task) {
-
-                if (task.isSuccessful()) {
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    Intent i = new Intent(Login.this, profileView.class);
-                    finish();
-                    startActivity(i);
-
-                } else {
-                    new AlertDialog.Builder(Login.this)
-                            .setTitle("Al Murray Says No")
-                            .setMessage("Uh oh! Your email or password is not recognised, please try again!s")
-                            .setCancelable(false)
-                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
+        if(mEmail.getText().toString().trim().length() == 0 || mPass.getText().toString().trim().length() == 0) {
 
 
-                                }
-                            }).show();
+        }
+
+        else {
+            Log.d("TAG", mEmail.getText().toString());
+            Log.d("TAG", mPass.getText().toString());
+            mAuth.signInWithEmailAndPassword(mEmail.getText().toString(), mPass.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                public void onComplete(@NonNull Task<AuthResult> task) {
+
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        SharedPreferences prefs = getApplicationContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor prefsEditor = prefs .edit();
+                        prefsEditor.putString("currentUser", mAuth.getCurrentUser().getUid());
+                        prefsEditor.commit();
+                        Intent i = new Intent(Login.this, Activity.class);
+                        finish();
+                        startActivity(i);
+
+                    } else {
+                        new AlertDialog.Builder(Login.this)
+                                .setTitle("Al Murray Says No")
+                                .setMessage("Uh oh! Your email or password is not recognised, please try again!")
+                                .setCancelable(false)
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+
+                                    }
+                                }).show();
+
+                    }
+
 
                 }
 
+            });
+        }
 
-            }
 
-        });
     }
 }
 

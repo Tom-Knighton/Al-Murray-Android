@@ -33,7 +33,14 @@
         <activity android:name=".positivePointForm" />
         <activity android:name=".manualReviewForm" />
         <activity android:name=".tipForm" />
-        <activity android:name=".profileView"></activity>
+        <activity android:name=".profileView" />
+        <activity android:name=".feedBackForm" />
+        <activity android:name=".AdminView" />
+        <activity android:name=".listUsers" />
+        <activity android:name=".georgeD" />
+        <activity android:name=".TomK" />
+        <activity android:name=".NickW" />
+        <activity android:name=".editProfileView"></activity>
     </application>
 
 </manifest>
