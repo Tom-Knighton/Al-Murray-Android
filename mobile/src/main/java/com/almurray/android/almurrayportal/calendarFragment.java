@@ -2,7 +2,9 @@ package com.almurray.android.almurrayportal;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.icu.text.IDNA;
 import android.media.Image;
 import android.media.session.PlaybackState;
@@ -10,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -29,6 +32,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.makeramen.roundedimageview.RoundedImageView;
+
+import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -83,8 +88,19 @@ public class calendarFragment extends Fragment {
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("events");
 
 
-    private RoundedImageView treeEvent;
-    private RoundedImageView christmasEvent;
+    private RoundedImageView event1;
+    private RoundedImageView event2;
+    private RoundedImageView event3;
+
+    String expandedInfo1;
+    String expandedInfo2;
+    String expandedInfo3;
+
+    String title1;
+    String title2;
+    String title3;
+
+    FloatingActionButton info;
 
     @Override
     public void onResume() {
@@ -95,23 +111,79 @@ public class calendarFragment extends Fragment {
         Runnable updater = new Runnable() {
 
             public void run() {
-                treeEvent = getActivity().findViewById(R.id.imageView1);
-                christmasEvent = getActivity().findViewById(R.id.christmasTab);
+                event1 = getActivity().findViewById(R.id.event1Container);
+                event2 = getActivity().findViewById(R.id.event2Container);
+                event3 = getActivity().findViewById(R.id.event3Container);
 
-                treeEvent.setOnClickListener(new View.OnClickListener() {
+                event1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        tab1Info();
+                        new AlertDialog.Builder(getContext())
+                                .setTitle(title1)
+                                .setMessage(expandedInfo1)
+                                .setCancelable(false)
+                                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+
+                                    }
+                                }).show();
                     }
                 });
 
-                christmasEvent.setOnClickListener(new View.OnClickListener() {
+                event2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        tab2Info();
+                        new AlertDialog.Builder(getContext())
+                                .setTitle(title2)
+                                .setMessage(expandedInfo2)
+                                .setCancelable(false)
+                                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+
+                                    }
+                                }).show();
                     }
                 });
 
+                event3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new AlertDialog.Builder(getContext())
+                                .setTitle(title3)
+                                .setMessage(expandedInfo3)
+                                .setCancelable(false)
+                                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+
+                                    }
+                                }).show();
+                    }
+                });
+
+
+                info = getView().findViewById(R.id.infoCalendarButton);
+                info.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new AlertDialog.Builder(getContext())
+                                .setTitle("Info")
+                                .setMessage("This list of upcoming events is displayed from the database, meaning it can be changed dynamically. \n\nEvents are colour coded:\n\nRed=Very Important\nOrange=Important and\nGreen=Not Important.\n\nYou can tap on each event to read more about it.")
+                                .setCancelable(false)
+                                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+
+                                    }
+                                }).show();
+                    }
+                });
 
 
             }
@@ -121,33 +193,9 @@ public class calendarFragment extends Fragment {
     }
 
 
-    public void tab1Info() {
-        new AlertDialog.Builder(getContext())
-                .setTitle("The Melting of the Trees")
-                .setMessage("The Melting of the Trees is an event which marks the fall of Winter upon Al Murray's Universe. The exact date of the Melting can vary, however it is usually around the 22nd of November. During this several day-long event, the Trees, in an unspecified location, begin to scream in joy and melt for Al Murray. They melt into the Pond, and remain as such until Spring, when the trees unmelt into trees again, without any memory of the Melting. The Melting of the Trees is a staple of Murryanity.")
-                .setCancelable(false)
-                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
 
 
-                    }
-                }).show();
-    }
 
-    public void tab2Info() {
-        new AlertDialog.Builder(getContext())
-                .setTitle("Christmas")
-                .setMessage("Christmas is that time of year when you gather your family round the festively decorated fireplace, get on your knees, and pray to Al Murray. For this is the day Al Murray was born, the day the legend of Murrysus was forever inscribed in the minds of mortals.")
-                .setCancelable(false)
-                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-
-                    }
-                }).show();
-    }
 
 
 
@@ -161,6 +209,86 @@ public class calendarFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        getActivity().setTitle("Events");
+
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String event1Title = dataSnapshot.child("event1").child("title").getValue(String.class);
+                TextView event1TitleText = (TextView)getView().findViewById(R.id.event1Title);
+                title1 = event1Title;
+                event1TitleText.setText(event1Title);
+
+                String event1Date = dataSnapshot.child("event1").child("date").getValue(String.class);
+                TextView event1DateText = (TextView)getView().findViewById(R.id.event1Date);
+                event1DateText.setText(event1Date);
+
+                String event1Info = dataSnapshot.child("event1").child("info").getValue(String.class);
+                TextView event1InfoText = (TextView)getView().findViewById(R.id.event1Info);
+                event1InfoText.setText(event1Info);
+
+                Integer event1Importance = dataSnapshot.child("event1").child("importance").getValue(Integer.class);
+                RoundedImageView event1Card = (RoundedImageView)getView().findViewById(R.id.event1Container);
+                if(event1Importance == 1) { event1Card.setImageDrawable(new ColorDrawable(0xFF669900));}
+                if(event1Importance == 2) { event1Card.setImageDrawable(new ColorDrawable(0xFFFF8800));}
+                if(event1Importance == 3) { event1Card.setImageDrawable(new ColorDrawable(0xFFFF4444));}
+
+                //2
+                String event2Title = dataSnapshot.child("event2").child("title").getValue(String.class);
+                TextView event2TitleText = (TextView)getView().findViewById(R.id.event2Title);
+                title2 = event2Title;
+                event2TitleText.setText(event2Title);
+
+                String event2Date = dataSnapshot.child("event2").child("date").getValue(String.class);
+                TextView event2DateText = (TextView)getView().findViewById(R.id.event2Date);
+                event2DateText.setText(event2Date);
+
+                String event2Info = dataSnapshot.child("event2").child("info").getValue(String.class);
+                TextView event2InfoText = (TextView)getView().findViewById(R.id.event2Info);
+                event2InfoText.setText(event2Info);
+
+                Integer event2Importance = dataSnapshot.child("event2").child("importance").getValue(Integer.class);
+                RoundedImageView event2Card = (RoundedImageView)getView().findViewById(R.id.event2Container);
+                if(event2Importance == 1) { event2Card.setImageDrawable(new ColorDrawable(0xFF669900));}
+                if(event2Importance == 2) { event2Card.setImageDrawable(new ColorDrawable(0xFFFF8800));}
+                if(event2Importance == 3) { event2Card.setImageDrawable(new ColorDrawable(0xFFFF4444));}
+
+                //3
+                String event3Title = dataSnapshot.child("event3").child("title").getValue(String.class);
+                TextView event3TitleText = (TextView)getView().findViewById(R.id.event3Title);
+                title3 = event3Title;
+                event3TitleText.setText(event3Title);
+
+                String event3Date = dataSnapshot.child("event3").child("date").getValue(String.class);
+                TextView event3DateText = (TextView)getView().findViewById(R.id.event3Date);
+                event3DateText.setText(event3Date);
+
+                String event3Info = dataSnapshot.child("event3").child("info").getValue(String.class);
+                TextView event3InfoText = (TextView)getView().findViewById(R.id.event3Info);
+                event3InfoText.setText(event3Info);
+
+                Integer event3Importance = dataSnapshot.child("event3").child("importance").getValue(Integer.class);
+                RoundedImageView event3Card = (RoundedImageView)getView().findViewById(R.id.event3Container);
+                if(event3Importance == 1) { event3Card.setImageDrawable(new ColorDrawable(0xFF669900));}
+                if(event3Importance == 2) { event3Card.setImageDrawable(new ColorDrawable(0xFFFF8800));}
+                if(event3Importance == 3) { event3Card.setImageDrawable(new ColorDrawable(0xFFFF4444));}
+
+                //Expanded
+
+                expandedInfo1 = dataSnapshot.child("event1").child("expandedInfo").getValue(String.class);
+                expandedInfo2 = dataSnapshot.child("event2").child("expandedInfo").getValue(String.class);
+                expandedInfo3 = dataSnapshot.child("event3").child("expandedInfo").getValue(String.class);
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        ref.addListenerForSingleValueEvent(eventListener);
 
 
 
@@ -174,6 +302,9 @@ public class calendarFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_calendar, container, false);
+
+
+
 
 
 

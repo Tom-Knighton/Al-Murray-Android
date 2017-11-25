@@ -34,12 +34,12 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
-        mButton = (Button) findViewById(R.id.signinbutton);
-        mEmail = (EditText) findViewById(R.id.emailText);
-        mPass = (EditText) findViewById(R.id.passwordText);
+        mButton = (Button) findViewById(R.id.loginButton);
+        mEmail = (EditText) findViewById(R.id.emailEntry);
+        mPass = (EditText) findViewById(R.id.passwordEntry);
 
         if (mAuth.getCurrentUser() != null) {
-            Intent i = new Intent(Login.this, Activity.class);
+            Intent i = new Intent(Login.this, MainNav.class);
             finish();
             startActivity(i);
 
@@ -65,7 +65,7 @@ public class Login extends AppCompatActivity {
                         SharedPreferences.Editor prefsEditor = prefs .edit();
                         prefsEditor.putString("currentUser", mAuth.getCurrentUser().getUid());
                         prefsEditor.commit();
-                        Intent i = new Intent(Login.this, Activity.class);
+                        Intent i = new Intent(Login.this, MainNav.class);
                         finish();
                         startActivity(i);
 

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+    </group>
+
+    <item android:title="Main">
+        <menu>
+            <item
+                android:id="@+id/chatProfileAction"
+                android:icon="@drawable/ic_account_circle_black_24px"
+                android:title="Profile" />
+            <item
+                android:id="@+id/chatEventsAction"
+                android:icon="@drawable/ic_event_black_24px"
+                android:title="Calendar" />
+            <item
+                android:id="@+id/chatRequestsAction"
+                android:icon="@drawable/ic_redeem_black_24px"
+                android:title="Requests" />
+            <item
+                android:id="@+id/chatInfoAction"
+                android:icon="@drawable/ic_info_black_24px"
+                android:title="Info" />
+
+        </menu>
+    </item>
+
+    <item android:title="Chat">
+        <menu>
+            <item
+                android:id="@+id/ChatChatAction"
+                android:icon="@drawable/ic_chat_black_24px"
+                android:title="Chat" />
+
+
+        </menu>
+    </item>
+
+</menu>

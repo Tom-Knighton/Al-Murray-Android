@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.almurray.android.almurrayportal.prayerRoom"
+    android:background="@drawable/prayer"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Prayer Room \n(Silence Please)"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="40sp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/prayInfo"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_above="@id/simplePrayButton"
+        android:layout_centerHorizontal="true"
+        android:text="Information"
+        android:textColor="@android:color/white"
+        android:background="@drawable/gradientblue"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Simple Prayer"
+        android:id="@+id/simplePrayButton"
+        style="@style/loginButtonStyle"
+        android:textColor="@android:color/white"
+        android:layout_margin="30dp"
+        android:layout_centerInParent="true"/>
+
+    <Button
+        android:id="@+id/complexPrayButton"
+        style="@style/loginButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:layout_below="@+id/simplePrayButton"
+        android:layout_marginTop="5dp"
+        android:text="Manual Review Prayers"
+        android:textColor="@android:color/white" />
+
+
+</RelativeLayout>

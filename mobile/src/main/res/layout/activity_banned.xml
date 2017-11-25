@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.almurray.android.almurrayportal.bannedActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+
+        >
+
+
+        <TextView
+            android:id="@+id/bannedTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="This account is temporarily banned"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="20sp"
+            android:textAlignment="center"
+
+            />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bannedTitle"
+            android:paddingTop="40dp"
+            android:text="You will be notified when your account is unbanned. The maximum a temporary ban can last is 48 hours."
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_red_light"/>
+
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.webkit.ConsoleMessage;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +28,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.sendbird.android.SendBird;
+import com.sendbird.android.SendBirdException;
+import com.sendbird.android.User;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -57,11 +61,16 @@ public class profileViewTab extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("users");
+    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
     FloatingActionButton refreshP;
     FloatingActionButton adminP;
     ImageView profilePic;
+    Button logoutButton;
+    Button prayerButton;
+    FloatingActionButton clearButton;
 
 
     public profileViewTab() {
@@ -95,7 +104,7 @@ public class profileViewTab extends Fragment {
         Runnable updater = new Runnable() {
 
             public void run() {
-                refreshP = getView().findViewById(R.id.refreshP);
+                refreshP = getView().findViewById(R.id.refreshButton);
                 refreshP.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -103,7 +112,7 @@ public class profileViewTab extends Fragment {
                     }
                 });
 
-                adminP = getView().findViewById(R.id.adminP);
+                adminP = getView().findViewById(R.id.adminButton);
                 adminP.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -112,8 +121,29 @@ public class profileViewTab extends Fragment {
                     }
                 });
 
+                clearButton = getView().findViewById(R.id.clearButton);
+                clearButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for(DataSnapshot repSnap : dataSnapshot.getChildren()) {
+                                    repSnap.child("simplePrayers").getRef().setValue(0);
+                                    repSnap.child("complexPrayers").getRef().setValue(0);
+                                }
+                            }
 
-                profilePic = getView().findViewById(R.id.profileView);
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                });
+
+
+                profilePic = getView().findViewById(R.id.profileSmallImageView);
                 profilePic.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -121,6 +151,26 @@ public class profileViewTab extends Fragment {
                         startActivity(i);
                     }
                 });
+
+                logoutButton = getView().findViewById(R.id.logoutButton);
+                logoutButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        FirebaseAuth.getInstance().signOut();
+                        getActivity().finish();
+                        startActivity(new Intent(getActivity(), Login.class));
+                    }
+                });
+
+                prayerButton = getView().findViewById(R.id.goToPrayerRoom);
+                prayerButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(getActivity(), prayerRoom.class));
+                    }
+                });
+
+
 
             }
         };
@@ -139,30 +189,50 @@ public class profileViewTab extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        getActivity().setTitle("Profile");
+
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+
                 String  aPoints = dataSnapshot.child("AmigoPoints").getValue(String.class);
-                TextView aT = (TextView)getView().findViewById(R.id.amigoPoints);
+                TextView aT = (TextView)getView().findViewById(R.id.amigoPointsLabel);
                 aT.setText(aPoints);
 
-                String  pPoints = dataSnapshot.child("pPoints").getValue(String.class);
-                TextView pT = (TextView)getView().findViewById(R.id.pPoints);
+                String  pPoints = dataSnapshot.child("pPoints").getValue(String .class);
+                TextView pT = (TextView)getView().findViewById(R.id.positivePointsLabel);
                 pT.setText(pPoints);
 
 
                 String aRank = dataSnapshot.child("amigoRank").getValue(String.class);
-                TextView aRT = (TextView)getView().findViewById(R.id.aRank);
-                aRT.setText(aRank);
+                TextView aRT = (TextView)getView().findViewById(R.id.amigoRankLabel);
+                aRT.setText("Amigo Rank: "+aRank);
 
                 String pRank = dataSnapshot.child("rank").getValue(String.class);
-                TextView pRT = (TextView)getView().findViewById(R.id.pRank);
-                pRT.setText(pRank);
+                TextView pRT = (TextView)getView().findViewById(R.id.positiveRankLabel);
+                pRT.setText("Positive Rank: "+pRank);
+
+                String sName = dataSnapshot.child("sName").getValue(String.class);
+                TextView snT = (TextView)getView().findViewById(R.id.spanishNameLabel);
+                snT.setText(sName);
+
+                String fullName = dataSnapshot.child("fullName").getValue(String.class);
+                TextView fnT = (TextView)getView().findViewById(R.id.profileNameLabel);
+                fnT.setText(fullName);
+
+                String team = dataSnapshot.child("team").getValue(String.class);
+                TextView rT = (TextView)getView().findViewById(R.id.profileTeamLabel);
+                rT.setText(team);
+
+                String standing = dataSnapshot.child("standing").getValue(String.class);
+                TextView sT = (TextView)getView().findViewById(R.id.standingLabel);
+                sT.setText("Current Standing: "+standing);
 
 
                 String urlTo = dataSnapshot.child("urToImage").getValue(String.class);
                 Context context = getContext();
-                de.hdodenhof.circleimageview.CircleImageView pI = getView().findViewById(R.id.profileView);
+                de.hdodenhof.circleimageview.CircleImageView pI = getView().findViewById(R.id.profileSmallImageView);
                 Picasso.with(context).load(urlTo).into(pI);
 
                 SharedPreferences prefs = getContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
@@ -178,6 +248,20 @@ public class profileViewTab extends Fragment {
                 String reqCode = dataSnapshot.child("code").getValue(String.class);
                 prefsEditor.putString("reqCode", reqCode);
                 prefsEditor.commit();
+
+
+                Boolean bannedB = dataSnapshot.child("banned").getValue(Boolean.class);
+                if (bannedB == true) {
+                    Intent i = new Intent(getActivity(), bannedActivity.class);
+                    getActivity().finish();
+                    startActivity(i);
+
+                }
+
+
+
+
+
 
 
             }
@@ -204,32 +288,66 @@ public class profileViewTab extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String  aPoints = dataSnapshot.child("AmigoPoints").getValue(String.class);
-                TextView aT = (TextView)getView().findViewById(R.id.amigoPoints);
+                TextView aT = (TextView)getView().findViewById(R.id.amigoPointsLabel);
                 aT.setText(aPoints);
 
                 String  pPoints = dataSnapshot.child("pPoints").getValue(String .class);
-                TextView pT = (TextView)getView().findViewById(R.id.pPoints);
+                TextView pT = (TextView)getView().findViewById(R.id.positivePointsLabel);
                 pT.setText(pPoints);
 
 
                 String aRank = dataSnapshot.child("amigoRank").getValue(String.class);
-                TextView aRT = (TextView)getView().findViewById(R.id.aRank);
-                aRT.setText(aRank);
+                TextView aRT = (TextView)getView().findViewById(R.id.amigoRankLabel);
+                aRT.setText("Amigo Rank: "+aRank);
 
                 String pRank = dataSnapshot.child("rank").getValue(String.class);
-                TextView pRT = (TextView)getView().findViewById(R.id.pRank);
-                pRT.setText(pRank);
+                TextView pRT = (TextView)getView().findViewById(R.id.positiveRankLabel);
+                pRT.setText("Positive Rank: "+pRank);
+
+                String sName = dataSnapshot.child("sName").getValue(String.class);
+                TextView snT = (TextView)getView().findViewById(R.id.spanishNameLabel);
+                snT.setText(sName);
+
+                String fullName = dataSnapshot.child("fullName").getValue(String.class);
+                TextView fnT = (TextView)getView().findViewById(R.id.profileNameLabel);
+                fnT.setText(fullName);
+
+                String team = dataSnapshot.child("team").getValue(String.class);
+                TextView rT = (TextView)getView().findViewById(R.id.profileTeamLabel);
+                rT.setText(team);
+
+                String standing = dataSnapshot.child("standing").getValue(String.class);
+                TextView sT = (TextView)getView().findViewById(R.id.standingLabel);
+                sT.setText("Current Standing: "+standing);
 
 
                 String urlTo = dataSnapshot.child("urToImage").getValue(String.class);
                 Context context = getContext();
-                de.hdodenhof.circleimageview.CircleImageView pI = getView().findViewById(R.id.profileView);
+                de.hdodenhof.circleimageview.CircleImageView pI = getView().findViewById(R.id.profileSmallImageView);
                 Picasso.with(context).load(urlTo).into(pI);
 
                 SharedPreferences prefs = getContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor prefsEditor = prefs .edit();
                 prefsEditor.putString("urlToImage", urlTo);
                 prefsEditor.commit();
+
+                Boolean adminB = dataSnapshot.child("admin").getValue(Boolean.class);
+                if(adminB == true) {
+                    adminP.setVisibility(View.VISIBLE);
+                }
+
+                String reqCode = dataSnapshot.child("code").getValue(String.class);
+                prefsEditor.putString("reqCode", reqCode);
+                prefsEditor.commit();
+
+
+                Boolean bannedB = dataSnapshot.child("banned").getValue(Boolean.class);
+                if (bannedB == true) {
+                    Intent i = new Intent(getActivity(), bannedActivity.class);
+                    getActivity().finish();
+                    startActivity(i);
+
+                }
             }
 
             @Override

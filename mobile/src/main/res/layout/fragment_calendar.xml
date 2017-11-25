@@ -9,12 +9,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:id="@+id/tab1"
+        android:id="@+id/event1Tab"
         android:layout_height="wrap_content">
+
 
         <com.makeramen.roundedimageview.RoundedImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/imageView1"
+            android:id="@+id/event1Container"
             android:src="@android:color/holo_red_light"
             android:scaleType="center"
             android:layout_height="120dp"
@@ -35,33 +36,34 @@
         </com.makeramen.roundedimageview.RoundedImageView>
 
         <TextView
-            android:id="@+id/treeTitle"
+            android:id="@+id/event1Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Melting of the Trees"
+            android:text=""
             android:layout_marginTop="15dp"
             android:textSize="15sp"
             android:textColor="@android:color/white"
             android:layout_centerHorizontal="true"
             />
         <TextView
-            android:id="@+id/treeDate"
+            android:id="@+id/event1Date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/treeTitle"
-            android:text="19/11/17"
+            android:layout_below="@+id/event1Title"
+            android:text=""
             android:layout_marginTop="0dp"
             android:textSize="10sp"
             android:textColor="@android:color/white"
             android:layout_centerHorizontal="true"
             />
         <TextView
-            android:id="@+id/treeInfo"
+            android:id="@+id/event1Info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/treeDate"
-            android:text="Celebration/mourning of the melting of the trees, remember to pray!"
+            android:layout_below="@+id/event1Date"
+            android:text=""
             android:layout_marginTop="0dp"
+            android:textAlignment="center"
             android:textSize="13sp"
             android:paddingLeft="10dp"
             android:textColor="@android:color/white"
@@ -72,13 +74,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:id="@+id/tab2"
-        android:layout_below="@+id/tab1"
+        android:id="@+id/event2Tab"
+        android:layout_below="@+id/event1Tab"
         android:layout_height="wrap_content">
 
         <com.makeramen.roundedimageview.RoundedImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/christmasTab"
+            android:id="@+id/event2Container"
             android:src="@android:color/holo_orange_dark"
             android:scaleType="center"
             android:layout_height="120dp"
@@ -99,32 +101,33 @@
         </com.makeramen.roundedimageview.RoundedImageView>
 
         <TextView
-            android:id="@+id/christmasTitle"
+            android:id="@+id/event2Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Christmas Day"
+            android:text=""
             android:layout_marginTop="15dp"
             android:textSize="15sp"
             android:textColor="@android:color/white"
             android:layout_centerHorizontal="true"
             />
         <TextView
-            android:id="@+id/christmasDate"
+            android:id="@+id/event2Date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/christmasTitle"
-            android:text="25/12/17"
+            android:layout_below="@+id/event2Title"
+            android:text=""
             android:layout_marginTop="0dp"
             android:textSize="10sp"
             android:textColor="@android:color/white"
             android:layout_centerHorizontal="true"
             />
         <TextView
-            android:id="@+id/christmasInfo"
+            android:textAlignment="center"
+            android:id="@+id/event2Info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/christmasDate"
-            android:text="The birth of Murrysus! Thank you Al Murray for blessing us with our presents this year."
+            android:layout_below="@+id/event2Date"
+            android:text=""
             android:layout_marginTop="0dp"
             android:textSize="13sp"
             android:paddingLeft="10dp"
@@ -134,8 +137,83 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/event3Tab"
+        android:layout_below="@+id/event2Tab"
+        android:layout_height="wrap_content">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/event3Container"
+            android:src="@android:color/holo_orange_dark"
+            android:scaleType="center"
+            android:layout_height="120dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            app:riv_corner_radius="30dip"
+            app:riv_border_width="0dip"
+            app:riv_border_color="#333333"
+            app:riv_mutate_background="true"
+            app:riv_tile_mode="repeat"
+            app:riv_oval="false" >
 
 
+
+
+        </com.makeramen.roundedimageview.RoundedImageView>
+
+        <TextView
+            android:id="@+id/event3Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_marginTop="15dp"
+            android:textSize="15sp"
+            android:textColor="@android:color/white"
+            android:layout_centerHorizontal="true"
+            />
+        <TextView
+            android:id="@+id/event3Date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@+id/event3Title"
+            android:text=""
+            android:layout_marginTop="0dp"
+            android:textSize="10sp"
+            android:textColor="@android:color/white"
+            android:layout_centerHorizontal="true"
+            />
+        <TextView
+            android:id="@+id/event3Info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/event3Date"
+            android:textAlignment="center"
+            android:text=""
+            android:layout_marginTop="0dp"
+            android:textSize="13sp"
+            android:paddingLeft="10dp"
+            android:textColor="@android:color/white"
+            android:layout_centerHorizontal="true"
+            />
+
+    </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/infoCalendarButton"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/ic_info_outline_white_24px"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginRight="18dp" />
 
 
 </RelativeLayout>
