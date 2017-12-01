@@ -20,7 +20,6 @@
 
 
             <LinearLayout
-                    android:layout_below="@+id/topView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -61,11 +60,13 @@
                         android:visibility="invisible"
                         app:srcCompat="@drawable/quantum_ic_clear_white_24" />
 
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="350dp"
+                        android:orientation="vertical"
                         android:background="@drawable/gradientblue"
-                        android:orientation="vertical">
+                        >
 
 
                         <de.hdodenhof.circleimageview.CircleImageView
@@ -211,7 +212,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="45dp"
                         android:background="@drawable/nicebuttonback"
-                        android:text="Go To Prayer Room"
+                        android:text="Go To Santa's Grotto"
                         android:textColor="@android:color/white"
 
                         />
@@ -282,11 +283,26 @@
 
 
 
-
+            <com.jetradarmobile.snowfall.SnowfallView
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                app:snowflakesNum="250"
+                app:snowflakeAlphaMin="150"
+                app:snowflakeAlphaMax="255"
+                app:snowflakeAngleMax="5"
+                app:snowflakeSizeMin="8dp"
+                app:snowflakeSizeMax="20dp"
+                app:snowflakeSpeedMin="4"
+                app:snowflakeSpeedMax="12"
+                app:snowflakesFadingEnabled="true"
+                app:snowflakesAlreadyFalling="false"
+                />
 
 
 
         </RelativeLayout>
+
+
 
 
     </ScrollView>

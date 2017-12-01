@@ -106,16 +106,7 @@ public class SelectUserFragment extends Fragment{
                     // Error!
                     return;
                 }
-
-
-                Iterator itr = list.iterator();
-                while(itr.hasNext()) {
-                    User user = (User) itr.next();
-                    Log.d("TAG", "NVJNVMV JVMVMRI NFJVIV IEICIEC DNFIEIE JIVVI "+user.getNickname().toString());
-                    if(user.getNickname().toString() == "Taylor P") {
-                        Log.d("TAG", "HEY WE GOTTA TAYLOR OVA HERE");
-                    }
-                }
+                list.clear();
                 mListAdapter.setUserList(list);
             }
         });
@@ -135,7 +126,7 @@ public class SelectUserFragment extends Fragment{
 
 
                 for (User user : list) {
-                    if (user.getUserId().toString() != "stephanier") {
+                    if (!user.getUserId().equals("stephanier")) {
                         mListAdapter.addLast(user);
 
                     }

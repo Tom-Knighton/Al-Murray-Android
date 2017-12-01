@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
         android:name="android.support.multidex.MultiDexApplication"
@@ -53,7 +54,14 @@
             android:name=".ChatNav"
             android:label="@string/title_activity_chat_nav"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".createChat"></activity>
+        <activity android:name=".createChat" />
+
+        <service
+            android:name=".SoundService"
+            android:enabled="true" />
+
+        <activity android:name=".requestAccount" />
+        <activity android:name=".createAccountant"></activity>
     </application>
 
 </manifest>

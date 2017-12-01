@@ -77,4 +77,6 @@
     <string name="message_sending">Sending</string>
     <string name="message_failed">Failed</string>
     <string name="title_activity_chat_nav">ChatNav</string>
+
+    <string name="requestAccount">Don\'t have an account? Request one here.</string>
 </resources>

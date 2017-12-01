@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class listUsers extends AppCompatActivity {
 
 
@@ -20,8 +22,11 @@ public class listUsers extends AppCompatActivity {
     private Button sethButton;
     private Button taylorButton;
     private Button tomButton;
+    private Button createButton;
 
     private String currentUID;
+
+    String email = FirebaseAuth.getInstance().getCurrentUser().toString();
 
     @Override
     public void onResume() {
@@ -38,7 +43,7 @@ public class listUsers extends AppCompatActivity {
                 Log.d("TAG", currentUID);
 
 
-
+                createButton = findViewById(R.id.createAccountButton);
 
                 georgebutton = findViewById(R.id.georgeViewButton);
                 joeButton = findViewById(R.id.joeViewButton);
@@ -48,32 +53,36 @@ public class listUsers extends AppCompatActivity {
                 taylorButton = findViewById(R.id.taylorViewButton);
                 tomButton = findViewById(R.id.tomViewButton);
 
-                if(currentUID.equals("2yZRTW0x7cQjQ5aN8isNf8bxOp92")) {
+                if(email.equals("tomknighton@icloud.com")) {
+                    createButton.setEnabled(true);
+                }
+
+                if(email.equals("cornwells2013@royalliberty.co.uk")) {
                     samButton.setEnabled(false);
                     tomButton.setEnabled(false);
                 }
-                if(currentUID.equals("MQVUGM9ig5SDOzIsaqKGSRHT3lJ3")) {
+                if(email.equals("willisn2013@royalliberty.co.uk")) {
                     nickButton.setEnabled(false);
                     tomButton.setEnabled(false);
 
                 }
-                if(currentUID.equals("WbWHZsR23QhjoSRqMUe8TB4Gngh2")) {
+                if(email.equals("pught2013@royalliberty.co.uk")) {
                     taylorButton.setEnabled(false);
                     tomButton.setEnabled(false);
 
                 }
-                if(currentUID.equals("YLltc7T65CeMuOpN9P64qQixd502")) {
+                if(email.equals("leigh-kaufmans2013@royalliberty.co.uk")) {
                     sethButton.setEnabled(false);
                     tomButton.setEnabled(false);
 
                 }
 
-                if(currentUID.equals("j830FVllozcqkonqsVXfEShG8HX2")) {
+                if(email.equals("impett2013@royalliberty.co.uk")) {
                     joeButton.setEnabled(false);
                     tomButton.setEnabled(false);
 
                 }
-                if(currentUID.equals("kuYfK8Er9DT2YBkcpPamkp4eo0D3")) {
+                if(email.equals("dodkinsg2013@royalliberty.co.uk")) {
                     georgebutton.setEnabled(false);
                     tomButton.setEnabled(false);
 

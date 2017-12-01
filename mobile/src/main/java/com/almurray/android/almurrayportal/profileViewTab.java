@@ -170,6 +170,97 @@ public class profileViewTab extends Fragment {
                     }
                 });
 
+                ValueEventListener eventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                        String  aPoints = dataSnapshot.child("AmigoPoints").getValue(String.class);
+                        TextView aT = (TextView)getView().findViewById(R.id.amigoPointsLabel);
+                        aT.setText(aPoints);
+
+                        String  pPoints = dataSnapshot.child("pPoints").getValue(String .class);
+                        TextView pT = (TextView)getView().findViewById(R.id.positivePointsLabel);
+                        pT.setText(pPoints);
+
+
+                        String aRank = dataSnapshot.child("amigoRank").getValue(String.class);
+                        TextView aRT = (TextView)getView().findViewById(R.id.amigoRankLabel);
+                        aRT.setText("Amigo Rank: "+aRank);
+
+                        String pRank = dataSnapshot.child("rank").getValue(String.class);
+                        TextView pRT = (TextView)getView().findViewById(R.id.positiveRankLabel);
+                        pRT.setText("Positive Rank: "+pRank);
+
+                        String sName = dataSnapshot.child("sName").getValue(String.class);
+                        TextView snT = (TextView)getView().findViewById(R.id.spanishNameLabel);
+                        snT.setText(sName);
+
+                        String fullName = dataSnapshot.child("fullName").getValue(String.class);
+                        TextView fnT = (TextView)getView().findViewById(R.id.profileNameLabel);
+                        fnT.setText(fullName);
+
+                        String team = dataSnapshot.child("team").getValue(String.class);
+                        TextView rT = (TextView)getView().findViewById(R.id.profileTeamLabel);
+                        rT.setText(team);
+
+                        String standing = dataSnapshot.child("standing").getValue(String.class);
+                        TextView sT = (TextView)getView().findViewById(R.id.standingLabel);
+                        sT.setText("Current Standing: "+standing);
+
+
+                        String urlTo = dataSnapshot.child("urToImage").getValue(String.class);
+                        Context context = getContext();
+                        de.hdodenhof.circleimageview.CircleImageView pI = getView().findViewById(R.id.profileSmallImageView);
+                        Picasso.with(context).load(urlTo).into(pI);
+
+                        SharedPreferences prefs = getContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor prefsEditor = prefs .edit();
+                        prefsEditor.putString("urlToImage", urlTo);
+                        prefsEditor.commit();
+
+                        Boolean adminB = dataSnapshot.child("admin").getValue(Boolean.class);
+                        if(adminB == true) {
+                            adminP.setVisibility(View.VISIBLE);
+                        }
+
+                        String reqCode = dataSnapshot.child("code").getValue(String.class);
+                        prefsEditor.putString("reqCode", reqCode);
+                        prefsEditor.commit();
+
+
+                        Boolean bannedB = dataSnapshot.child("banned").getValue(Boolean.class);
+                        if (bannedB == true) {
+                            Intent i = new Intent(getActivity(), bannedActivity.class);
+                            getActivity().finish();
+                            startActivity(i);
+
+                        }
+
+                        String question1 = dataSnapshot.child("question1").getValue(String.class);
+                        String question2 = dataSnapshot.child("question2").getValue(String.class);
+                        String answer1 = dataSnapshot.child("answer1").getValue(String.class);
+                        String answer2 = dataSnapshot.child("answer2").getValue(String.class);
+                        prefsEditor.putString("question1", question1);
+                        prefsEditor.putString("question2", question2);
+                        prefsEditor.putString("answer1", answer1);
+                        prefsEditor.putString("answer2", answer2);
+
+                        prefsEditor.commit();
+
+
+
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                };
+                ref.addListenerForSingleValueEvent(eventListener);
+
 
 
             }
@@ -191,87 +282,7 @@ public class profileViewTab extends Fragment {
 
         getActivity().setTitle("Profile");
 
-        ValueEventListener eventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
 
-
-                String  aPoints = dataSnapshot.child("AmigoPoints").getValue(String.class);
-                TextView aT = (TextView)getView().findViewById(R.id.amigoPointsLabel);
-                aT.setText(aPoints);
-
-                String  pPoints = dataSnapshot.child("pPoints").getValue(String .class);
-                TextView pT = (TextView)getView().findViewById(R.id.positivePointsLabel);
-                pT.setText(pPoints);
-
-
-                String aRank = dataSnapshot.child("amigoRank").getValue(String.class);
-                TextView aRT = (TextView)getView().findViewById(R.id.amigoRankLabel);
-                aRT.setText("Amigo Rank: "+aRank);
-
-                String pRank = dataSnapshot.child("rank").getValue(String.class);
-                TextView pRT = (TextView)getView().findViewById(R.id.positiveRankLabel);
-                pRT.setText("Positive Rank: "+pRank);
-
-                String sName = dataSnapshot.child("sName").getValue(String.class);
-                TextView snT = (TextView)getView().findViewById(R.id.spanishNameLabel);
-                snT.setText(sName);
-
-                String fullName = dataSnapshot.child("fullName").getValue(String.class);
-                TextView fnT = (TextView)getView().findViewById(R.id.profileNameLabel);
-                fnT.setText(fullName);
-
-                String team = dataSnapshot.child("team").getValue(String.class);
-                TextView rT = (TextView)getView().findViewById(R.id.profileTeamLabel);
-                rT.setText(team);
-
-                String standing = dataSnapshot.child("standing").getValue(String.class);
-                TextView sT = (TextView)getView().findViewById(R.id.standingLabel);
-                sT.setText("Current Standing: "+standing);
-
-
-                String urlTo = dataSnapshot.child("urToImage").getValue(String.class);
-                Context context = getContext();
-                de.hdodenhof.circleimageview.CircleImageView pI = getView().findViewById(R.id.profileSmallImageView);
-                Picasso.with(context).load(urlTo).into(pI);
-
-                SharedPreferences prefs = getContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                SharedPreferences.Editor prefsEditor = prefs .edit();
-                prefsEditor.putString("urlToImage", urlTo);
-                prefsEditor.commit();
-
-                Boolean adminB = dataSnapshot.child("admin").getValue(Boolean.class);
-                if(adminB == true) {
-                    adminP.setVisibility(View.VISIBLE);
-                }
-
-                String reqCode = dataSnapshot.child("code").getValue(String.class);
-                prefsEditor.putString("reqCode", reqCode);
-                prefsEditor.commit();
-
-
-                Boolean bannedB = dataSnapshot.child("banned").getValue(Boolean.class);
-                if (bannedB == true) {
-                    Intent i = new Intent(getActivity(), bannedActivity.class);
-                    getActivity().finish();
-                    startActivity(i);
-
-                }
-
-
-
-
-
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-        ref.addListenerForSingleValueEvent(eventListener);
 
 
 

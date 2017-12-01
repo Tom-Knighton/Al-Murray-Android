@@ -10,11 +10,20 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Random;
 
 
 /**
@@ -46,6 +55,7 @@ public class requestsTab extends Fragment {
 
 
 
+
     public requestsTab() {
         // Required empty public constructor
     }
@@ -70,7 +80,11 @@ public class requestsTab extends Fragment {
 
     private TextView codeText;
 
-    CardView codeView;
+
+    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+    private String message;
+    private String answer;
+
 
     @Override
     public void onResume() {
@@ -82,52 +96,100 @@ public class requestsTab extends Fragment {
 
             public void run() {
                 final SharedPreferences prefs = getContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                SharedPreferences.Editor prefsEditor = prefs .edit();
+                final SharedPreferences.Editor prefsEditor = prefs .edit();
 
-                codeView = (CardView)getView().findViewById(R.id.codeCard);
-                codeView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new AlertDialog.Builder(getActivity())
-                                .setTitle("Your Request Code")
-                                .setMessage(prefs.getString("reqCode", ""))
-                                .setCancelable(false)
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-
-
-                                    }
-                                }).show();
-                    }
-                });
 
                 amigoPoints = (Button)getView().findViewById(R.id.amigoRequest);
                 amigoPoints.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Random r = new Random();
+                        int rN = r.nextInt((2-1)+1)+1;
+                        if(rN == 1) { message = prefs.getString("question1", ""); answer = prefs.getString("answer1", ""); }
+                        if(rN == 2) { message = prefs.getString("question2", ""); answer = prefs.getString("answer2", ""); }
+                        final EditText secAnswer = new EditText(getActivity());
                         new AlertDialog.Builder(getContext())
-                                .setTitle("Information")
-                                .setMessage("Please be aware your amigo-ness may be under investigation if you submit more than one amigo points request per 30 days, exceeding this limit may reset your amigo points to 1. This limit does not include Amigo Loans, however you may not request amigo points if you are currently taking out an Amigo Loan. Your request for amigo points will be manually reviewed and if deemed worthy you should recieve your points within 30 working days.")
-                                .setCancelable(false)
-                                .setNegativeButton("Disagree", new DialogInterface.OnClickListener() {
+                                .setTitle("Security Question")
+                                .setView(secAnswer)
+                                .setMessage(message)
+                                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-
-                                        dialogInterface.dismiss();
-
+                                        if(secAnswer.getText().toString() == answer.toString()) {
+                                            Toast.makeText(getContext(), "hi", Toast.LENGTH_LONG);
+                                            Log.d("TAG", "BLUUUUUUUUURG");
+                                        } else {
+                                            Log.d("TAG", "WRONG");
+                                            Log.d("TAG", "ENTERED: "+secAnswer.getText().toString());
+                                            Log.d("TAG", "PUT: "+answer.toString());
+                                        }
                                     }
                                 })
-                                .setPositiveButton("Agree", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent i = new Intent(getContext(), amigoPointForm.class);
-                                        startActivity(i);
+                                .show();
 
 
-                                    }
-                                }).show();
-                    }
+
+
+//                        new AlertDialog.Builder(getContext())
+//                                .setTitle("Information")
+//                                .setMessage("Please be aware your amigo-ness may be under investigation if you submit more than one amigo points request per 30 days, exceeding this limit may reset your amigo points to 1. This limit does not include Amigo Loans, however you may not request amigo points if you are currently taking out an Amigo Loan. Your request for amigo points will be manually reviewed and if deemed worthy you should recieve your points within 30 working days.")
+//                                .setCancelable(true)
+//                                .setNegativeButton("Disagree", new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                                        dialogInterface.dismiss();
+//
+//                                    }
+//                                })
+//                                .setPositiveButton("Agree", new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialog, int which) {
+//                                        Random r = new Random();
+//                                        int rN = r.nextInt((2-1)+1)+1;
+//                                        if(rN == 1) { message = prefs.getString("question1", ""); answer = prefs.getString("answer1", ""); }
+//                                        else if(rN == 2) {message = prefs.getString("question2", ""); answer = prefs.getString("answer2", ""); }
+//                                        final EditText secAnswer = new EditText(getActivity());
+//                                        new AlertDialog.Builder(getContext())
+//                                                .setView(secAnswer)
+//                                                .setTitle("Security Question")
+//                                                .setMessage(message)
+//                                                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+//                                                    @Override
+//                                                    public void onClick(DialogInterface dialogInterface, int i) {
+//                                                        if(secAnswer.getText().toString() == answer.toString()) {
+//                                                            Intent to1 = new Intent(getContext(), amigoPointForm.class);
+//                                                            startActivity(to1);
+//                                                            Log.d("TAG", answer);
+//                                                            Log.d("TAG", "right");
+//
+//                                                        }
+//                                                        else{
+//                                                            Toast.makeText(getContext(), "Security question answered incorrectly", Toast.LENGTH_SHORT);
+//                                                            dialogInterface.dismiss();
+//                                                            Log.d("TAG", answer);
+//                                                            Log.d("TAG", "wrong");
+//
+//                                                        }
+//                                                        Log.d("TAG", "COFNIRMED");
+//                                                    }
+//                                                })
+//                                                .setCancelable(true)
+//                                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                                                    @Override
+//                                                    public void onClick(DialogInterface dialogInterface, int i) {
+//                                                        dialogInterface.dismiss();
+//                                                    }
+//                                                })
+//                                                .show();
+//
+//
+//
+//
+//                                    }
+//                                }).show();
+//
+                         }
                 });
 
                 amigoLoan = (Button)getView().findViewById(R.id.loanRequest);
