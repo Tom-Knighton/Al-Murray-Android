@@ -85,7 +85,7 @@ public class ChatNav extends AppCompatActivity
                 SendBird.connect(sendbirdID, new SendBird.ConnectHandler() {
                     @Override
                     public void onConnected(User user, SendBirdException e) {
-                        Log.d("TAG", "LOGGED IN USER: "+SendBird.getCurrentUser().getUserId().toString());
+                        Log.d("TAG", "LOGGED IN USER: ");
                     }
                 });
 
