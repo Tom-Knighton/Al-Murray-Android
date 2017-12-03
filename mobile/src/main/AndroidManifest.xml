@@ -61,7 +61,8 @@
             android:enabled="true" />
 
         <activity android:name=".requestAccount" />
-        <activity android:name=".createAccountant"></activity>
+        <activity android:name=".createAccountant" />
+        <activity android:name=".SettingsStore"></activity>
     </application>
 
 </manifest>

@@ -106,7 +106,7 @@ public class SelectUserFragment extends Fragment{
                     // Error!
                     return;
                 }
-                list.clear();
+                list.remove(SendBird.getCurrentUser());
                 mListAdapter.setUserList(list);
             }
         });

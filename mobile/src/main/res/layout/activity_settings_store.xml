@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.almurray.android.almurrayportal.SettingsStore"
+    android:background="@drawable/back2">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:id="@+id/settingsLinear"
+                >
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_margin="20dp"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Enable/Disable Snow"
+                            android:textAlignment="center"/>
+
+                        <android.support.v7.widget.SwitchCompat
+                            android:id="@+id/snowSwitch"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:text="Enable: "
+                            android:layout_margin="20dp"
+                            android:layout_gravity="center"
+                            />
+
+                    </LinearLayout>
+
+
+
+
+                </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_margin="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Set Lanugage"
+                        android:textAlignment="center"/>
+
+                    <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/langSwitch"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Spanish: "
+                        android:layout_margin="20dp"
+                        android:layout_gravity="center"
+                        />
+
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/storeView1"
+                android:layout_below="@+id/settingsLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_margin="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Buy 20 Amigo Points"
+                        android:textAlignment="center"/>
+
+                    <Button
+                        android:id="@+id/buy20AP"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:text="Buy - £4.99"
+                        android:background="@android:color/holo_green_light"
+                        android:layout_gravity="bottom"/>
+
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_margin="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Buy 30 Positive Points"
+                        android:textAlignment="center"/>
+
+                    <Button
+                        android:id="@+id/buy30PP"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:text="Buy - £4.99"
+                        android:background="@android:color/holo_green_light"
+                        android:layout_gravity="bottom"/>
+
+
+                </android.support.v7.widget.CardView>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/storeView2"
+                android:layout_below="@+id/storeView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_margin="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Buy 50 Amigo Points"
+                        android:textAlignment="center"/>
+
+                    <Button
+                        android:id="@+id/buy50AP"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:text="Buy - £9.99"
+                        android:background="@android:color/holo_green_light"
+                        android:layout_gravity="bottom"/>
+
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_margin="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Buy 50 Positive Points"
+                        android:textAlignment="center"/>
+
+                    <Button
+                        android:id="@+id/buy50PP"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:text="Buy - £9.99"
+                        android:background="@android:color/holo_green_light"
+                        android:layout_gravity="bottom"/>
+
+
+                </android.support.v7.widget.CardView>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/storeView3"
+                android:layout_below="@+id/storeView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_margin="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Buy Amigo Rank"
+                        android:textAlignment="center"/>
+
+                    <Button
+                        android:id="@+id/buyARank"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:text="Buy - £19.99"
+                        android:background="@android:color/holo_green_light"
+                        android:layout_gravity="bottom"/>
+
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_margin="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Buy Positive Rank"
+                        android:textAlignment="center"/>
+
+                    <Button
+                        android:id="@+id/buyPRank"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:text="Buy - £24.99"
+                        android:background="@android:color/holo_green_light"
+                        android:layout_gravity="bottom"/>
+
+
+                </android.support.v7.widget.CardView>
+
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/storeView4"
+                android:layout_below="@+id/storeView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_margin="20dp">
+
+                    <TextView
+                        android:paddingTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="BUY NEW PROFILE PICTURE"
+                        android:textAlignment="center"/>
+
+                    <Button
+                        android:id="@+id/buyProfilePicture"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:text="Buy - £24.99"
+                        android:background="@android:color/holo_green_light"
+                        android:layout_gravity="bottom"/>
+
+
+                </android.support.v7.widget.CardView>
+
+
+
+
+
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>

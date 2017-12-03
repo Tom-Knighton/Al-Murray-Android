@@ -71,6 +71,7 @@ public class profileViewTab extends Fragment {
     Button logoutButton;
     Button prayerButton;
     FloatingActionButton clearButton;
+    Button settingsButton;
 
 
     public profileViewTab() {
@@ -104,6 +105,15 @@ public class profileViewTab extends Fragment {
         Runnable updater = new Runnable() {
 
             public void run() {
+
+                settingsButton = getView().findViewById(R.id.settingsButton);
+                settingsButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(getActivity(), SettingsStore.class));
+                    }
+                });
+
                 refreshP = getView().findViewById(R.id.refreshButton);
                 refreshP.setOnClickListener(new View.OnClickListener() {
                     @Override
