@@ -63,14 +63,14 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Set Lanugage"
+                        android:text="Enable Music"
                         android:textAlignment="center"/>
 
                     <android.support.v7.widget.SwitchCompat
-                        android:id="@+id/langSwitch"
+                        android:id="@+id/musicSwitch"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="Spanish: "
+                        android:text="Music: "
                         android:layout_margin="20dp"
                         android:layout_gravity="center"
                         />

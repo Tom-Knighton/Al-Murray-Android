@@ -51,6 +51,7 @@ dependencies {
     compile 'com.dinuscxj:circleprogressbar:1.1.1'
     compile 'com.github.stfalcon:multiimageview:0.1'
     compile 'com.github.jetradarmobile:android-snowfall:1.1.6'
+    compile 'com.anjlab.android.iab.v3:library:1.0.44'
 }
 
 

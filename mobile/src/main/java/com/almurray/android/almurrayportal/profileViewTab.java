@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jetradarmobile.snowfall.SnowfallView;
 import com.sendbird.android.SendBird;
 import com.sendbird.android.SendBirdException;
 import com.sendbird.android.User;
@@ -96,6 +97,7 @@ public class profileViewTab extends Fragment {
         return fragment;
     }
 
+    SnowfallView profileSnow;
     @Override
     public void onResume() {
         super.onResume();
@@ -105,6 +107,15 @@ public class profileViewTab extends Fragment {
         Runnable updater = new Runnable() {
 
             public void run() {
+                profileSnow = getActivity().findViewById(R.id.profileSnow);
+                SharedPreferences prefs = getContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor prefsEditor = prefs .edit();
+                if(prefs.getBoolean("snowState", false)) {
+                    profileSnow.setVisibility(View.VISIBLE);
+                } else {
+                    profileSnow.setVisibility(View.INVISIBLE);
+                }
+
 
                 settingsButton = getView().findViewById(R.id.settingsButton);
                 settingsButton.setOnClickListener(new View.OnClickListener() {
