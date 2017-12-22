@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.almurray.android.almurrayportal.createGroupChat">
+    
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:background="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/createChatToolbar">
+
+            </android.support.v7.widget.Toolbar>
+            
+            <android.support.v7.widget.CardView
+                android:layout_below="@+id/createChatToolbar"
+                android:id="@+id/tomCard"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/back2">
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <CheckBox
+                        android:text="Tom K."
+                        android:id="@+id/tomCheckBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <View
+                android:layout_below="@+id/tomCard"
+                android:id="@+id/seperator1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <android.support.v7.widget.CardView
+                android:layout_below="@+id/seperator1"
+                android:id="@+id/nickCard"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/back2">
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <CheckBox
+                        android:text="Nick W"
+                        android:id="@+id/nickCheckBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <View
+                android:id="@+id/seperator2"
+                android:layout_below="@+id/nickCard"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <android.support.v7.widget.CardView
+                android:layout_below="@+id/seperator2"
+                android:id="@+id/taylorCard"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/back2">
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <CheckBox
+                        android:text="Taylor P"
+                        android:id="@+id/taylorCheckBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <View
+                android:id="@+id/seperator3"
+                android:layout_below="@+id/taylorCard"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <android.support.v7.widget.CardView
+                android:layout_below="@+id/seperator3"
+                android:id="@+id/sethCard"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/back2">
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <CheckBox
+                        android:text="Seth"
+                        android:id="@+id/sethCheckBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <View
+                android:id="@+id/seperator4"
+                android:layout_below="@+id/sethCard"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <android.support.v7.widget.CardView
+                android:layout_below="@+id/seperator4"
+                android:id="@+id/georgeCard"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/back2">
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <CheckBox
+                        android:text="George D"
+                        android:id="@+id/georgeCheckBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <View
+                android:id="@+id/seperator5"
+                android:layout_below="@+id/georgeCard"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <android.support.v7.widget.CardView
+                android:layout_below="@+id/seperator5"
+                android:id="@+id/joeCard"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/back2">
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <CheckBox
+                        android:text="Joe I"
+                        android:id="@+id/joeCheckBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <View
+                android:id="@+id/seperator6"
+                android:layout_below="@+id/joeCard"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <android.support.v7.widget.CardView
+                android:layout_below="@+id/seperator6"
+                android:id="@+id/samCard"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/back2">
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <CheckBox
+                        android:text="Sam C"
+                        android:id="@+id/samCheckBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <View
+                android:id="@+id/seperator7"
+                android:layout_below="@+id/samCard"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="People You Have Access To "
+                android:textAlignment="center"
+                android:layout_below="@id/seperator7"/>
+
+            <Button
+                android:id="@+id/createChatButton"
+                style="?attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_above="@+id/tomCard"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:text="Create"
+                android:textColor="@android:color/white" />
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

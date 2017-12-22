@@ -21,7 +21,6 @@ public class profileView extends AppCompatActivity {
 
 
         SharedPreferences prefs = getApplicationContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor prefsEditor = prefs .edit();
         url = prefs.getString("urlToImage", "");
 
 

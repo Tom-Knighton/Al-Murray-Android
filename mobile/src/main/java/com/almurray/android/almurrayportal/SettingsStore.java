@@ -83,17 +83,19 @@ public class SettingsStore extends AppCompatActivity implements BillingProcessor
                         if(b) {
                             prefsEditor.putBoolean("musicState", true);
                             prefsEditor.commit();
+                            startService(new Intent(SettingsStore.this, SoundService.class));
                         } else {
                             prefsEditor.putBoolean("musicState", false);
+                            stopService(new Intent(SettingsStore.this, SoundService.class));
                             prefsEditor.commit();
                         }
                     }
                 });
 
                 if(prefs.getBoolean("musicState", true)) {
-                    snowSwitch.setChecked(true);
+                    musicSwitch.setChecked(true);
                 } else {
-                    snowSwitch.setChecked(false);
+                    musicSwitch.setChecked(false);
                 }
 
                 buy20AP = findViewById(R.id.buy20AP);

@@ -17,7 +17,7 @@ public class tipForm extends AppCompatActivity {
         setContentView(R.layout.activity_tip_form);
 
         webView = findViewById(R.id.tipFormWeb);
-        webView.loadUrl("https://goo.gl/forms/ipiOHwHxdPoxr4Od2");
+        webView.loadUrl("https://almurray.typeform.com/to/J2i9Em");
         webView.getSettings().setJavaScriptEnabled(true);
 
 

@@ -2,9 +2,12 @@ package com.almurray.android.almurrayportal;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -134,6 +137,8 @@ public class GroupChatFragment extends Fragment {
 
         // Load messages from cache.
         mChatAdapter.load(mChannelUrl);
+
+
     }
 
     @Nullable
@@ -232,7 +237,7 @@ public class GroupChatFragment extends Fragment {
         return rootView;
     }
 
-    private void refresh() {
+    public void refresh() {
         if (mChannel == null) {
             GroupChannel.getChannel(mChannelUrl, new GroupChannel.GroupChannelGetHandler() {
                 @Override
@@ -280,12 +285,14 @@ public class GroupChatFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        mChatAdapter.setContext(getActivity()); // Glide bug fix (java.lang.IllegalArgumentException: You cannot start a load for a destroyed activity)
+        //mChatAdapter.setContext(getActivity().getSupportFragmentManager().ge); // Glide bug fix (java.lang.IllegalArgumentException: You cannot start a load for a destroyed activity)
 
         // Gets channel from URL user requested
-
-        Log.d(LOG_TAG, mChannelUrl);
-
+        Log.d(LOG_TAG, "HELLO WE ARE RESUMING AT "+mChannelUrl);
+        Intent intent = getActivity().getIntent();
+        intent.putExtra("currentState", "inChat");
+        intent.putExtra("inChatURL", mChannelUrl);
+        refresh();
         SendBird.addChannelHandler(CHANNEL_HANDLER_ID, new SendBird.ChannelHandler() {
             @Override
             public void onMessageReceived(BaseChannel baseChannel, BaseMessage baseMessage) {
@@ -431,6 +438,7 @@ public class GroupChatFragment extends Fragment {
         mLayoutManager.setReverseLayout(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mChatAdapter);
+        mRecyclerView.setAdapter(mChatAdapter);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -482,14 +490,15 @@ public class GroupChatFragment extends Fragment {
                 }
 
 
-                onFileMessageClicked(message );
+                onFileMessageClicked(message, message.getSender().getUserId() );
             }
         });
 
         mChatAdapter.setItemLongClickListener(new GroupChatAdapter.OnItemLongClickListener() {
             @Override
-            public void onUserMessageItemLongClick(UserMessage message, int position) {
-                showMessageOptionsDialog(message, position);
+            public void onUserMessageItemLongClick(UserMessage message, int position ) {
+
+                showMessageOptionsDialog(message, position, message.getMessage(), message.getSender().getUserId());
             }
 
             @Override
@@ -502,21 +511,44 @@ public class GroupChatFragment extends Fragment {
         });
     }
 
-    private void showMessageOptionsDialog(final BaseMessage message, final int position) {
-        String[] options = new String[] { "Edit message", "Delete message" };
-
+    private void showMessageOptionsDialog(final BaseMessage message, final int position, final String text, final String userID) {
+        String[] options = new String[] { "Copy Text", "Edit message", "Delete Message"};
+        String[] otherOptions = new String[] {"Copy Text", "View Profile"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == 0) {
-                    setState(STATE_EDIT, message, position);
-                } else if (which == 1) {
-                    deleteMessage(message);
+
+        if(userID.equals(SendBird.getCurrentUser().getUserId())) {
+
+            builder.setItems(options, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (which == 0) {
+                        ClipboardManager _clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                        _clipboard.setPrimaryClip(ClipData.newPlainText("Message", text));
+                    } else if (which == 1) {
+                        setState(STATE_EDIT, message, position);
+                    } else if (which == 2) {
+                        deleteMessage(message);
+                    }
                 }
-            }
-        });
-        builder.create().show();
+            });
+            builder.create().show();
+        }else {
+            builder.setItems(otherOptions, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (which == 0) {
+                        ClipboardManager _clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                        _clipboard.setPrimaryClip(ClipData.newPlainText("Message", text));
+                    } else if (which == 1) {
+                        Intent i = new Intent(getActivity(), editProfileView.class);
+                        i.putExtra("currentSendbird", userID);
+                        startActivity(i);
+                    }
+                }
+            });
+            builder.create().show();
+        }
+
     }
 
     private void showFileOptionsDialog(final BaseMessage message) {
@@ -633,6 +665,7 @@ public class GroupChatFragment extends Fragment {
     }
 
     private void requestMedia() {
+
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             // If storage permissions are not granted, request permissions at run-time,
@@ -652,8 +685,10 @@ public class GroupChatFragment extends Fragment {
 
             intent.setAction(Intent.ACTION_GET_CONTENT);
 
-            // Always show the chooser (if there are multiple options available)
+            //Always show the chooser (if there are multiple options available)
             startActivityForResult(Intent.createChooser(intent, "Select Media"), INTENT_REQUEST_CHOOSE_MEDIA);
+            //getActivity().getIntent().putExtra("comingFromChatURL", mChannelUrl);
+            //startActivity(new Intent(getActivity(), maintenanceActivity.class));
 
             // Set this as false to maintain connection
             // even when an external Activity is started.
@@ -684,37 +719,55 @@ public class GroupChatFragment extends Fragment {
         }
     }
 
-    private void onFileMessageClicked(final FileMessage message) {
+    private void onFileMessageClicked(final FileMessage message, final String userID) {
 
 
         String[] options = new String[] { "View File", "Delete File" };
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == 0) {
-                    String type = message.getType().toLowerCase();
-                    if (type.startsWith("image")) {
-                        Intent i = new Intent(getActivity(), PhotoViewerActivity.class);
-                        i.putExtra("url", message.getUrl());
-                        i.putExtra("type", message.getType());
-                        startActivity(i);
-                    } else if (type.startsWith("video")) {
-                        Intent intent = new Intent(getActivity(), MediaPlayerActivity.class);
-                        intent.putExtra("url", message.getUrl());
-                        startActivity(intent);
-                    } else {
-                        showDownloadConfirmDialog(message);
+        if(userID.equals(SendBird.getCurrentUser().getUserId())) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setItems(options, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (which == 0) {
+                        String type = message.getType().toLowerCase();
+                        if (type.startsWith("image")) {
+                            Intent i = new Intent(getActivity(), PhotoViewerActivity.class);
+                            i.putExtra("url", message.getUrl());
+                            i.putExtra("type", message.getType());
+                            startActivity(i);
+                        } else if (type.startsWith("video")) {
+                            Intent intent = new Intent(getActivity(), MediaPlayerActivity.class);
+                            intent.putExtra("url", message.getUrl());
+                            startActivity(intent);
+                        } else {
+                            showDownloadConfirmDialog(message);
+                        }
+                    } else if (which == 1) {
+                        deleteMessage(message);
                     }
-                } else if (which == 1) {
-                    deleteMessage(message);
                 }
+            });
+
+
+            builder.create().show();
+
+        } else {
+            String type = message.getType().toLowerCase();
+            if (type.startsWith("image")) {
+                Intent i = new Intent(getActivity(), PhotoViewerActivity.class);
+                i.putExtra("url", message.getUrl());
+                i.putExtra("type", message.getType());
+                startActivity(i);
+            } else if (type.startsWith("video")) {
+                Intent intent = new Intent(getActivity(), MediaPlayerActivity.class);
+                intent.putExtra("url", message.getUrl());
+                startActivity(intent);
+            } else {
+                showDownloadConfirmDialog(message);
             }
-        });
+        }
 
-
-        builder.create().show();
 
     }
 
@@ -744,8 +797,8 @@ public class GroupChatFragment extends Fragment {
 
         if(mChannel.getMemberCount() <= 2) {
             List<Member> members = mChannel.getMembers();
-            if (members.get(0).getNickname().toString() != SendBird.getCurrentUser().getNickname().toString()) {
-                getActivity().setTitle(members.get(1).getNickname().toString());
+            if (!members.get(0).getNickname().equals(SendBird.getCurrentUser().getNickname())) {
+                getActivity().setTitle(members.get(1).getNickname());
 
             }
         }
@@ -829,6 +882,10 @@ public class GroupChatFragment extends Fragment {
 //            sendUserMessageWithUrl(text, urls.get(0));
 //            return;
 //        }
+
+
+        text = text.trim();
+
 
         UserMessage tempUserMessage = mChannel.sendUserMessage(text, new BaseChannel.SendUserMessageHandler() {
             @Override

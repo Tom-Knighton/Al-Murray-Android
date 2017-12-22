@@ -11,6 +11,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class listUsers extends AppCompatActivity {
 
@@ -26,7 +31,16 @@ public class listUsers extends AppCompatActivity {
 
     private String currentUID;
 
-    String email = FirebaseAuth.getInstance().getCurrentUser().toString();
+    private String georgeU;
+    private String nickU;
+    private String taylorU;
+    private String sethU;
+    private String samU;
+    private String tomU;
+    private String joeU;
+
+    String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("globalvariables").child("ids");
 
     @Override
     public void onResume() {
@@ -37,11 +51,6 @@ public class listUsers extends AppCompatActivity {
         Runnable updater = new Runnable() {
 
             public void run() {
-                SharedPreferences prefs = getApplicationContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                SharedPreferences.Editor prefsEditor = prefs .edit();
-                currentUID = prefs.getString("currentUser", "");
-                Log.d("TAG", currentUID);
-
 
                 createButton = findViewById(R.id.createAccountButton);
 
@@ -89,86 +98,106 @@ public class listUsers extends AppCompatActivity {
                 }
 
 
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        georgeU = dataSnapshot.child("GeorgeD").getValue(String.class);
+                        nickU = dataSnapshot.child("NickW").getValue(String.class);
+                        taylorU = dataSnapshot.child("TaylorP").getValue(String.class);
+                        sethU = dataSnapshot.child("Seth").getValue(String.class);
+                        samU = dataSnapshot.child("SamC").getValue(String.class);
+                        tomU = dataSnapshot.child("TomK").getValue(String.class);
+                        joeU = dataSnapshot.child("JoeI").getValue(String.class);
+                        String level;
+
+
+                        georgebutton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                SharedPreferences prefs = getApplicationContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                                Intent i = new Intent(listUsers.this, editProfileView.class);
+                                i.putExtra("currentEditUser", "GeorgeD");
+                                i.putExtra("currentEditUID", georgeU);
+                                if(getIntent().hasExtra("rankOC")) { i.putExtra("level", getIntent().getStringExtra("rankOC")); }
+                                startActivity(i);
+                            }
+                        });
+                        joeButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent i = new Intent(listUsers.this, editProfileView.class);
+                                i.putExtra("currentEditUser", "JoeI");
+                                i.putExtra("currentEditUID", joeU);
+                                if(getIntent().hasExtra("rankOC")) { i.putExtra("level", getIntent().getStringExtra("rankOC")); }
+                                startActivity(i);
+                            }
+                        });
+                        nickButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent i = new Intent(listUsers.this, editProfileView.class);
+                                i.putExtra("currentEditUser", "NickW");
+                                if(getIntent().hasExtra("rankOC")) { i.putExtra("level", getIntent().getStringExtra("rankOC")); }
+                                i.putExtra("currentEditUID", nickU);
+                                startActivity(i);
+                            }
+                        });
+                        samButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent i = new Intent(listUsers.this, editProfileView.class);
+                                i.putExtra("currentEditUser", "SamC");
+                                i.putExtra("currentEditUID", samU);
+                                if(getIntent().hasExtra("rankOC")) { i.putExtra("level", getIntent().getStringExtra("rankOC")); }
+                                startActivity(i);
+                            }
+                        });
+                        sethButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent i = new Intent(listUsers.this, editProfileView.class);
+                                i.putExtra("currentEditUser", "Seth");
+                                i.putExtra("currentEditUID", sethU);
+                                if(getIntent().hasExtra("rankOC")) { i.putExtra("level", getIntent().getStringExtra("rankOC")); }
+                                startActivity(i);
+                            }
+                        });
+                        taylorButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent i = new Intent(listUsers.this, editProfileView.class);
+                                i.putExtra("currentEditUser", "TaylorP");
+                                i.putExtra("currentEditUID", taylorU);
+                                if(getIntent().hasExtra("rankOC")) { i.putExtra("level", getIntent().getStringExtra("rankOC")); }
+                                startActivity(i);
+                            }
+                        });
+                        tomButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent i = new Intent(listUsers.this, editProfileView.class);
+                                i.putExtra("currentEditUser", "TomK");
+                                i.putExtra("currentEditUID", tomU);
+                                if(getIntent().hasExtra("rankOC")) { i.putExtra("level", getIntent().getStringExtra("rankOC")); }
+                                startActivity(i);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
 
 
-                georgebutton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        SharedPreferences prefs = getApplicationContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor prefsEditor = prefs .edit();
-                        prefsEditor.putString("currentEditUser", "GeorgeD");
-                        prefsEditor.commit();
-                        Intent i = new Intent(listUsers.this, editProfileView.class);
-                        startActivity(i);
-                    }
-                });
-                joeButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        SharedPreferences prefs = getApplicationContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor prefsEditor = prefs .edit();
-                        prefsEditor.putString("currentEditUser", "JoeI");
-                        prefsEditor.commit();
-                        Intent i = new Intent(listUsers.this, editProfileView.class);
-                        startActivity(i);
-                    }
-                });
-                nickButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        SharedPreferences prefs = getApplicationContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor prefsEditor = prefs .edit();
-                        prefsEditor.putString("currentEditUser", "NickW");
-                        prefsEditor.commit();
-                        Intent i = new Intent(listUsers.this, editProfileView.class);
-                        startActivity(i);
-                    }
-                });
-                samButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        SharedPreferences prefs = getApplicationContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor prefsEditor = prefs .edit();
-                        prefsEditor.putString("currentEditUser", "SamC");
-                        prefsEditor.commit();
-                        Intent i = new Intent(listUsers.this, editProfileView.class);
-                        startActivity(i);
-                    }
-                });
-                sethButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        SharedPreferences prefs = getApplicationContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor prefsEditor = prefs .edit();
-                        prefsEditor.putString("currentEditUser", "SethL");
-                        prefsEditor.commit();
-                        Intent i = new Intent(listUsers.this, editProfileView.class);
-                        startActivity(i);
-                    }
-                });
-                taylorButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        SharedPreferences prefs = getApplicationContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor prefsEditor = prefs .edit();
-                        prefsEditor.putString("currentEditUser", "TaylorP");
-                        prefsEditor.commit();
-                        Intent i = new Intent(listUsers.this, editProfileView.class);
-                        startActivity(i);
-                    }
-                });
-                tomButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        SharedPreferences prefs = getApplicationContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor prefsEditor = prefs .edit();
-                        prefsEditor.putString("currentEditUser", "TomK");
-                        prefsEditor.commit();
-                        Intent i = new Intent(listUsers.this, editProfileView.class);
-                        startActivity(i);
-                    }
-                });
+
+
+
+
+
+
 
 
             }

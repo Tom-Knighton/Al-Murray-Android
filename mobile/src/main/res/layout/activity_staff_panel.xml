@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.almurray.android.almurrayportal.staffPanel"
+    android:background="@drawable/prayer"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Staff Panel"
+        android:textAlignment="center"
+        android:textSize="50sp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"/>
+
+    <Button
+        android:layout_margin="10dp"
+        style="@style/loginButtonStyle"
+        android:id="@+id/staffMAM"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Rules &amp; Regulations"/>
+    <Button
+        android:layout_margin="10dp"
+        style="@style/loginButtonStyle"
+        android:id="@+id/staffMHM"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Chats"/>
+    <Button
+        android:layout_margin="10dp"
+        style="@style/loginButtonStyle"
+        android:id="@+id/staffEP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Edit User's Profile"/>
+    <Button
+        android:layout_margin="10dp"
+        style="@style/loginButtonStyle"
+        android:id="@+id/staffRY"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Relieve Yourself"/>
+
+
+</LinearLayout>

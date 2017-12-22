@@ -21,9 +21,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.sendbird.android.GroupChannel;
+import com.sendbird.android.SendBirdException;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -33,18 +37,31 @@ public class editProfileView extends AppCompatActivity {
     private CircleImageView profileImage;
     private TextView amigoPoints;
     private TextView pPoints;
-    private Button editPPoints;
-    private Button editAPoints;
     private TextView ARankLabel;
     private TextView PRankLabel;
+    private TextView currentStanding;
+    private TextView currentTeam;
+    private TextView currentName;
+    private TextView currentSName;
+
+
+    private Button editPButton;
+
+    private Button dm;
+
+
+    private String currentU;
+    private String currentN;
 
 
     private String currentAPoints;
     private String currentPPoints;
     private String currentARank;
     private String currentPRank;
+    private String userSendbird;
+
     private String linkToURLI;
-    private String profile;
+
 
 
 
@@ -59,47 +76,95 @@ public class editProfileView extends AppCompatActivity {
         Runnable updater = new Runnable() {
 
             public void run() {
-                profileImage = findViewById(R.id.editProfileImage);
-                amigoPoints = findViewById(R.id.editAmigoLabel);
-                pPoints = findViewById(R.id.editPositiveLabel);
-                editPPoints = findViewById(R.id.posEdit);
-                editAPoints = findViewById(R.id.amigoEdit);
-                ARankLabel = findViewById(R.id.editARankView);
-                PRankLabel = findViewById(R.id.editPrankView);
-                SharedPreferences prefs = getApplicationContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                SharedPreferences.Editor prefsEditor = prefs .edit();
-                profile = prefs.getString("currentEditUser", "");
-                Log.d("TAG", profile);
 
-                if(profile == "GeorgeD") {
-                    ref = FirebaseDatabase.getInstance().getReference().child("users").child("kuYfK8Er9DT2YBkcpPamkp4eo0D3");
-                    getStats();
-                }
-                if(profile == "JoeI") {
-                    ref = FirebaseDatabase.getInstance().getReference().child("users").child("j830FVllozcqkonqsVXfEShG8HX2");
-                    getStats();
-                }
-                if(profile == "NickW") {
-                    ref = FirebaseDatabase.getInstance().getReference().child("users").child("MQVUGM9ig5SDOzIsaqKGSRHT3lJ3");
-                    getStats();
-                }
-                if(profile == "SamC") {
-                    ref = FirebaseDatabase.getInstance().getReference().child("users").child("2yZRTW0x7cQjQ5aN8isNf8bxOp92");
-                    getStats();
-                }
-                if(profile == "SethL") {
-                    ref = FirebaseDatabase.getInstance().getReference().child("users").child("uRpVX2ppdsQ4VKxPyDFGsx7q51i1");
-                    getStats();
-                }
-                if(profile == "TaylorP") {
-                    ref = FirebaseDatabase.getInstance().getReference().child("users").child("WbWHZsR23QhjoSRqMUe8TB4Gngh2");
-                    getStats();
-                }
-                if(profile == "TomK") {
-                    ref = FirebaseDatabase.getInstance().getReference().child("users").child("aSatYR3zJpW1wTXfrrCGwhN6Cuc2");
-                    getStats();
+                ref = FirebaseDatabase.getInstance().getReference().child("globalvariables").child("ids");
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        final Intent intent = getIntent();
+                        if(intent.hasExtra("currentSendbird")) {
+                            String send = intent.getStringExtra("currentSendbird");
+                            currentU = dataSnapshot.child(send).getValue(String.class);
+                        } else {
+                            currentU = intent.getStringExtra("currentEditUID");
+                            currentN = intent.getStringExtra("currentEditUser");
 
-                }
+                        }
+
+
+                        ARankLabel = findViewById(R.id.editARankL);
+                        PRankLabel = findViewById(R.id.editPRankL);
+                        amigoPoints = findViewById(R.id.editAPointsL);
+                        pPoints = findViewById(R.id.editPPointsL);
+                        profileImage = findViewById(R.id.editProfileImage);
+                        currentTeam = findViewById(R.id.editTeamL);
+                        currentStanding = findViewById(R.id.editStandingL);
+                        currentName = findViewById(R.id.editNameLabel);
+                        currentSName = findViewById(R.id.editSpanishName);
+                        editPButton = findViewById(R.id.editProfileButton);
+                        Log.d("TAG", "BEFORE INTENT");
+                        if(intent.hasExtra("level")) {
+                            Log.d("TAG", "HAS INTENT");
+                            if(intent.getStringExtra("level").equals("staff") || intent.getStringExtra("level").equals("admin")) {
+                                Log.d("TAG", "EY WE NEED VSIBILITY");
+                                editPButton.setVisibility(View.VISIBLE);
+
+                                editPButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Log.d("TAG", "HEYA CURRENT UID IS: "+currentU);
+                                        Intent i = new Intent(editProfileView.this, editUserStats.class);
+                                        SharedPreferences preferences = getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = preferences.edit();
+                                        editor.putString("level", intent.getStringExtra("level"));
+                                        editor.putString("currentlyEditing", currentU);
+                                        editor.commit();
+                                        i.putExtra("currentlyEditing", currentU);
+                                        startActivity(i);
+                                    }
+                                });
+                            }
+                        }
+
+                        getStats(currentU);
+
+                        final ArrayList<String> ids = new ArrayList<>(2);
+
+                        dm = findViewById(R.id.profileDM);
+                        dm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                SharedPreferences preferences = getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                                String sID = preferences.getString("sendbirdIDC", "");
+                                ids.add(sID);
+                                ids.add(userSendbird);
+                                GroupChannel.createChannelWithUserIds(ids, true, new GroupChannel.GroupChannelCreateHandler() {
+                                    @Override
+                                    public void onResult(GroupChannel groupChannel, SendBirdException e) {
+                                        if (e != null) {
+                                            // Error.
+                                            return;
+                                        } else {
+                                            Intent intent1 = new Intent(editProfileView.this, MainNav.class);
+                                            intent1.putExtra("toChat", "deffo");
+                                            intent1.putExtra("openChatName", userSendbird);
+                                            startActivity(intent1);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+
 
 
             }
@@ -110,7 +175,9 @@ public class editProfileView extends AppCompatActivity {
 
     }
 
-    public void getStats() {
+    public void getStats(String id) {
+        Log.d("TAG", currentU);
+        ref = FirebaseDatabase.getInstance().getReference().child("users").child(currentU);
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -122,8 +189,14 @@ public class editProfileView extends AppCompatActivity {
 
                 ARankLabel.setText("Amigo Rank: "+currentARank);
                 PRankLabel.setText("Positivity Rank: "+currentPRank);
-                amigoPoints.setText("Amigo Points: "+currentAPoints);
-                pPoints.setText("Positivity Points: "+currentPPoints);
+                currentStanding.setText("Current Standing: "+dataSnapshot.child("standing").getValue(String.class));
+                currentSName.setText(dataSnapshot.child("sName").getValue(String.class));
+                currentName.setText(dataSnapshot.child("fullName").getValue(String.class));
+                currentTeam.setText(dataSnapshot.child("team").getValue(String.class));
+                amigoPoints.setText(currentAPoints);
+                pPoints.setText(currentPPoints);
+
+                userSendbird = dataSnapshot.child("sendbird").getValue(String.class);
 
                 Context context = getApplicationContext();
                 Picasso.with(context).load(linkToURLI).into(profileImage);
@@ -149,67 +222,67 @@ public class editProfileView extends AppCompatActivity {
     }
 
 
-    public void onEditAmigo(View v) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final EditText newAmigoPoints = new EditText(this);
-        builder.setView(newAmigoPoints);
-        builder.setTitle("Edit Amigo Points");
-        builder.setMessage("Set new Amigo Points value");
-        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        dataSnapshot.child("AmigoPoints").getRef().setValue(newAmigoPoints.getText().toString());
-                        getStats();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        builder.show();
-    }
-
-    public void onEditPos(View v) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final EditText newPosPoints = new EditText(this);
-        builder.setView(newPosPoints);
-        builder.setTitle("Edit Positivity Points");
-        builder.setMessage("Set new Positivity Points value");
-        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        dataSnapshot.child("pPoints").getRef().setValue(newPosPoints.getText().toString());
-                        getStats();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        builder.show();
-    }
+//    public void onEditAmigo(View v) {
+//        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        final EditText newAmigoPoints = new EditText(this);
+//        builder.setView(newAmigoPoints);
+//        builder.setTitle("Edit Amigo Points");
+//        builder.setMessage("Set new Amigo Points value");
+//        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        dataSnapshot.child("AmigoPoints").getRef().setValue(newAmigoPoints.getText().toString());
+//                        getStats(id);
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                });
+//            }
+//        });
+//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                dialogInterface.dismiss();
+//            }
+//        });
+//        builder.show();
+//    }
+//
+//    public void onEditPos(View v) {
+//        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        final EditText newPosPoints = new EditText(this);
+//        builder.setView(newPosPoints);
+//        builder.setTitle("Edit Positivity Points");
+//        builder.setMessage("Set new Positivity Points value");
+//        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        dataSnapshot.child("pPoints").getRef().setValue(newPosPoints.getText().toString());
+//                        getStats(id);
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                });
+//            }
+//        });
+//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                dialogInterface.dismiss();
+//            }
+//        });
+//        builder.show();
+//    }
 }

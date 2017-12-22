@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +23,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.vision.text.Line;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -62,6 +66,8 @@ public class calendarFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    ProgressBar loader;
+
 
     public calendarFragment() {
         // Required empty public constructor
@@ -88,9 +94,9 @@ public class calendarFragment extends Fragment {
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("events");
 
 
-    private RoundedImageView event1;
-    private RoundedImageView event2;
-    private RoundedImageView event3;
+    private CardView event1;
+    private CardView event2;
+    private CardView event3;
 
     String expandedInfo1;
     String expandedInfo2;
@@ -111,6 +117,8 @@ public class calendarFragment extends Fragment {
         Runnable updater = new Runnable() {
 
             public void run() {
+                loader = getActivity().findViewById(R.id.chatloader);
+                loader.setVisibility(View.INVISIBLE);
                 event1 = getActivity().findViewById(R.id.event1Container);
                 event2 = getActivity().findViewById(R.id.event2Container);
                 event3 = getActivity().findViewById(R.id.event3Container);
@@ -228,10 +236,10 @@ public class calendarFragment extends Fragment {
                 event1InfoText.setText(event1Info);
 
                 Integer event1Importance = dataSnapshot.child("event1").child("importance").getValue(Integer.class);
-                RoundedImageView event1Card = (RoundedImageView)getView().findViewById(R.id.event1Container);
-                if(event1Importance == 1) { event1Card.setImageDrawable(new ColorDrawable(0xFF669900));}
-                if(event1Importance == 2) { event1Card.setImageDrawable(new ColorDrawable(0xFFFF8800));}
-                if(event1Importance == 3) { event1Card.setImageDrawable(new ColorDrawable(0xFFFF4444));}
+                LinearLayout event1Color = (LinearLayout) getView().findViewById(R.id.event1Color);
+                if(event1Importance == 1) { event1Color.setBackground(new ColorDrawable(0xFF669900));}
+                if(event1Importance == 2) { event1Color.setBackground(new ColorDrawable(0xFFFF8800));}
+                if(event1Importance == 3) { event1Color.setBackground(new ColorDrawable(0xFFFF4444));}
 
                 //2
                 String event2Title = dataSnapshot.child("event2").child("title").getValue(String.class);
@@ -248,10 +256,10 @@ public class calendarFragment extends Fragment {
                 event2InfoText.setText(event2Info);
 
                 Integer event2Importance = dataSnapshot.child("event2").child("importance").getValue(Integer.class);
-                RoundedImageView event2Card = (RoundedImageView)getView().findViewById(R.id.event2Container);
-                if(event2Importance == 1) { event2Card.setImageDrawable(new ColorDrawable(0xFF669900));}
-                if(event2Importance == 2) { event2Card.setImageDrawable(new ColorDrawable(0xFFFF8800));}
-                if(event2Importance == 3) { event2Card.setImageDrawable(new ColorDrawable(0xFFFF4444));}
+                LinearLayout event2Color = (LinearLayout) getView().findViewById(R.id.event2Color);
+                if(event2Importance == 1) { event2Color.setBackground(new ColorDrawable(0xFF669900));}
+                if(event2Importance == 2) { event2Color.setBackground(new ColorDrawable(0xFFFF8800));}
+                if(event2Importance == 3) { event2Color.setBackground(new ColorDrawable(0xFFFF4444));}
 
                 //3
                 String event3Title = dataSnapshot.child("event3").child("title").getValue(String.class);
@@ -268,10 +276,10 @@ public class calendarFragment extends Fragment {
                 event3InfoText.setText(event3Info);
 
                 Integer event3Importance = dataSnapshot.child("event3").child("importance").getValue(Integer.class);
-                RoundedImageView event3Card = (RoundedImageView)getView().findViewById(R.id.event3Container);
-                if(event3Importance == 1) { event3Card.setImageDrawable(new ColorDrawable(0xFF669900));}
-                if(event3Importance == 2) { event3Card.setImageDrawable(new ColorDrawable(0xFFFF8800));}
-                if(event3Importance == 3) { event3Card.setImageDrawable(new ColorDrawable(0xFFFF4444));}
+                LinearLayout event3Color = (LinearLayout) getView().findViewById(R.id.event3Color);
+                if(event3Importance == 1) { event3Color.setBackground(new ColorDrawable(0xFF669900));}
+                if(event3Importance == 2) { event3Color.setBackground(new ColorDrawable(0xFFFF8800));}
+                if(event3Importance == 3) { event3Color.setBackground(new ColorDrawable(0xFFFF4444));}
 
                 //Expanded
 

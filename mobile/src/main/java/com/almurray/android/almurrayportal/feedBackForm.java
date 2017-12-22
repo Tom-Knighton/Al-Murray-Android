@@ -17,7 +17,7 @@ public class feedBackForm extends AppCompatActivity {
         setContentView(R.layout.activity_feed_back_form);
 
         webView = findViewById(R.id.feedBackFormView);
-        webView.loadUrl("https://goo.gl/forms/wOYfRRgo3Zq5YTC43");
+        webView.loadUrl("https://almurray.typeform.com/to/Ya5QHM");
         webView.getSettings().setJavaScriptEnabled(true);
         final feedBackForm activity = new feedBackForm();
 

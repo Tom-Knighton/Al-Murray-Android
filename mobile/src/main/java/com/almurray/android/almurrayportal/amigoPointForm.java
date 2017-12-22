@@ -17,7 +17,7 @@ public class amigoPointForm extends AppCompatActivity {
         setContentView(R.layout.activity_amigo_point_form2);
 
         webView = findViewById(R.id.amigoPFormWeb);
-        webView.loadUrl("https://goo.gl/forms/MGCS3I84t69UTGez1");
+        webView.loadUrl("https://almurray.typeform.com/to/mjKZRg");
         webView.getSettings().setJavaScriptEnabled(true);
 
 

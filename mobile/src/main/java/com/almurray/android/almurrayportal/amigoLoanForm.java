@@ -17,7 +17,7 @@ public class amigoLoanForm extends AppCompatActivity {
 
 
         webView = findViewById(R.id.amigoLoanForm);
-        webView.loadUrl("https://goo.gl/forms/REOiMP5z7tGtY31J2");
+        webView.loadUrl("https://almurray.typeform.com/to/F7zBdf");
         webView.getSettings().setJavaScriptEnabled(true);
         final amigoLoanForm activity = new amigoLoanForm();
 

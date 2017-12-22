@@ -119,10 +119,9 @@ public class SelectableUserListAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     public void addLast(User user) {
-        if(user.getNickname().toString() != "Stephanie R") {
-            mUsers.add(user);
-            notifyDataSetChanged();
-        }
+        mUsers.add(user);
+        notifyDataSetChanged();
+
     }
 
     private class SelectableUserHolder extends RecyclerView.ViewHolder {

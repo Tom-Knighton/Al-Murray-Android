@@ -1,5 +1,6 @@
 package com.almurray.android.almurrayportal;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,6 +40,23 @@ public class Login extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         Handler handler = new Handler();
+        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+        try {
+            notificationManager.cancelAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        final SharedPreferences prefs = getApplicationContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor prefsEditor = prefs .edit();
+
+        prefsEditor.putBoolean("snowState", true);
+        prefsEditor.putBoolean("musicState", true);
+
+        prefsEditor.apply();
+
+
+
 
 
         Runnable updater = new Runnable() {
@@ -69,7 +87,8 @@ public class Login extends AppCompatActivity {
         mButton = (Button) findViewById(R.id.loginButton);
         mEmail = (EditText) findViewById(R.id.emailEntry);
         mPass = (EditText) findViewById(R.id.passwordEntry);
-        startService(new Intent(Login.this, SoundService.class));
+
+
         if (mAuth.getCurrentUser() != null) {
             Intent i = new Intent(Login.this, MainNav.class);
             finish();
@@ -98,6 +117,7 @@ public class Login extends AppCompatActivity {
                         prefsEditor.putString("currentUser", mAuth.getCurrentUser().getUid());
                         prefsEditor.commit();
                         Intent i = new Intent(Login.this, MainNav.class);
+                        i.putExtra("destination", "profile");
                         finish();
                         startActivity(i);
 

@@ -47,6 +47,7 @@ public class AdminView extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(AdminView.this, listUsers.class);
+                        i.putExtra("rankOC", getIntent().getStringExtra("rankOC"));
                         startActivity(i);
                     }
                 });

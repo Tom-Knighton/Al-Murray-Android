@@ -1,12 +1,25 @@
 package com.almurray.android.almurrayportal;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -33,15 +46,36 @@ public class infoView extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment infoView.
-     */
-    // TODO: Rename and change types and number of parameters
+    Button sopButton;
+    ProgressBar loader;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Handler handler = new Handler();
+
+
+        Runnable updater = new Runnable() {
+
+            public void run() {
+                loader = getActivity().findViewById(R.id.chatloader);
+                loader.setVisibility(View.INVISIBLE);
+                sopButton = getActivity().findViewById(R.id.seeSOP);
+                sopButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(getActivity(), seeSop.class));
+                    }
+                });
+
+
+            }
+        };
+
+        handler.post(updater);
+    }
+
+
     public static infoView newInstance(String param1, String param2) {
         infoView fragment = new infoView();
         Bundle args = new Bundle();

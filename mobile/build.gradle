@@ -6,8 +6,8 @@ android {
         applicationId "com.almurray.android.almurrayportal"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 90
-        versionName "0.9.0"
+        versionCode 101
+        versionName "1.1.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -29,6 +29,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:11.0.4'
     implementation 'com.android.support:support-v4:26.1.0'
     implementation 'com.google.firebase:firebase-database:11.0.4'
+    compile 'com.google.firebase:firebase-messaging:11.0.4'
+    compile 'com.github.javiersantos:AppUpdater:2.6.4'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
@@ -52,7 +54,18 @@ dependencies {
     compile 'com.github.stfalcon:multiimageview:0.1'
     compile 'com.github.jetradarmobile:android-snowfall:1.1.6'
     compile 'com.anjlab.android.iab.v3:library:1.0.44'
+    compile "me.leolin:ShortcutBadger:1.1.19@aar"
+    compile 'com.github.deano2390:android-viewbadger:1.0.0'
 }
+
+
+
+
+
+
+
+
+
 
 
 

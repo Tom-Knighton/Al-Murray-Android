@@ -247,21 +247,36 @@ public class GroupChannelListAdapter extends RecyclerView.Adapter<RecyclerView.V
                   @Nullable final OnItemLongClickListener longClickListener) {
 
             if(channel.getMemberCount() <= 2) {
-                List<Member> members = channel.getMembers();
-                if (members.get(0).getNickname().toString() != SendBird.getCurrentUser().getNickname().toString()) {
-                    Picasso.with(context).load(members.get(1).getProfileUrl()).into(coverImage);
-                    topicText.setText(members.get(1).getNickname().toString());
-                    memberCountText.setText("Members: "+String.valueOf(channel.getMemberCount()));
 
+                List<Member> members = channel.getMembers();
+                if(members.size() == 1) {
+                    Picasso.with(context).load(SendBird.getCurrentUser().getProfileUrl()).into(coverImage);
+                    topicText.setText("Lonely Chat :(");
+                    memberCountText.setText("Just Yourself");
+                } else {
+                    Log.d("TAG", "CURRENT USER IS: "+SendBird.getCurrentUser().getNickname());
+                    if(members.get(0).getNickname().equals(SendBird.getCurrentUser().getNickname())) {
+                        Picasso.with(context).load(members.get(1).getProfileUrl()).into(coverImage);
+                        topicText.setText(members.get(1).getNickname());
+                        memberCountText.setText("Members: "+String.valueOf(channel.getMemberCount()));
+                    } else if(members.get(1).getNickname().equals(SendBird.getCurrentUser().getNickname())) {
+                        Picasso.with(context).load(members.get(0).getProfileUrl()).into(coverImage);
+                        topicText.setText(members.get(0).getNickname());
+                        memberCountText.setText("Members: "+String.valueOf(channel.getMemberCount()));
+                    }
                 }
+
+
+
             }
 
-            if(channel.getMemberCount() > 2) {
+            else if(channel.getMemberCount() > 2) {
                 List<Member> members = channel.getMembers();
                 coverImage.setImageResource(R.drawable.ic_if_myspace_1063061);
-                topicText.setText(channel.getName().toString());
+                topicText.setText(channel.getName());
                 memberCountText.setText("Group Chat");
             }
+
 
 
 

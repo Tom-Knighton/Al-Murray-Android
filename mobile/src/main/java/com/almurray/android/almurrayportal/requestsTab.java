@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +53,8 @@ public class requestsTab extends Fragment {
     Button manReview;
     Button confessions;
     Button feedback;
+
+    ProgressBar loader;
 
 
 
@@ -95,6 +98,8 @@ public class requestsTab extends Fragment {
         Runnable updater = new Runnable() {
 
             public void run() {
+                loader = getActivity().findViewById(R.id.chatloader);
+                loader.setVisibility(View.INVISIBLE);
                 final SharedPreferences prefs = getContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
                 final SharedPreferences.Editor prefsEditor = prefs .edit();
 
@@ -115,80 +120,16 @@ public class requestsTab extends Fragment {
                                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        if(secAnswer.getText().toString() == answer.toString()) {
-                                            Toast.makeText(getContext(), "hi", Toast.LENGTH_LONG);
-                                            Log.d("TAG", "BLUUUUUUUUURG");
+                                        if(secAnswer.getText().toString().toLowerCase().equals(answer.toLowerCase())) {
+                                            startActivity(new Intent(getActivity(), amigoPointForm.class));
                                         } else {
-                                            Log.d("TAG", "WRONG");
-                                            Log.d("TAG", "ENTERED: "+secAnswer.getText().toString());
-                                            Log.d("TAG", "PUT: "+answer.toString());
+                                            Toast.makeText(getContext(), "Security Answer Incorrect", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 })
                                 .show();
 
 
-
-
-//                        new AlertDialog.Builder(getContext())
-//                                .setTitle("Information")
-//                                .setMessage("Please be aware your amigo-ness may be under investigation if you submit more than one amigo points request per 30 days, exceeding this limit may reset your amigo points to 1. This limit does not include Amigo Loans, however you may not request amigo points if you are currently taking out an Amigo Loan. Your request for amigo points will be manually reviewed and if deemed worthy you should recieve your points within 30 working days.")
-//                                .setCancelable(true)
-//                                .setNegativeButton("Disagree", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                                        dialogInterface.dismiss();
-//
-//                                    }
-//                                })
-//                                .setPositiveButton("Agree", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        Random r = new Random();
-//                                        int rN = r.nextInt((2-1)+1)+1;
-//                                        if(rN == 1) { message = prefs.getString("question1", ""); answer = prefs.getString("answer1", ""); }
-//                                        else if(rN == 2) {message = prefs.getString("question2", ""); answer = prefs.getString("answer2", ""); }
-//                                        final EditText secAnswer = new EditText(getActivity());
-//                                        new AlertDialog.Builder(getContext())
-//                                                .setView(secAnswer)
-//                                                .setTitle("Security Question")
-//                                                .setMessage(message)
-//                                                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-//                                                    @Override
-//                                                    public void onClick(DialogInterface dialogInterface, int i) {
-//                                                        if(secAnswer.getText().toString() == answer.toString()) {
-//                                                            Intent to1 = new Intent(getContext(), amigoPointForm.class);
-//                                                            startActivity(to1);
-//                                                            Log.d("TAG", answer);
-//                                                            Log.d("TAG", "right");
-//
-//                                                        }
-//                                                        else{
-//                                                            Toast.makeText(getContext(), "Security question answered incorrectly", Toast.LENGTH_SHORT);
-//                                                            dialogInterface.dismiss();
-//                                                            Log.d("TAG", answer);
-//                                                            Log.d("TAG", "wrong");
-//
-//                                                        }
-//                                                        Log.d("TAG", "COFNIRMED");
-//                                                    }
-//                                                })
-//                                                .setCancelable(true)
-//                                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                                                    @Override
-//                                                    public void onClick(DialogInterface dialogInterface, int i) {
-//                                                        dialogInterface.dismiss();
-//                                                    }
-//                                                })
-//                                                .show();
-//
-//
-//
-//
-//                                    }
-//                                }).show();
-//
                          }
                 });
 
@@ -196,27 +137,26 @@ public class requestsTab extends Fragment {
                 amigoLoan.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Random r = new Random();
+                        int rN = r.nextInt((2-1)+1)+1;
+                        if(rN == 1) { message = prefs.getString("question1", ""); answer = prefs.getString("answer1", ""); }
+                        if(rN == 2) { message = prefs.getString("question2", ""); answer = prefs.getString("answer2", ""); }
+                        final EditText secAnswer = new EditText(getActivity());
                         new AlertDialog.Builder(getContext())
-                                .setTitle("Information")
-                                .setMessage("Please be aware you amigo-ness may be under investigation if you submit more than one amigo loan per 30 days, exceeding this limit may temporarily suspend your amigoness. If your loan is accepted, you must wait 60 days before requesting another loan. Amigo loans must be payed back with the current interest rate within 365 days. Your request for an amigo loan will be manually reviewed and if deemed worthy you should recieve your loan within 30 working days.")
-                                .setCancelable(false)
-                                .setNegativeButton("Disagree", new DialogInterface.OnClickListener() {
+                                .setTitle("Security Question")
+                                .setView(secAnswer)
+                                .setMessage(message)
+                                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-
-                                        dialogInterface.dismiss();
-
+                                        if(secAnswer.getText().toString().toLowerCase().equals(answer.toLowerCase())) {
+                                            startActivity(new Intent(getActivity(), amigoLoanForm.class));
+                                        } else {
+                                            Toast.makeText(getContext(), "Security Answer Incorrect", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 })
-                                .setPositiveButton("Agree", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent i = new Intent(getContext(), amigoLoanForm.class);
-                                        startActivity(i);
-
-
-                                    }
-                                }).show();
+                                .show();
                     }
                 });
 
@@ -224,27 +164,26 @@ public class requestsTab extends Fragment {
                 posPoints.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Random r = new Random();
+                        int rN = r.nextInt((2-1)+1)+1;
+                        if(rN == 1) { message = prefs.getString("question1", ""); answer = prefs.getString("answer1", ""); }
+                        if(rN == 2) { message = prefs.getString("question2", ""); answer = prefs.getString("answer2", ""); }
+                        final EditText secAnswer = new EditText(getActivity());
                         new AlertDialog.Builder(getContext())
-                                .setTitle("Information")
-                                .setMessage("Please be aware your positivity may be under investigation if you submit more than one positivityness request per 30 days, exceeding this limit may reset your positvity points to 1. If you have recieved an amigo loan recently your application for positvity will be denied.  REQUESTING POSITVITY POINTS IS ONLY AVALIABLE TO THOSE WHO ARE POP 2 OR LOWER. Your request for positivity points will be manually reviewed and if deemed worthy you should recieve your points within 30 working days.")
-                                .setCancelable(false)
-                                .setNegativeButton("Disagree", new DialogInterface.OnClickListener() {
+                                .setTitle("Security Question")
+                                .setView(secAnswer)
+                                .setMessage(message)
+                                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-
-                                        dialogInterface.dismiss();
-
+                                        if(secAnswer.getText().toString().toLowerCase().equals(answer.toLowerCase())) {
+                                            startActivity(new Intent(getActivity(), positivePointForm.class));
+                                        } else {
+                                            Toast.makeText(getContext(), "Security Answer Incorrect", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 })
-                                .setPositiveButton("Agree", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent i = new Intent(getContext(), positivePointForm.class);
-                                        startActivity(i);
-
-
-                                    }
-                                }).show();
+                                .show();
                     }
                 });
 
@@ -252,27 +191,26 @@ public class requestsTab extends Fragment {
                 manReview.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Random r = new Random();
+                        int rN = r.nextInt((2-1)+1)+1;
+                        if(rN == 1) { message = prefs.getString("question1", ""); answer = prefs.getString("answer1", ""); }
+                        if(rN == 2) { message = prefs.getString("question2", ""); answer = prefs.getString("answer2", ""); }
+                        final EditText secAnswer = new EditText(getActivity());
                         new AlertDialog.Builder(getContext())
-                                .setTitle("Information")
-                                .setMessage("If you click 'proceed', your account will be placed under temporary special measures and a SPOPIT and a Sénor Amigo will manually review your account and points. Requesting this more than once every 90 days may possibly result in a complete reset of Amigoness and Positivty, as per Al Murray.")
-                                .setCancelable(false)
-                                .setNegativeButton("Disagree", new DialogInterface.OnClickListener() {
+                                .setTitle("Security Question")
+                                .setView(secAnswer)
+                                .setMessage(message)
+                                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-
-                                        dialogInterface.dismiss();
-
+                                        if(secAnswer.getText().toString().toLowerCase().equals(answer.toLowerCase())) {
+                                            startActivity(new Intent(getActivity(), manualReviewForm.class));
+                                        } else {
+                                            Toast.makeText(getContext(), "Security Answer Incorrect", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 })
-                                .setPositiveButton("Agree", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent i = new Intent(getContext(), manualReviewForm.class);
-                                        startActivity(i);
-
-
-                                    }
-                                }).show();
+                                .show();
                     }
                 });
 
@@ -280,29 +218,26 @@ public class requestsTab extends Fragment {
                 confessions.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Random r = new Random();
+                        int rN = r.nextInt((2-1)+1)+1;
+                        if(rN == 1) { message = prefs.getString("question1", ""); answer = prefs.getString("answer1", ""); }
+                        if(rN == 2) { message = prefs.getString("question2", ""); answer = prefs.getString("answer2", ""); }
+                        final EditText secAnswer = new EditText(getActivity());
                         new AlertDialog.Builder(getContext())
-                                .setTitle("Information")
-                                .setMessage("If you have any information on wanted individuals, negative individuals, or want to report a lack of amigoiness, click 'proceed'. Alternatively, if you would like to commend someone, this is also the place to do it.")
-                                .setCancelable(false)
-                                .setNegativeButton("Disagree", new DialogInterface.OnClickListener() {
+                                .setTitle("Security Question")
+                                .setView(secAnswer)
+                                .setMessage(message)
+                                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-
-                                        dialogInterface.dismiss();
-
+                                        if(secAnswer.getText().toString().toLowerCase().equals(answer.toLowerCase())) {
+                                            startActivity(new Intent(getActivity(), tipForm.class));
+                                        } else {
+                                            Toast.makeText(getContext(), "Security Answer Incorrect", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 })
-                                .setPositiveButton("Agree", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent i = new Intent(getContext(), tipForm.class);
-                                        startActivity(i);
-
-
-                                    }
-
-
-                                }).show();
+                                .show();
                     }
                 });
 

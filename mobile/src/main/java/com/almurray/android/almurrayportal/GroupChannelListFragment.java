@@ -122,6 +122,11 @@ public class GroupChannelListFragment extends Fragment {
             }
         });
 
+        Bundle args = getArguments();
+
+
+
+
         super.onResume();
     }
 
@@ -346,6 +351,7 @@ public class GroupChannelListFragment extends Fragment {
      */
     private void refreshChannelList(int numChannels) {
         mChannelListQuery = GroupChannel.createMyGroupChannelListQuery();
+        mChannelListQuery.setIncludeEmpty(true);
         mChannelListQuery.setLimit(numChannels);
 
         mChannelListQuery.next(new GroupChannelListQuery.GroupChannelListQueryResultHandler() {

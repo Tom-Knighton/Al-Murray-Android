@@ -17,7 +17,7 @@ public class positivePointForm extends AppCompatActivity {
         setContentView(R.layout.activity_positive_point_form);
 
         webView = findViewById(R.id.positiveForm);
-        webView.loadUrl("https://goo.gl/forms/IKAxCiHbbYy963S72");
+        webView.loadUrl("https://almurray.typeform.com/to/tbWD4C");
         webView.getSettings().setJavaScriptEnabled(true);
 
 

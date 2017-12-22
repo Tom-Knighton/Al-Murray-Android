@@ -51,19 +51,19 @@
 
 
     <com.jetradarmobile.snowfall.SnowfallView
+        android:id="@+id/prayerSnowFall"
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        app:snowflakesNum="250"
-        app:snowflakeAlphaMin="150"
         app:snowflakeAlphaMax="255"
+        app:snowflakeAlphaMin="150"
         app:snowflakeAngleMax="5"
-        app:snowflakeSizeMin="8dp"
         app:snowflakeSizeMax="20dp"
-        app:snowflakeSpeedMin="4"
+        app:snowflakeSizeMin="8dp"
         app:snowflakeSpeedMax="12"
-        app:snowflakesFadingEnabled="true"
+        app:snowflakeSpeedMin="4"
         app:snowflakesAlreadyFalling="false"
-        />
+        app:snowflakesFadingEnabled="true"
+        app:snowflakesNum="250" />
 
 
 </RelativeLayout>

@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Anna Bluiasdfasdfasdfasdfasdfasdfasdfasdfafm" />
+            android:text=":(" />
 
         <TextView
             android:id="@+id/text_group_channel_list_member_count"
@@ -48,7 +48,7 @@
             android:paddingRight="4dp"
             android:gravity="center"
             android:maxLines="1"
-            android:text="3" />
+            android:text="Just You" />
 
     </LinearLayout>
 
@@ -76,7 +76,7 @@
             android:textColor="#8e8e8e"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="This sounded nonsense to Alice, so she said nothing, but set off at her being blah blah" />
+            android:text="Haha you're so lonely" />
 
     </LinearLayout>
 
@@ -90,7 +90,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/container_group_channel_list_topic"
         android:maxLines="1"
-        android:text="9999/99/99" />
+        android:text="Lonely" />
 
     <TextView
         android:id="@+id/text_group_channel_list_unread_count"
@@ -104,7 +104,7 @@
         android:background="@drawable/group_channel_list_unread_background"
         android:gravity="center"
         android:maxLines="1"
-        android:text="9+" />
+        android:text=":(" />
 
 
 

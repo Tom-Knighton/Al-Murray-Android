@@ -106,7 +106,11 @@ public class SelectUserFragment extends Fragment{
                     // Error!
                     return;
                 }
-                list.remove(SendBird.getCurrentUser());
+
+                Log.d("TAG", list.toString());
+                list.remove(list.get(0));
+                list.remove(list.get(0));
+
                 mListAdapter.setUserList(list);
             }
         });
@@ -126,10 +130,10 @@ public class SelectUserFragment extends Fragment{
 
 
                 for (User user : list) {
-                    if (!user.getUserId().equals("stephanier")) {
-                        mListAdapter.addLast(user);
 
-                    }
+                    mListAdapter.addLast(user);
+
+
                 }
             }
         });

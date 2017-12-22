@@ -1,6 +1,9 @@
 package com.almurray.android.almurrayportal;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jetradarmobile.snowfall.SnowfallView;
 
 public class prayerRoom extends AppCompatActivity {
 
@@ -21,6 +25,7 @@ public class prayerRoom extends AppCompatActivity {
     Button simplePray;
     Button complexPray;
     Button prayInfo;
+    SnowfallView prayerSnow;
 
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
@@ -30,10 +35,22 @@ public class prayerRoom extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+
+
         Handler handler = new Handler();
         Runnable updater = new Runnable() {
             @Override
             public void run() {
+                prayerSnow = findViewById(R.id.prayerSnowFall);
+                SharedPreferences prefs = getApplicationContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor prefsEditor = prefs .edit();
+                if(prefs.getBoolean("snowState", true)) {
+                    prayerSnow.setVisibility(View.VISIBLE);
+                } else {
+                    prayerSnow.setVisibility(View.INVISIBLE);
+                }
+
+
                 prayInfo = (Button)findViewById(R.id.prayInfo);
                 prayInfo.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -100,7 +117,7 @@ public class prayerRoom extends AppCompatActivity {
                     public void onClick(View v) {
                         new AlertDialog.Builder(prayerRoom.this)
                                 .setTitle("PSA")
-                                .setMessage("ONLY CLICK THIS IF YOU HAVE SUBMITTED A MANUAL REVIEW RECENTLY")
+                                .setMessage("One of these can be submitted per 2 days. Simply a normal prayer but with a message.")
                                 .setCancelable(true)
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
@@ -111,6 +128,7 @@ public class prayerRoom extends AppCompatActivity {
                                                 Integer oldCPrayers = dataSnapshot.child("complexPrayers").getValue(Integer.class);
                                                 Integer newCPrayers = oldCPrayers + 1;
                                                 dataSnapshot.child("complexPrayers").getRef().setValue(newCPrayers);
+                                                startActivity(new Intent(prayerRoom.this, complexPrayer.class));
                                             }
 
                                             @Override

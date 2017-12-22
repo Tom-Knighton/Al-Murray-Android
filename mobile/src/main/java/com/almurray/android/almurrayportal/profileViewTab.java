@@ -3,6 +3,7 @@ package com.almurray.android.almurrayportal;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +20,8 @@ import android.view.animation.OvershootInterpolator;
 import android.webkit.ConsoleMessage;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +31,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.jetradarmobile.snowfall.SnowfallView;
 import com.sendbird.android.SendBird;
 import com.sendbird.android.SendBirdException;
@@ -37,6 +41,7 @@ import com.squareup.picasso.Picasso;
 import org.w3c.dom.Text;
 
 import java.io.Console;
+import java.io.IOException;
 
 import javax.sql.StatementEvent;
 
@@ -59,11 +64,13 @@ public class profileViewTab extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    ProgressBar loader;
     private OnFragmentInteractionListener mListener;
 
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
     DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("users");
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    DatabaseReference globalRef = FirebaseDatabase.getInstance().getReference().child("globalvariables");
 
 
     FloatingActionButton refreshP;
@@ -73,6 +80,9 @@ public class profileViewTab extends Fragment {
     Button prayerButton;
     FloatingActionButton clearButton;
     Button settingsButton;
+    Button staffButton;
+
+    LinearLayout top;
 
 
     public profileViewTab() {
@@ -107,13 +117,33 @@ public class profileViewTab extends Fragment {
         Runnable updater = new Runnable() {
 
             public void run() {
+                loader = getActivity().findViewById(R.id.chatloader);
+                loader.setVisibility(View.INVISIBLE);
+                final Intent intent = getActivity().getIntent();
+                staffButton = getActivity().findViewById(R.id.staffProfilePanel);
+                staffButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(getActivity(), staffPanel.class));
+                    }
+                });
+                top = getActivity().findViewById(R.id.profileTopIdentifier);
                 profileSnow = getActivity().findViewById(R.id.profileSnow);
                 SharedPreferences prefs = getContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor prefsEditor = prefs .edit();
-                if(prefs.getBoolean("snowState", false)) {
+                if(prefs.getBoolean("snowState", true)) {
                     profileSnow.setVisibility(View.VISIBLE);
                 } else {
                     profileSnow.setVisibility(View.INVISIBLE);
+                }
+                if(prefs.getBoolean("musicState", true)) {
+                    getActivity().startService(new Intent(getActivity(), SoundService.class));
+                } else {
+                    try {
+                        getActivity().stopService(new Intent(getActivity(), SoundService.class));
+                    } catch (Exception e) {
+                        Log.d("TAG", e.getMessage());
+                    }
                 }
 
 
@@ -121,6 +151,7 @@ public class profileViewTab extends Fragment {
                 settingsButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        intent.putExtra("currentState", "settings");
                         startActivity(new Intent(getActivity(), SettingsStore.class));
                     }
                 });
@@ -137,6 +168,7 @@ public class profileViewTab extends Fragment {
                 adminP.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        intent.putExtra("currentState", "admin");
                         Intent i = new Intent(getActivity(), AdminView.class);
                         startActivity(i);
                     }
@@ -178,6 +210,29 @@ public class profileViewTab extends Fragment {
                     @Override
                     public void onClick(View v) {
                         FirebaseAuth.getInstance().signOut();
+                        SendBird.unregisterPushTokenAllForCurrentUser(new SendBird.UnregisterPushTokenHandler() {
+                            @Override
+                            public void onUnregistered(SendBirdException e) {
+
+                            }
+                        });
+                        SendBird.unregisterPushTokenForCurrentUser(FirebaseInstanceId.getInstance().getToken(), new SendBird.UnregisterPushTokenHandler() {
+                            @Override
+                            public void onUnregistered(SendBirdException e) {
+
+                            }
+                        });
+                        try {
+                            FirebaseInstanceId.getInstance().deleteInstanceId();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        SendBird.disconnect(new SendBird.DisconnectHandler() {
+                            @Override
+                            public void onDisconnected() {
+
+                            }
+                        });
                         getActivity().finish();
                         startActivity(new Intent(getActivity(), Login.class));
                     }
@@ -194,6 +249,9 @@ public class profileViewTab extends Fragment {
                 ValueEventListener eventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        final String sendbirdID = dataSnapshot.child("sendbird").getValue(String.class);
+
+
 
 
                         String  aPoints = dataSnapshot.child("AmigoPoints").getValue(String.class);
@@ -238,20 +296,36 @@ public class profileViewTab extends Fragment {
                         SharedPreferences prefs = getContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
                         SharedPreferences.Editor prefsEditor = prefs .edit();
                         prefsEditor.putString("urlToImage", urlTo);
+                        prefsEditor.putString("sendbirdIDC", sendbirdID);
                         prefsEditor.commit();
 
+                        SendBird.connect(prefs.getString("sendbirdIDC", ""), new SendBird.ConnectHandler() {
+                            @Override
+                            public void onConnected(User user, SendBirdException e) {
+                                Log.d("TAG","Connected");
+                            }
+                        });
+
+                        Boolean staffB = dataSnapshot.child("staff").getValue(Boolean.class);
+                        if(staffB) {
+                            prefsEditor.putString("staffLevel", "staff");
+                            prefsEditor.commit();
+                            staffButton.setVisibility(View.VISIBLE);
+                        }
+
                         Boolean adminB = dataSnapshot.child("admin").getValue(Boolean.class);
-                        if(adminB == true) {
+                        if(adminB) {
+                            prefsEditor.putString("staffLevel", "admin");
+                            prefsEditor.commit();
                             adminP.setVisibility(View.VISIBLE);
                         }
 
-                        String reqCode = dataSnapshot.child("code").getValue(String.class);
-                        prefsEditor.putString("reqCode", reqCode);
-                        prefsEditor.commit();
+
+
 
 
                         Boolean bannedB = dataSnapshot.child("banned").getValue(Boolean.class);
-                        if (bannedB == true) {
+                        if (bannedB) {
                             Intent i = new Intent(getActivity(), bannedActivity.class);
                             getActivity().finish();
                             startActivity(i);
@@ -267,7 +341,7 @@ public class profileViewTab extends Fragment {
                         prefsEditor.putString("answer1", answer1);
                         prefsEditor.putString("answer2", answer2);
 
-                        prefsEditor.commit();
+                        prefsEditor.apply();
 
 
 
@@ -282,6 +356,22 @@ public class profileViewTab extends Fragment {
                 };
                 ref.addListenerForSingleValueEvent(eventListener);
 
+                ValueEventListener globListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Boolean maintenance = dataSnapshot.child("maintenance").getValue(Boolean.class);
+                        if(maintenance) {
+                            getActivity().finish();
+                            startActivity(new Intent(getActivity(), maintenanceActivity.class));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                };
+                globalRef.addListenerForSingleValueEvent(globListener);
 
 
             }
@@ -319,6 +409,10 @@ public class profileViewTab extends Fragment {
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+
+
                 String  aPoints = dataSnapshot.child("AmigoPoints").getValue(String.class);
                 TextView aT = (TextView)getView().findViewById(R.id.amigoPointsLabel);
                 aT.setText(aPoints);
@@ -388,6 +482,22 @@ public class profileViewTab extends Fragment {
             }
         };
         ref.addListenerForSingleValueEvent(eventListener);
+        ValueEventListener globListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Boolean maintenance = dataSnapshot.child("maintenance").getValue(Boolean.class);
+                if(maintenance) {
+                    getActivity().finish();
+                    startActivity(new Intent(getActivity(), maintenanceActivity.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        globalRef.addListenerForSingleValueEvent(globListener);
     }
 
     @Override

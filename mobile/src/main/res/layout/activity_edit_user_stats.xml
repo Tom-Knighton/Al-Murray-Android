@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.almurray.android.almurrayportal.editUserStats">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/editStats1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/editStatsViewPic"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/prayer"/>
+
+                <Button
+                    android:enabled="false"
+                    android:id="@+id/editStatsEditPic"
+                    android:textColor="@android:color/white"
+                    android:layout_margin="10dp"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Only Admins can edit profile image"/>
+
+            </LinearLayout>
+            <android.support.v4.widget.Space
+                android:id="@+id/editStatsSpace1"
+                android:layout_below="@+id/editStats1"
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+            <LinearLayout
+
+                android:layout_below="@+id/editStatsSpace1"
+                android:id="@+id/editStats2"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/editStatsViewAP"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="25sp"
+                    android:layout_gravity="center"
+                    android:text="150"/>
+
+                <Button
+                    android:id="@+id/editStatsEditAP"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/nicebuttonback"
+                    android:onClick="onEditAmigo"
+                    android:text="Edit Amigo Points"
+                    android:textColor="@android:color/white" />
+
+            </LinearLayout>
+            <android.support.v4.widget.Space
+                android:id="@+id/editStatsSpace2"
+                android:layout_below="@+id/editStats2"
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+            <LinearLayout
+
+                android:layout_below="@+id/editStatsSpace2"
+                android:id="@+id/editStats3"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/editStatsViewPP"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="25sp"
+                    android:layout_gravity="center"
+                    android:text="150"/>
+
+                <Button
+                    android:id="@+id/editStatsEditPP"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/nicebuttonback"
+                    android:onClick="onEditPositive"
+                    android:text="Edit Positivity Points"
+                    android:textColor="@android:color/white" />
+
+            </LinearLayout>
+            <android.support.v4.widget.Space
+                android:id="@+id/editStatsSpace3"
+                android:layout_below="@+id/editStats3"
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+
+            <android.support.v7.widget.CardView
+                android:layout_margin="10dp"
+                android:foregroundGravity="center"
+                android:layout_below="@+id/editStatsSpace3"
+                android:id="@+id/editStatsViewCard"
+                android:layout_width="400dp"
+                android:layout_height="120dp"
+                android:layout_centerHorizontal="true"
+     >
+
+                <LinearLayout
+                    android:background="@drawable/back2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:textColor="@android:color/white"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="Amigo Rank:"
+                            android:textSize="20sp" />
+
+                        <TextView
+
+                            android:id="@+id/editStatsARank"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="10dp"
+                            android:text=""
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:textColor="@android:color/white"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Positive Rank"
+                            android:textSize="19sp" />
+
+                        <TextView
+
+                            android:id="@+id/editStatsPrank"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="10dp"
+                            android:text=""
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:textColor="@android:color/white"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Current Team:"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:textColor="@android:color/white"
+
+                            android:id="@+id/editStatsTeam"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="10dp"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <LinearLayout
+                android:id="@+id/editStats4"
+                android:layout_below="@id/editStatsViewCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/editStatsBan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onBan"
+                    android:text="Ban" />
+
+                <Button
+                    android:id="@+id/editStatsUnban"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onUnBan"
+                    android:text="Unban" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/editStats5"
+                android:layout_below="@id/editStats4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/editStatsChatBan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onChatBan"
+                    android:text="Ban From Chat" />
+
+                <Button
+                    android:id="@+id/editStatsChatUnban"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onChatUnban"
+                    android:text="Unban From Chat" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/editStats6"
+                android:layout_below="@id/editStats5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/editStatsPromotion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onPromotion"
+                    android:text="Recommend For Promotion" />
+
+                <Button
+                    android:id="@+id/editStatsDemotion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onDemotion"
+                    android:text="Recommend For Demotion" />
+            </LinearLayout>
+
+
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+
+
+
+</RelativeLayout>

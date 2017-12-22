@@ -17,7 +17,7 @@ public class manualReviewForm extends AppCompatActivity {
 
 
         webView = findViewById(R.id.manualFormWeb);
-        webView.loadUrl("https://goo.gl/forms/qKv55u3Mv9PeNmO33");
+        webView.loadUrl("https://almurray.typeform.com/to/uecWsQ");
         webView.getSettings().setJavaScriptEnabled(true);
 
 

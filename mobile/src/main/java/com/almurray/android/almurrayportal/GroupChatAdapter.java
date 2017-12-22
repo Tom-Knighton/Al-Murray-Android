@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +21,13 @@ import com.almurray.android.almurrayportal.utils.FileUtils;
 import com.almurray.android.almurrayportal.utils.ImageUtils;
 import com.almurray.android.almurrayportal.utils.TextUtils;
 import com.dinuscxj.progressbar.CircleProgressBar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.sendbird.android.AdminMessage;
 import com.sendbird.android.BaseChannel;
 import com.sendbird.android.BaseMessage;
@@ -72,6 +75,7 @@ class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private boolean mIsMessageListLoading;
 
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("globalvariables");
+    DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
     interface OnItemLongClickListener {
         void onUserMessageItemLongClick(UserMessage message, int position);
@@ -79,6 +83,7 @@ class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void onFileMessageItemLongClick(FileMessage message);
 
         void onAdminMessageItemLongClick(AdminMessage message);
+
     }
 
     interface OnItemClickListener {
@@ -288,6 +293,8 @@ class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public int getItemViewType(int position) {
 
         BaseMessage message = mMessageList.get(position);
+
+
 
         if (message instanceof UserMessage) {
             UserMessage userMessage = (UserMessage) message;
@@ -638,6 +645,7 @@ class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         MyUserMessageHolder(View itemView) {
             super(itemView);
 
+
             messageText = (TextView) itemView.findViewById(R.id.text_group_chat_message);
             editedText = (TextView) itemView.findViewById(R.id.text_group_chat_edited);
             timeText = (TextView) itemView.findViewById(R.id.text_group_chat_time);
@@ -658,7 +666,6 @@ class GroupChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void bind(Context context, final UserMessage message, GroupChannel channel, boolean isContinuous, boolean isNewDay, boolean isTempMessage, boolean isFailedMessage, final OnItemClickListener clickListener, final OnItemLongClickListener longClickListener, final int position) {
             messageText.setText(message.getMessage());
             timeText.setText(DateUtils.formatTime(message.getCreatedAt()));
-
 
 
 
