@@ -79,4 +79,19 @@
     <string name="title_activity_chat_nav">ChatNav</string>
 
     <string name="requestAccount">Don\'t have an account? Request one here.</string>
+
+    <string name="score">tah score</string>
+    <string name="hs_title">High-Score</string>
+    <string name="hs_error_name_empty">Name is empty !</string>
+    <string name="hs_error_no_internet">Please establish an internet connection !</string>
+    <string name="hs_bttn_getonline">Show online highscore</string>
+    <string name="hs_bttn_getlocal">Show local highscore</string>
+    <string name="hs_bttn_pushOnline">Push Online</string>
+    <string name="hs_pushed_online">Score saved online !</string>
+    <string name="hs_already_pushed">Score is already online !</string>
+    <string name="visit_website">Visit our website</string>
+    <string name="hs_loading_local">loading local highscore...</string>
+    <string name="hs_loading_online">loading online highscore...</string>
+    <string name="hs_no_data">no data available</string>
+    <string name="info">V1.1.1</string>
 </resources>

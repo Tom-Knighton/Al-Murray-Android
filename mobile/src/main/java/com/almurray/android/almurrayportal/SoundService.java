@@ -9,6 +9,8 @@ import android.os.IBinder;
  * Created by thoma on 27/11/2017.
  */
 
+
+
 public class SoundService extends Service {
 
 
@@ -19,7 +21,7 @@ public class SoundService extends Service {
     }
 
     public void onCreate() {
-        player = MediaPlayer.create(this, R.raw.christmasbg); //select music file
+        player = MediaPlayer.create(this, R.raw.hhm); //select music file
         player.setLooping(true); //set looping
     }
 

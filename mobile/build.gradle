@@ -6,8 +6,8 @@ android {
         applicationId "com.almurray.android.almurrayportal"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 101
-        versionName "1.1.0"
+        versionCode 102
+        versionName "1.1.1"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -57,6 +57,7 @@ dependencies {
     compile "me.leolin:ShortcutBadger:1.1.19@aar"
     compile 'com.github.deano2390:android-viewbadger:1.0.0'
 }
+
 
 
 

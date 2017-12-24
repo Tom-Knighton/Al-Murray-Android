@@ -29,6 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service android:name=".utils.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -39,6 +40,7 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
         <activity android:name=".amigoPointForm" />
         <activity android:name=".amigoLoanForm" />
         <activity android:name=".positivePointForm" />
@@ -60,7 +62,7 @@
         <activity
             android:name=".MainNav"
             android:label="@string/title_activity_main_nav"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ChatNav"
             android:label="@string/title_activity_chat_nav"
@@ -74,16 +76,14 @@
         <activity android:name=".requestAccount" />
         <activity android:name=".createAccountant" />
         <activity android:name=".SettingsStore" />
-
-
-
         <activity android:name=".maintenanceActivity" />
         <activity android:name=".complexPrayer" />
         <activity android:name=".seeSop" />
         <activity android:name=".viewRoles" />
         <activity android:name=".staffPanel" />
         <activity android:name=".editUserStats" />
-        <activity android:name=".AdminEventsView"></activity>
+        <activity android:name=".AdminEventsView" />
+        <activity android:name=".dinosaur"></activity>
     </application>
 
 </manifest>

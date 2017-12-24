@@ -121,7 +121,9 @@ public class chatfragment extends Fragment {
 //            manager.beginTransaction()
 //                    .replace(R.id.container_group_channel, fragment)
 //                    .commit();
+            SharedPreferences.Editor pE = prefs.edit();
 
+            pE.putString("inChannelURL", channelUrl);
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container_group_channel, fragment)
                     .addToBackStack(null)

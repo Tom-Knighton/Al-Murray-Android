@@ -16,6 +16,8 @@ public class seeSop extends AppCompatActivity {
         setContentView(R.layout.activity_see_sop);
 
         webView = findViewById(R.id.sopWeb);
+
+        //webView.loadUrl("http://www.almurray.online/dino");
         webView.loadUrl("https://docs.google.com/document/d/1idi5dugfa5mCzslcTcciGDO4O_QEwlNkG0WZLKrIyy0/edit?usp=sharing");
         webView.getSettings().setJavaScriptEnabled(true);
         final amigoLoanForm activity = new amigoLoanForm();
