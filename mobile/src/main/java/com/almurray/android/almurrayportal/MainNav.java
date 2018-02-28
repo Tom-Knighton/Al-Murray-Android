@@ -1,17 +1,12 @@
 package com.almurray.android.almurrayportal;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -23,14 +18,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.almurray.android.almurrayportal.anti.antiPage;
+import com.almurray.android.almurrayportal.feedUtils.feedPage;
+import com.almurray.android.almurrayportal.feeds.feedMain;
+import com.almurray.android.almurrayportal.info.infoFragment;
 import com.almurray.android.almurrayportal.utils.MyFirebaseInstanceIDService;
 import com.almurray.android.almurrayportal.utils.MyFirebaseMessagingService;
-import com.github.javiersantos.appupdater.AppUpdater;
-import com.github.javiersantos.appupdater.enums.Display;
-import com.github.javiersantos.appupdater.enums.UpdateFrom;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,20 +33,37 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.onesignal.OSPermissionSubscriptionState;
+import com.onesignal.OSSubscriptionObserver;
+import com.onesignal.OSSubscriptionStateChanges;
+import com.onesignal.OneSignal;
 import com.sendbird.android.SendBird;
 import com.sendbird.android.SendBirdException;
 import com.sendbird.android.User;
-import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
+import java.util.prefs.Preferences;
+
+import io.github.tonnyl.whatsnew.WhatsNew;
+import io.github.tonnyl.whatsnew.item.WhatsNewItem;
+import io.github.tonnyl.whatsnew.util.PresentationOption;
+import nl.siegmann.epublib.epub.Main;
 
 public class MainNav extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, chatfragment.OnFragmentInteractionListener, profileViewTab.OnFragmentInteractionListener, calendarFragment.OnFragmentInteractionListener, infoView.OnFragmentInteractionListener, chatView.OnFragmentInteractionListener, requestsTab.OnFragmentInteractionListener{
+        implements OSSubscriptionObserver, NavigationView.OnNavigationItemSelectedListener, infoFragment.OnFragmentInteractionListener, feedPage.OnFragmentInteractionListener, feedMain.OnFragmentInteractionListener, antiPage.OnFragmentInteractionListener,  chatfragment.OnFragmentInteractionListener, profileViewTab.OnFragmentInteractionListener, calendarFragment.OnFragmentInteractionListener, infoView.OnFragmentInteractionListener, chatView.OnFragmentInteractionListener, requestsTab.OnFragmentInteractionListener{
 
 
 
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
     ProgressBar chatloader;
+
+
+    public void refreshGary() {
+
+
+    }
+
+    DrawerLayout drawer;
+    ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +79,8 @@ public class MainNav extends AppCompatActivity
         setSupportActionBar(toolbar);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
 
 
         if(prefs.getBoolean("musicState", true)) {
@@ -90,15 +104,42 @@ public class MainNav extends AppCompatActivity
 
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        setDrawer(false);
+
+
+//        if(!prefs.getString("has205", "").equals("true")) {
+//            Log.d("TAG", "SHOULD BE SEEING");
+//            WhatsNew whatsNew = WhatsNew.newInstance(
+//                    new WhatsNewItem("Notifications", "A new style of notifications, read the announcements chat for more.", R.drawable.ic_heart),
+//                    new WhatsNewItem("Fixes", "Many fixes, including the annoying chat picture bug."),
+//                    new WhatsNewItem("Changes", "Removed the requests tab (visually at least)")
+//
+//
+//            );
+//
+//
+//            whatsNew.presentAutomatically(MainNav.this);
+//            edit.putString("has205", "true");
+//            edit.apply();
+//        }
 
 
 
+    }
 
+    public void setDrawer(boolean enabled) {
+        if(enabled) {
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            toggle.setDrawerIndicatorEnabled(true);
+        } else {
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            toggle.setDrawerIndicatorEnabled(false);
+        }
     }
 
     public void getStatus() {
@@ -139,6 +180,7 @@ public class MainNav extends AppCompatActivity
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Boolean maintenance = dataSnapshot.child("maintenance").getValue(Boolean.class);
                 if(maintenance) {
+
                     finish();
                     startActivity(new Intent(MainNav.this, maintenanceActivity.class));
                 }
@@ -163,6 +205,19 @@ public class MainNav extends AppCompatActivity
 
 
             public void run() {
+
+                OneSignal.startInit(MainNav.this).inFocusDisplaying(OneSignal.OSInFocusDisplayOption.None).unsubscribeWhenNotificationsAreDisabled(false).init();
+                OSPermissionSubscriptionState os = OneSignal.getPermissionSubscriptionState();
+                Log.d("TAG", "***************"+os.getSubscriptionStatus().getUserId());
+                SharedPreferences prefs2 = getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor edit = prefs2.edit();
+                edit.putString("onesignal", os.getSubscriptionStatus().getUserId());
+                edit.apply();
+
+                if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+                    finish();
+                    startActivity(new Intent(MainNav.this, Login.class));
+                }
 
                 getStatus();
 
@@ -201,22 +256,7 @@ public class MainNav extends AppCompatActivity
                                 public void onConnected(User user, SendBirdException e) {
                                     Log.d("TAG", "Passed trial 3");
 
-                                    SendBird.registerPushTokenForCurrentUser(FirebaseInstanceId.getInstance().getToken(), new SendBird.RegisterPushTokenWithStatusHandler() {
 
-                                        @Override
-                                        public void onRegistered(SendBird.PushTokenRegistrationStatus pushTokenRegistrationStatus, SendBirdException e) {
-                                            if (e != null) {
-                                                Toast.makeText(MainNav.this, "" + e.getCode() + ":" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                                return;
-                                            }
-
-                                            if (pushTokenRegistrationStatus == SendBird.PushTokenRegistrationStatus.PENDING) {
-                                                Toast.makeText(MainNav.this, "Connection required to register push token. ;)", Toast.LENGTH_LONG).show();
-                                            } else {
-                                                Toast.makeText(MainNav.this, "Notifications Enabled for session", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
                                     android.support.v4.app.Fragment fragment = null;
                                     Class fragmentClass = null;
                                     fragmentClass = chatfragment.class;
@@ -254,9 +294,20 @@ public class MainNav extends AppCompatActivity
                         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
 
-                    }
+                    } else if(intent.getStringExtra("currentState").equals("feed")) {
+                        android.support.v4.app.Fragment fragment = null;
+                        Class fragmentClass = null;
+                        fragmentClass = feedPage.class;
+                        try {
+                            fragment = (android.support.v4.app.Fragment) fragmentClass.newInstance();
+                        } catch (Exception ei) {
+                            ei.printStackTrace();
+                        }
+                        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
 
-                     else if(intent.getStringExtra("currentState").equals("calendar")) {
+
+                    } else if(intent.getStringExtra("currentState").equals("calendar")) {
                         android.support.v4.app.Fragment fragment = null;
                         Class fragmentClass = null;
                         fragmentClass = calendarFragment.class;
@@ -285,7 +336,7 @@ public class MainNav extends AppCompatActivity
                     else if(intent.getStringExtra("currentState").equals("info")) {
                         android.support.v4.app.Fragment fragment = null;
                         Class fragmentClass = null;
-                        fragmentClass = infoView.class;
+                        fragmentClass = infoFragment.class;
                         try {
                             fragment = (android.support.v4.app.Fragment) fragmentClass.newInstance();
                         } catch (Exception ei) {
@@ -316,20 +367,7 @@ public class MainNav extends AppCompatActivity
                         SendBird.connect(prefs.getString("sendbirdIDC", ""), new SendBird.ConnectHandler() {
                             @Override
                             public void onConnected(User user, SendBirdException e) {
-                                SendBird.registerPushTokenForCurrentUser(FirebaseInstanceId.getInstance().getToken(), new SendBird.RegisterPushTokenWithStatusHandler() {
 
-                                    @Override
-                                    public void onRegistered(SendBird.PushTokenRegistrationStatus pushTokenRegistrationStatus, SendBirdException e) {
-                                        if (e != null) {
-                                            Toast.makeText(MainNav.this, "" + e.getCode() + ":" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                            return;
-                                        }
-
-                                        if (pushTokenRegistrationStatus == SendBird.PushTokenRegistrationStatus.PENDING) {
-                                            Toast.makeText(MainNav.this, "Connection required to register push token. ;)", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
 
                                 android.support.v4.app.Fragment fragment = null;
                                 Class fragmentClass = null;
@@ -411,7 +449,17 @@ public class MainNav extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
+//        switch (item.getItemId()) {
+//            case R.id.profileNoties:
+//                //startActivity(new Intent(MainNav.this, noties.class));
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//
+//        }
+
         return super.onOptionsItemSelected(item);
+
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -438,6 +486,24 @@ public class MainNav extends AppCompatActivity
 
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
+        } else if(id == R.id.nav_garygram) {
+            fragmentClass = feedPage.class;
+            try {
+                fragment = (android.support.v4.app.Fragment) fragmentClass.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            getIntent().putExtra("currentState", "feed");
+
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+            chatloader.setVisibility(View.INVISIBLE);
+
+
+
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+
         } else if(id == R.id.nav_events) {
             fragmentClass = calendarFragment.class;
             try {
@@ -473,7 +539,7 @@ public class MainNav extends AppCompatActivity
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         } else if(id == R.id.nav_info) {
-            fragmentClass = infoView.class;
+            fragmentClass = infoFragment.class;
             try {
                 fragment = (android.support.v4.app.Fragment) fragmentClass.newInstance();
             } catch (Exception e) {
@@ -515,5 +581,15 @@ public class MainNav extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onOSSubscriptionChanged(OSSubscriptionStateChanges stateChanges) {
+
+        SharedPreferences preferences = getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = preferences.edit();
+        edit.putString("onesignal", stateChanges.getTo().getUserId());
+        edit.apply();
+        Log.d("TAG", "***********ID INCOMING***** : "+stateChanges.getTo().getUserId());
     }
 }

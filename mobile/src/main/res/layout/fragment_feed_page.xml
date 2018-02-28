@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.almurray.android.almurrayportal.feedUtils.feedPage"
+    android:orientation="vertical">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <TextView
+        android:id="@+id/feedPageTeam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Viewing Feed For: Team R"
+        android:textAlignment="center"/>
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/feedPageTeam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/feedPageRecycler"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        />
+
+
+    <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/feedToUpload"
+        app:srcCompat="@drawable/ic_file_upload_white_24px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="15dp"
+        android:layout_alignParentBottom="true"/>
+
+
+
+
+</RelativeLayout>

@@ -69,14 +69,14 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Enable Music"
+                        android:text="Are you cold?"
                         android:textAlignment="center"/>
 
                     <android.support.v7.widget.SwitchCompat
                         android:id="@+id/musicSwitch"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="Music: "
+                        android:text="Yes/No: "
                         android:layout_margin="20dp"
                         android:layout_gravity="center"
                         />

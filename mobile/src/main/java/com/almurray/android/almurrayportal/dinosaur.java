@@ -28,11 +28,10 @@ public class dinosaur extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
 
 
-        final tipForm activity = new tipForm();
 
         webView.setWebViewClient(new WebViewClient() {
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                Toast.makeText(activity, description, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), description, Toast.LENGTH_SHORT).show();
             }
         });
 

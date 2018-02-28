@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.almurray.android.almurrayportal.feedUtils.uploadToFeed">
+
+
+    <TextView
+        android:id="@+id/uploadFeedTeam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Upload to Feed for: Team R"
+        android:textAlignment="center"/>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_below="@+id/uploadFeedTeam"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:id="@+id/uploadFeedCard"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/uploadFeedHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:text="Select an Image to upload by clicking on the image below"
+                    android:textAlignment="center" />
+
+
+
+            </RelativeLayout>
+
+
+
+            <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/uploadFeedImage"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
+                app:srcCompat="@drawable/ic_file_upload_black_24px"
+                android:layout_height="180dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+
+
+
+
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/uploadFeedDescriptionButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:text="Add a Description"
+                android:gravity="center"
+                android:textAlignment="center"/>
+
+
+            <TextView
+                android:id="@+id/uploadFeedDescription"
+                android:layout_width="match_parent"
+                android:textAlignment="center"
+                android:layout_height="30dp"
+                android:layout_margin="5dp"
+                android:text="Please add a description above"
+                />
+
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+    <Button
+        android:enabled="false"
+        android:id="@+id/uploadPostButton"
+        android:layout_margin="15dp"
+        style="@style/loginButtonStyle"
+        android:text="Upload Post"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

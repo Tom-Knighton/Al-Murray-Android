@@ -27,6 +27,7 @@ public class listUsers extends AppCompatActivity {
     private Button sethButton;
     private Button taylorButton;
     private Button tomButton;
+    private Button georgeBButton;
     private Button createButton;
 
     private String currentUID;
@@ -38,6 +39,7 @@ public class listUsers extends AppCompatActivity {
     private String samU;
     private String tomU;
     private String joeU;
+    private String georgeB;
 
     String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("globalvariables").child("ids");
@@ -61,6 +63,7 @@ public class listUsers extends AppCompatActivity {
                 sethButton = findViewById(R.id.sethViewButton);
                 taylorButton = findViewById(R.id.taylorViewButton);
                 tomButton = findViewById(R.id.tomViewButton);
+                georgeBButton = findViewById(R.id.viewGeorgeB);
 
                 if(email.equals("tomknighton@icloud.com")) {
                     createButton.setEnabled(true);
@@ -108,6 +111,7 @@ public class listUsers extends AppCompatActivity {
                         samU = dataSnapshot.child("SamC").getValue(String.class);
                         tomU = dataSnapshot.child("TomK").getValue(String.class);
                         joeU = dataSnapshot.child("JoeI").getValue(String.class);
+                        georgeB = dataSnapshot.child("GeorgeB").getValue(String.class);
                         String level;
 
 
@@ -178,6 +182,17 @@ public class listUsers extends AppCompatActivity {
                                 Intent i = new Intent(listUsers.this, editProfileView.class);
                                 i.putExtra("currentEditUser", "TomK");
                                 i.putExtra("currentEditUID", tomU);
+                                if(getIntent().hasExtra("rankOC")) { i.putExtra("level", getIntent().getStringExtra("rankOC")); }
+                                startActivity(i);
+                            }
+                        });
+
+                        georgeBButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent i = new Intent(listUsers.this, editProfileView.class);
+                                i.putExtra("currentEditUser", "GeorgeB");
+                                i.putExtra("currentEditUID", georgeB);
                                 if(getIntent().hasExtra("rankOC")) { i.putExtra("level", getIntent().getStringExtra("rankOC")); }
                                 startActivity(i);
                             }

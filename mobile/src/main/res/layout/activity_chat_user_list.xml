@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.almurray.android.almurrayportal.chatUsers.chatUserList">
+
+
+    <Button
+        android:id="@+id/newCreateChatButton"
+        android:text="Create Chat"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:background="@color/endblue"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:enabled="false"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/chatUsersRecycler"
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+</RelativeLayout>

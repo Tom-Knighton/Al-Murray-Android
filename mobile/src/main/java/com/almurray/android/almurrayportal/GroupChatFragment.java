@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -42,6 +43,12 @@ import com.almurray.android.almurrayportal.utils.FileUtils;
 import com.almurray.android.almurrayportal.utils.PreferenceUtils;
 import com.almurray.android.almurrayportal.utils.TextUtils;
 import com.almurray.android.almurrayportal.utils.WebUtils;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.onesignal.OneSignal;
 import com.sendbird.android.AdminMessage;
 import com.sendbird.android.BaseChannel;
 import com.sendbird.android.BaseMessage;
@@ -56,13 +63,20 @@ import com.sendbird.android.UserMessage;
 import com.squareup.picasso.Picasso;
 
 
+import org.apache.http.conn.ssl.StrictHostnameVerifier;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
 
 
 public class GroupChatFragment extends Fragment {
@@ -92,6 +106,7 @@ public class GroupChatFragment extends Fragment {
     private ImageButton mUploadFileButton;
     private View mCurrentEventLayout;
     private TextView mCurrentEventText;
+    private TextView noCanDo;
 
     private GroupChannel mChannel;
     private String mChannelUrl;
@@ -157,6 +172,8 @@ public class GroupChatFragment extends Fragment {
         mMessageEditText = (EditText) rootView.findViewById(R.id.edittext_group_chat_message);
         mMessageSendButton = (Button) rootView.findViewById(R.id.button_group_chat_send);
         mUploadFileButton = (ImageButton) rootView.findViewById(R.id.button_group_chat_upload);
+
+        noCanDo = (TextView) rootView.findViewById(R.id.noTypeText);
 
         mMessageEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -234,6 +251,8 @@ public class GroupChatFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
+
+
         return rootView;
     }
 
@@ -279,6 +298,8 @@ public class GroupChatFragment extends Fragment {
                 }
             });
         }
+
+
     }
 
     @Override
@@ -288,6 +309,8 @@ public class GroupChatFragment extends Fragment {
         //mChatAdapter.setContext(getActivity().getSupportFragmentManager().ge); // Glide bug fix (java.lang.IllegalArgumentException: You cannot start a load for a destroyed activity)
 
         // Gets channel from URL user requested
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        SharedPreferences prefs = getContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
         Log.d(LOG_TAG, "HELLO WE ARE RESUMING AT "+mChannelUrl);
         Intent intent = getActivity().getIntent();
         intent.putExtra("currentState", "inChat");
@@ -376,6 +399,8 @@ public class GroupChatFragment extends Fragment {
                 });
             }
         }
+
+
     }
 
     @Override
@@ -512,8 +537,8 @@ public class GroupChatFragment extends Fragment {
     }
 
     private void showMessageOptionsDialog(final BaseMessage message, final int position, final String text, final String userID) {
-        String[] options = new String[] { "Copy Text", "Edit message", "Delete Message"};
-        String[] otherOptions = new String[] {"Copy Text", "View Profile"};
+        String[] options = new String[] { "Copy Text", "Edit message", "Delete Message", "Dino"};
+        String[] otherOptions = new String[] {"Copy Text", "View Profile", "Dino"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         if(userID.equals(SendBird.getCurrentUser().getUserId())) {
@@ -528,6 +553,8 @@ public class GroupChatFragment extends Fragment {
                         setState(STATE_EDIT, message, position);
                     } else if (which == 2) {
                         deleteMessage(message);
+                    } else if (which == 3) {
+                        startActivity(new Intent(getActivity(), dinosaur.class));
                     }
                 }
             });
@@ -543,6 +570,8 @@ public class GroupChatFragment extends Fragment {
                         Intent i = new Intent(getActivity(), editProfileView.class);
                         i.putExtra("currentSendbird", userID);
                         startActivity(i);
+                    } else if (which == 2) {
+                        startActivity(new Intent(getActivity(), dinosaur.class));
                     }
                 }
             });
@@ -808,6 +837,23 @@ public class GroupChatFragment extends Fragment {
             getActivity().setTitle(mChannel.getName());
         }
 
+        if(mChannel.getName().equals("Announcements")) {
+            SharedPreferences prefs = getContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+
+            if(prefs.getString("staffLevel", "").equals("admin")) {
+                noCanDo.setVisibility(View.GONE);
+                mMessageEditText.setVisibility(View.VISIBLE);
+                mMessageSendButton.setVisibility(View.VISIBLE);
+                mUploadFileButton.setVisibility(View.VISIBLE);
+            } else {
+                noCanDo.setVisibility(View.VISIBLE);
+                mMessageEditText.setVisibility(View.GONE);
+                mMessageSendButton.setVisibility(View.GONE);
+                mUploadFileButton.setVisibility(View.GONE);
+            }
+
+        }
+
 
 
     }
@@ -876,7 +922,7 @@ public class GroupChatFragment extends Fragment {
 
     }
 
-    private void sendUserMessage(String text) {
+    private void sendUserMessage(final String text) {
 //        List<String> urls = WebUtils.extractUrls(text);
 //        if (urls.size() > 0) {
 //            sendUserMessageWithUrl(text, urls.get(0));
@@ -884,12 +930,11 @@ public class GroupChatFragment extends Fragment {
 //        }
 
 
-        text = text.trim();
 
 
         UserMessage tempUserMessage = mChannel.sendUserMessage(text, new BaseChannel.SendUserMessageHandler() {
             @Override
-            public void onSent(UserMessage userMessage, SendBirdException e) {
+            public void onSent(final UserMessage userMessage, SendBirdException e) {
                 if (e != null) {
                     // Error!
                     Log.e(LOG_TAG, e.toString());
@@ -903,9 +948,628 @@ public class GroupChatFragment extends Fragment {
 
                 // Update a sent message to RecyclerView
                 mChatAdapter.markMessageSent(userMessage);
+                final SharedPreferences preferences = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
+
+                if (mChannel.getMemberCount() > 2) {
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                    StrictMode.setThreadPolicy(policy);
+                    List<Member> members = mChannel.getMembers();
+                    for(int i = 0; i < members.size(); i++) {
+
+                        if (!members.get(i).getUserId().equals(preferences.getString("sendbirdIDC", ""))) {
+                            try {
+                                String jsonResponse;
+
+                                URL url = new URL("https://onesignal.com/api/v1/notifications");
+                                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                                con.setUseCaches(false);
+                                con.setDoOutput(true);
+                                con.setDoInput(true);
+
+                                con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                                con.setRequestProperty("Authorization", "Basic NGI4NjYzMGYtYjFhMi00ZDQ1LWIzNDYtNWI2NTRhNjRhNTY3");
+                                con.setRequestMethod("POST");
+
+
+
+                                String strJsonBody = "{"
+                                        + "\"app_id\": \"2144f1b0-6c2c-44e2-ab7d-80fbae543240\","
+                                        + "\"ios_badgeType\": \"Increase\","
+                                        + "\"ios_badgeCount\": \"1\","
+                                        + "\"mutable_content\": \"true\","
+                                        + "\"content_available\": \"true\","
+                                        + "\"headings\": {\"en\": \""+mChannel.getName()+"\"},"
+                                        + "\"subtitle\": {\"en\": \""+preferences.getString("currentFullName", "")+"\"},"
+                                        + "\"filters\": [{\"field\": \"tag\", \"key\": \"sendbird\", \"relation\": \"=\", \"value\": \""+members.get(i).getUserId()+"\"}],"
+                                        + "\"data\": {\"foo\": \"bar\"},"
+                                        + "\"contents\": {\"en\": \""+text+"\"}"
+                                        + "}";
+
+
+                                System.out.println("strJsonBody:\n" + strJsonBody);
+
+                                byte[] sendBytes = strJsonBody.getBytes("UTF-8");
+                                con.setFixedLengthStreamingMode(sendBytes.length);
+
+                                OutputStream outputStream = con.getOutputStream();
+                                outputStream.write(sendBytes);
+
+                                int httpResponse = con.getResponseCode();
+                                System.out.println("httpResponse: " + httpResponse);
+
+                                if (httpResponse >= HttpURLConnection.HTTP_OK
+                                        && httpResponse < HttpURLConnection.HTTP_BAD_REQUEST) {
+                                    Scanner scanner = new Scanner(con.getInputStream(), "UTF-8");
+                                    jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
+                                    scanner.close();
+                                } else {
+                                    Scanner scanner = new Scanner(con.getErrorStream(), "UTF-8");
+                                    jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
+                                    scanner.close();
+                                }
+                                System.out.println("jsonResponse:\n" + jsonResponse);
+
+                            } catch (Throwable t) {
+                                t.printStackTrace();
+                            }
+                        }
+                    }
+
+                } else {
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                    StrictMode.setThreadPolicy(policy);
+                    List<Member> members = mChannel.getMembers();
+                    for(int i = 0; i < members.size(); i++) {
+
+                        if (!members.get(i).getUserId().equals(preferences.getString("sendbirdIDC", ""))) {
+                            try {
+                                String jsonResponse;
+
+                                URL url = new URL("https://onesignal.com/api/v1/notifications");
+                                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                                con.setUseCaches(false);
+                                con.setDoOutput(true);
+                                con.setDoInput(true);
+
+                                con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                                con.setRequestProperty("Authorization", "Basic NGI4NjYzMGYtYjFhMi00ZDQ1LWIzNDYtNWI2NTRhNjRhNTY3");
+                                con.setRequestMethod("POST");
+
+
+
+                                String strJsonBody = "{"
+                                        + "\"app_id\": \"2144f1b0-6c2c-44e2-ab7d-80fbae543240\","
+                                        + "\"ios_badgeType\": \"Increase\","
+                                        + "\"ios_badgeCount\": \"1\","
+                                        + "\"mutable_content\": \"true\","
+                                        + "\"content_available\": \"true\","
+                                        + "\"headings\": {\"en\": \"From: "+preferences.getString("currentFullName", "")+"\"},"
+                                        + "\"filters\": [{\"field\": \"tag\", \"key\": \"sendbird\", \"relation\": \"=\", \"value\": \""+members.get(i).getUserId()+"\"}],"
+                                        + "\"data\": {\"foo\": \"bar\"},"
+                                        + "\"contents\": {\"en\": \""+text+"\"}"
+                                        + "}";
+
+
+                                System.out.println("strJsonBody:\n" + strJsonBody);
+
+                                byte[] sendBytes = strJsonBody.getBytes("UTF-8");
+                                con.setFixedLengthStreamingMode(sendBytes.length);
+
+                                OutputStream outputStream = con.getOutputStream();
+                                outputStream.write(sendBytes);
+
+                                int httpResponse = con.getResponseCode();
+                                System.out.println("httpResponse: " + httpResponse);
+
+                                if (httpResponse >= HttpURLConnection.HTTP_OK
+                                        && httpResponse < HttpURLConnection.HTTP_BAD_REQUEST) {
+                                    Scanner scanner = new Scanner(con.getInputStream(), "UTF-8");
+                                    jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
+                                    scanner.close();
+                                } else {
+                                    Scanner scanner = new Scanner(con.getErrorStream(), "UTF-8");
+                                    jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
+                                    scanner.close();
+                                }
+                                System.out.println("jsonResponse:\n" + jsonResponse);
+
+                            } catch (Throwable t) {
+                                t.printStackTrace();
+                            }
+                        }
+                    }
+                }
             }
         });
+
+
+
+        if(text.equals("?help")) {
+            final String botMessage = "--Al Murray Bot--\nAll Commands:\n?users : Total users\n?bots : Total bots\n" +
+                    "?lastUpdate : date of last update\n?lastDatabase : last update to database\n?latestVer : latest version\n?currentVer : Your current version" +
+                    "\n?currentBeta : Current beta\n?currentAlpha : Current Alpha\n?reportIssue {issue} : reports issue\n?myRole : Your role" +
+                    "\n?joke : Tells a joke\n?ban {name} : Mod only, bans user\n?postsLeft : Number of GaryGram posts left\n?totalIssues : Current total issues";
+            UserMessage message = mChannel.sendUserMessage(botMessage, new BaseChannel.SendUserMessageHandler() {
+                @Override
+                public void onSent(UserMessage userMessage, SendBirdException e) {
+                    mChatAdapter.markMessageSent(userMessage);
+                }
+            });
+
+            mChatAdapter.addFirst(message);
+        } else if(text.equals("?totalIssues")) {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("reported");
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Integer total = dataSnapshot.child("lastReport").getValue(Integer.class);
+                    final String botMessage = "--Al Murray Bot--\nTotal Open Issues: "+String.valueOf(total);
+                    UserMessage message = mChannel.sendUserMessage(botMessage, new BaseChannel.SendUserMessageHandler() {
+                        @Override
+                        public void onSent(UserMessage userMessage, SendBirdException e) {
+                            mChatAdapter.markMessageSent(userMessage);
+                        }
+                    });
+
+                    mChatAdapter.addFirst(message);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        } else if(text.equals("?postsLeft")) {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("globalvariables");
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Integer lastPost = dataSnapshot.child("lastPost").getValue(Integer.class);
+                    final String botMessage = "--Al Murray Bot--\nGaryGram posts left: "+String.valueOf(lastPost);
+                    UserMessage message = mChannel.sendUserMessage(botMessage, new BaseChannel.SendUserMessageHandler() {
+                        @Override
+                        public void onSent(UserMessage userMessage, SendBirdException e) {
+                            mChatAdapter.markMessageSent(userMessage);
+                        }
+                    });
+
+                    mChatAdapter.addFirst(message);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        } else if (text.equals("?users")) {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("botStuff");
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Integer users = dataSnapshot.child("users").getValue(Integer.class);
+                    final String botMessage = "--Al Murray Bot--\nCurrent users: "+String.valueOf(users);
+                    UserMessage message = mChannel.sendUserMessage(botMessage, new BaseChannel.SendUserMessageHandler() {
+                        @Override
+                        public void onSent(UserMessage userMessage, SendBirdException e) {
+                            mChatAdapter.markMessageSent(userMessage);
+                        }
+                    });
+
+                    mChatAdapter.addFirst(message);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        } else if (text.equals("?bots")) {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("botStuff");
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Integer bots = dataSnapshot.child("bots").getValue(Integer.class);
+                    final String botMessage = "--Al Murray Bot--\nCurrent bots: "+String.valueOf(bots);
+                    UserMessage message =  mChannel.sendUserMessage(botMessage, new BaseChannel.SendUserMessageHandler() {
+                        @Override
+                        public void onSent(UserMessage userMessage, SendBirdException e) {
+                            mChatAdapter.markMessageSent(userMessage);
+                        }
+                    });
+                    mChatAdapter.addFirst(message);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        } else if (text.equals("?lastUpdate")) {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("botStuff");
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String lastupdate = dataSnapshot.child("lastUpdate").getValue(String.class);
+                    final String botMessage = "--Al Murray Bot--\nLast Update: "+String.valueOf(lastupdate);
+                    UserMessage message = mChannel.sendUserMessage(botMessage, new BaseChannel.SendUserMessageHandler() {
+                        @Override
+                        public void onSent(UserMessage userMessage, SendBirdException e) {
+                            mChatAdapter.markMessageSent(userMessage);
+                        }
+                    });
+                    mChatAdapter.addFirst(message);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        } else if (text.equals("?lastDatabase")) {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("botStuff");
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String lastupdate = dataSnapshot.child("lastDatabase").getValue(String.class);
+                    final String botMessage = "--Al Murray Bot--\nLast Databse Update: "+String.valueOf(lastupdate);
+                    UserMessage message =  mChannel.sendUserMessage(botMessage, new BaseChannel.SendUserMessageHandler() {
+                        @Override
+                        public void onSent(UserMessage userMessage, SendBirdException e) {
+                            mChatAdapter.markMessageSent(userMessage);
+                        }
+                    });
+                    mChatAdapter.addFirst(message);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        } else if (text.equals("?latestVer")) {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("botStuff");
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String currentVer = dataSnapshot.child("currentVer").getValue(String.class);
+                    final String botMessage = "--Al Murray Bot--\nLatest Version: "+String.valueOf(currentVer);
+                    UserMessage message =  mChannel.sendUserMessage(botMessage, new BaseChannel.SendUserMessageHandler() {
+                        @Override
+                        public void onSent(UserMessage userMessage, SendBirdException e) {
+                            mChatAdapter.markMessageSent(userMessage);
+                        }
+                    });
+                    mChatAdapter.addFirst(message);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        } else if(text.equals("?currentVer")) {
+            final String botMessage = "--Al Murray Bot--\nCurrent Version: "+R.string.all_app_version;
+
+            UserMessage message = mChannel.sendUserMessage(botMessage, new BaseChannel.SendUserMessageHandler() {
+                @Override
+                public void onSent(UserMessage userMessage, SendBirdException e) {
+                    mChatAdapter.markMessageSent(userMessage);
+                }
+            });
+            mChatAdapter.addFirst(message);
+
+
+        } else if (text.equals("?currentBeta")) {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("botStuff");
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String beta = dataSnapshot.child("currentBeta").getValue(String.class);
+                    final String botMessage = "--Al Murray Bot--\nCurrent Beta: "+String.valueOf(beta);
+                    UserMessage message = mChannel.sendUserMessage(botMessage, new BaseChannel.SendUserMessageHandler() {
+                        @Override
+                        public void onSent(UserMessage userMessage, SendBirdException e) {
+                            mChatAdapter.markMessageSent(userMessage);
+                        }
+                    });
+                    mChatAdapter.addFirst(message);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        } else if (text.equals("?currentAlpha")) {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("botStuff");
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String alpha = dataSnapshot.child("currentAlpha").getValue(String.class);
+                    final String botMessage = "--Al Murray Bot--\nCurrent Alpha: "+String.valueOf(alpha);
+                    UserMessage message = mChannel.sendUserMessage(botMessage, new BaseChannel.SendUserMessageHandler() {
+                        @Override
+                        public void onSent(UserMessage userMessage, SendBirdException e) {
+                            mChatAdapter.markMessageSent(userMessage);
+                        }
+                    });
+                    mChatAdapter.addFirst(message);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+        } else if (text.equals("?joke")) {
+            Random rand = new Random();
+            int i = rand.nextInt(5);
+            if (i == 0) { i = 1; }
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("botStuff").child("jokes").child(String.valueOf(i));
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String joke = dataSnapshot.child("joke").getValue(String.class);
+                    final String botMessage = "--Al Murray Bot--\n"+String.valueOf(joke);
+                    UserMessage message = mChannel.sendUserMessage(botMessage, new BaseChannel.SendUserMessageHandler() {
+                        @Override
+                        public void onSent(UserMessage userMessage, SendBirdException e) {
+                            mChatAdapter.markMessageSent(userMessage);
+                        }
+                    });
+                    mChatAdapter.addFirst(message);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        } else if (text.equals("?myRole")) {
+            SharedPreferences preferences = getContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+            String role = preferences.getString("staffLevel", "member");
+            final String botMessage = "--Al Murray Bot--\nYour Role: "+role;
+
+            UserMessage message = mChannel.sendUserMessage(botMessage, new BaseChannel.SendUserMessageHandler() {
+                @Override
+                public void onSent(UserMessage userMessage, SendBirdException e) {
+                    mChatAdapter.markMessageSent(userMessage);
+                }
+            });
+            mChatAdapter.addFirst(message);
+        }
+
+        try {
+            SharedPreferences preferences = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+            if(preferences.getString("staffLevel", "").equals("staff") || preferences.getString("staffLevel", "").equals("admin")) {
+                if(text.substring(0, 4).equals("?ban")) {
+                    try {
+
+                        String rest = text.substring(5, text.length());
+                        final String[] restWords = rest.split("\\s+");
+                        Log.d("TAG", restWords[0]);
+                        Log.d("TAG", rest.replace(restWords[0], ""));
+
+                        try {
+                            final String rest2 = rest;
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("globalvariables").child("ids");
+                            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    try {
+                                        String id  = dataSnapshot.child(String.valueOf(restWords[0].trim())).getValue(String.class);
+                                        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child("users").child(id);
+                                        ref2.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                dataSnapshot.child("banned").getRef().setValue(true);
+                                                dataSnapshot.child("bannedR").getRef().setValue(rest2.replace(restWords[0], "").trim());
+                                                Log.d("TAG", restWords[1]);
+                                                String botmessage = "--Al Murray Bot--\nBanned: "+restWords[0]+"\nReason: "+rest2.replace(restWords[0], "");
+                                                UserMessage message = mChannel.sendUserMessage(botmessage, new BaseChannel.SendUserMessageHandler() {
+                                                    @Override
+                                                    public void onSent(UserMessage userMessage, SendBirdException e) {
+                                                        mChatAdapter.markMessageSent(userMessage);
+                                                    }
+                                                });
+                                                mChatAdapter.addFirst(message);
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+
+                                    } catch (Exception eei) {
+                                        UserMessage message = mChannel.sendUserMessage("--Al Murray Bot--\n Error Banning : User not found", new BaseChannel.SendUserMessageHandler() {
+                                            @Override
+                                            public void onSent(UserMessage userMessage, SendBirdException e) {
+                                                mChatAdapter.markMessageSent(userMessage);
+                                            }
+                                        });
+                                        mChatAdapter.addFirst(message);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+                        } catch (Exception eii) {
+                            UserMessage message = mChannel.sendUserMessage("--Al Murray Bot--\nError : Correct format is ?ban {id} {reason}", new BaseChannel.SendUserMessageHandler() {
+                                @Override
+                                public void onSent(UserMessage userMessage, SendBirdException e) {
+                                    mChatAdapter.markMessageSent(userMessage);
+                                }
+                            });
+                            mChatAdapter.addFirst(message);
+                        }
+                    } catch (Exception ei) {
+                        UserMessage message = mChannel.sendUserMessage("--Al Murray Bot--\nError : Correct format is ?ban {id} {reason}", new BaseChannel.SendUserMessageHandler() {
+                            @Override
+                            public void onSent(UserMessage userMessage, SendBirdException e) {
+                                mChatAdapter.markMessageSent(userMessage);
+                            }
+                        });
+                        mChatAdapter.addFirst(message);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+
+        try {
+            SharedPreferences preferences = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+            if(preferences.getString("staffLevel", "").equals("staff") || preferences.getString("staffLevel", "").equals("admin")) {
+                if(text.substring(0, 6).equals("?unban")) {
+                    Log.d("TAG", "GEKKI");
+                    try {
+                        final String rest2 = text.substring(7,text.length()).trim();
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("globalvariables").child("ids");
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                try {
+                                    String id = dataSnapshot.child(rest2).getValue(String.class);
+                                    DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child("users").child(id);
+                                    ref2.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            dataSnapshot.child("banned").getRef().setValue(false);
+                                            dataSnapshot.child("bannedR").getRef().setValue("");
+                                            Log.d("TAG", rest2);
+                                            String botmessage = "--Al Murray Bot--\nUnbanned: "+rest2;
+                                            UserMessage message = mChannel.sendUserMessage(botmessage, new BaseChannel.SendUserMessageHandler() {
+                                                @Override
+                                                public void onSent(UserMessage userMessage, SendBirdException e) {
+                                                    mChatAdapter.markMessageSent(userMessage);
+                                                }
+                                            });
+                                            mChatAdapter.addFirst(message);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+                                } catch (Exception eei) {
+                                    UserMessage message = mChannel.sendUserMessage("--Al Murray Bot--\n Error Banning : User not found", new BaseChannel.SendUserMessageHandler() {
+                                        @Override
+                                        public void onSent(UserMessage userMessage, SendBirdException e) {
+                                            mChatAdapter.markMessageSent(userMessage);
+                                        }
+                                    });
+                                    mChatAdapter.addFirst(message);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+                    } catch (Exception eii) {
+                        UserMessage message = mChannel.sendUserMessage("--Al Murray Bot--\nError : Correct format is ?unban {id}", new BaseChannel.SendUserMessageHandler() {
+                            @Override
+                            public void onSent(UserMessage userMessage, SendBirdException e) {
+                                mChatAdapter.markMessageSent(userMessage);
+                            }
+                        });
+                        mChatAdapter.addFirst(message);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+
+        }
+
+        try {
+            if(text.substring(0, 12).equals("?reportIssue")) {
+
+                try {
+                    String reason = text.substring(13,text.length());
+                    reason = reason.trim();
+                    if (reason.equals("") || reason.equals(" ")) {
+                        UserMessage message = mChannel.sendUserMessage("--Al Murray Bot--\nError : Please specify an issue", new BaseChannel.SendUserMessageHandler() {
+                            @Override
+                            public void onSent(UserMessage userMessage, SendBirdException e) {
+                                mChatAdapter.markMessageSent(userMessage);
+                            }
+                        });
+                        mChatAdapter.addFirst(message);
+                    } else {
+                        final String reason2 = reason;
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("reported");
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Log.d("TAG", "REPORT ISSUE 2");
+
+                                Integer old = dataSnapshot.child("lastReport").getValue(Integer.class);
+                                Integer newN = old  + 1;
+                                dataSnapshot.child(String.valueOf(newN)).child("type").getRef().setValue("chat");
+                                dataSnapshot.child(String.valueOf(newN)).child("reason").getRef().setValue(reason2);
+                                dataSnapshot.child("lastReport").getRef().setValue(newN);
+
+                                String botMessage = "--Al Murray Bot--\nIssue Reported\nIssue # : "+String.valueOf(newN)+"\nIssue : "+reason2;
+                                UserMessage message = mChannel.sendUserMessage(botMessage, new BaseChannel.SendUserMessageHandler() {
+                                    @Override
+                                    public void onSent(UserMessage userMessage, SendBirdException e) {
+                                        mChatAdapter.markMessageSent(userMessage);
+                                    }
+                                });
+                                mChatAdapter.addFirst(message);
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+                    }
+                } catch (Exception ei){
+                    Log.d("TAG", ei.getMessage());
+                    UserMessage message = mChannel.sendUserMessage("--Al Murray Bot--\nError : Please specify an issue", new BaseChannel.SendUserMessageHandler() {
+                        @Override
+                        public void onSent(UserMessage userMessage, SendBirdException e) {
+                            mChatAdapter.markMessageSent(userMessage);
+                        }
+                    });
+                    mChatAdapter.addFirst(message);
+                }
+
+
+
+
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Display a user message to RecyclerView
         mChatAdapter.addFirst(tempUserMessage);

@@ -74,17 +74,7 @@ public class infoView extends Fragment {
                 });
                 commandments = getActivity().findViewById(R.id.commandmentsCard);
                 times = 0;
-                commandments.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(times < 10) {
-                            times++;
-                            Toast.makeText(getContext(), String.valueOf(times), Toast.LENGTH_SHORT).show();
-                        } else {
-                            startActivity(new Intent(getContext(), dinosaur.class));
-                        }
-                    }
-                });
+
 
 
             }

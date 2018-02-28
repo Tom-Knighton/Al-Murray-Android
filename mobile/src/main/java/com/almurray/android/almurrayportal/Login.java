@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.*;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import io.fabric.sdk.android.Fabric;
 
 
 public class Login extends AppCompatActivity {
@@ -82,6 +84,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
         mButton = (Button) findViewById(R.id.loginButton);

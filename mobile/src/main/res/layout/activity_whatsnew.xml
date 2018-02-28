@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.almurray.android.almurrayportal.whatsnew">
+
+    <TextView
+        android:id="@+id/whatsNewTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="What's New"
+        android:textAlignment="center"
+        android:textSize="22sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        />
+    <TextView
+        android:id="@+id/whatsNewVersion"
+        android:layout_below="@+id/whatsNewTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2.0.6"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/whatsNewFirst"
+        android:layout_below="@+id/whatsNewVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notifications:"
+        android:textAlignment="textStart"
+        android:gravity="start"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        />
+    <TextView
+        android:id="@+id/whatsNewFirstInfo"
+        android:layout_below="@+id/whatsNewFirst"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:text="Notifications have been redone in this update, notifications are now cross platform! This means notifications can be sent on one platform and received on another.
+Also, you no longer have to have entered the chat to start receiving notifications, they are sent automatically.
+
+As well as this, notifications are now sent when you are invited to a chat AND when someone comments on your GaryGram post! :)"
+        android:textAlignment="textStart"
+        android:gravity="start"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="12sp"
+        android:textColor="@android:color/background_dark"
+        />
+
+    <TextView
+        android:id="@+id/whatsNewSecond"
+        android:layout_below="@+id/whatsNewFirstInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\nANNOUNCEMENTS:"
+        android:textAlignment="textStart"
+        android:gravity="start"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="15sp"
+        android:textColor="@color/red"
+        android:textStyle="bold"
+        />
+    <TextView
+        android:id="@+id/whatsNewSecondInfo"
+        android:layout_below="@+id/whatsNewSecond"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:text="Any chat titled 'Announcements' is now coloured bright red, and no one can type in the chat apart from admins. This chat will be used to announce new updates and promotions, instead of direct chats."
+        android:textAlignment="textStart"
+        android:gravity="start"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="12sp"
+        android:textColor="@android:color/background_dark"
+        />
+
+    <TextView
+        android:id="@+id/whatsNewThird"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/whatsNewSecondInfo"
+        android:gravity="start"
+        android:text="\nRequests:"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"/>
+    <TextView
+        android:id="@+id/whatsNewThirdInfo"
+        android:layout_below="@+id/whatsNewThird"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:text="Requests have been visually removed for now :("
+        android:textAlignment="textStart"
+        android:gravity="start"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="12sp"
+        android:textColor="@android:color/background_dark"
+        />
+    <Button
+        style="@style/loginButtonStyle"
+        android:layout_margin="40dp"
+        android:id="@+id/whatsNewButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Continue"
+        android:layout_below="@+id/whatsNewThirdInfo"/>
+
+
+
+</RelativeLayout>
+

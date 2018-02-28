@@ -253,7 +253,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="45dp"
                         android:background="@drawable/nicebuttonback"
-                        android:text="Go To Santa's Grotto"
+                        android:text="Go To Prayer Room"
                         android:textColor="@android:color/white"
 
                         />
@@ -338,6 +338,7 @@
                 app:snowflakeSpeedMax="12"
                 app:snowflakesFadingEnabled="true"
                 app:snowflakesAlreadyFalling="false"
+                android:visibility="gone"
                 />
 
 

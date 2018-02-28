@@ -2,6 +2,7 @@ package com.almurray.android.almurrayportal;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.media.Image;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.almurray.android.almurrayportal.utils.DateUtils;
@@ -221,10 +223,11 @@ public class GroupChannelListAdapter extends RecyclerView.Adapter<RecyclerView.V
         TextView topicText, lastMessageText, unreadCountText, dateText, memberCountText;
         CircleImageView coverImage;
         LinearLayout typingIndicatorContainer;
+        RelativeLayout view;
 
         ChannelHolder(View itemView) {
             super(itemView);
-
+            view = (RelativeLayout) itemView.findViewById(R.id.groupChatListItem);
             topicText = (TextView) itemView.findViewById(R.id.text_group_channel_list_topic);
             lastMessageText = (TextView) itemView.findViewById(R.id.text_group_channel_list_message);
             unreadCountText = (TextView) itemView.findViewById(R.id.text_group_channel_list_unread_count);
@@ -275,8 +278,20 @@ public class GroupChannelListAdapter extends RecyclerView.Adapter<RecyclerView.V
                 coverImage.setImageResource(R.drawable.ic_if_myspace_1063061);
                 topicText.setText(channel.getName());
                 memberCountText.setText("Group Chat");
+
             }
 
+            if(channel.getName().equals("Announcements")) {
+                coverImage.setImageResource(R.mipmap.ic_launcher);
+                view.setBackgroundColor(Color.parseColor("#ffff4444"));
+                topicText.setTextColor(Color.parseColor("#ffffff"));
+                lastMessageText.setTextColor(Color.parseColor("#ffffff"));
+                memberCountText.setText("Members: 27");
+            } else {
+                view.setBackgroundColor(Color.parseColor("#ffffff"));
+                topicText.setTextColor(Color.parseColor("#000000"));
+                lastMessageText.setTextColor(Color.parseColor("#C0C0C0"));
+            }
 
 
 

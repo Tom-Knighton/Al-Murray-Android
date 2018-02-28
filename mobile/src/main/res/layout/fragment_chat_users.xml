@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.almurray.android.almurrayportal.chatUsers.chatUsers">
+
+    <!-- TODO: Update blank fragment layout -->
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="50dp"
+       android:id="@+id/userDisplayBox"
+       android:orientation="horizontal">
+
+       <de.hdodenhof.circleimageview.CircleImageView
+           android:id="@+id/userDisplayProfile"
+           android:layout_width="40dp"
+           android:layout_height="40dp"
+           android:layout_margin="10dp"/>
+
+       <TextView
+           android:id="@+id/userDisplayName"
+           android:layout_toRightOf="@+id/userDisplayProfile"
+           android:layout_toEndOf="@+id/userDisplayProfile"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:text="Tom Knighton"
+           android:textAlignment="gravity"
+           android:gravity=""
+           android:layout_marginRight="50dp"
+           android:layout_marginEnd="50dp"
+          />
+
+       <CheckBox
+           android:button="@null"
+           android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+           android:layout_alignParentEnd="true"
+           android:layout_alignParentRight="true"
+           android:gravity="center"
+           android:id="@+id/userDisplayCheck"
+           android:layout_width="match_parent"
+           android:layout_height="50dp"
+           android:checked="false"/>
+
+
+
+   </RelativeLayout>
+
+</RelativeLayout>

@@ -27,6 +27,7 @@ import com.sendbird.android.GroupChannel;
 import com.sendbird.android.GroupChannelListQuery;
 import com.sendbird.android.SendBird;
 import com.sendbird.android.SendBirdException;
+import com.almurray.android.almurrayportal.chatUsers.*;
 
 
 import java.util.List;
@@ -91,7 +92,7 @@ public class GroupChannelListFragment extends Fragment {
         mCreateChannelFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), CreateGroupChannelActivity.class);
+                Intent intent = new Intent(getContext(), chatUserList.class);
                 startActivityForResult(intent, INTENT_REQUEST_NEW_GROUP_CHANNEL);
             }
         });
@@ -166,7 +167,7 @@ public class GroupChannelListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mChannelListAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-
+        refreshChannelList(25);
         // If user scrolls to bottom of the list, loads more channels.
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

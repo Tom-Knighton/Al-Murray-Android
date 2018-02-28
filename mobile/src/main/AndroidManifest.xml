@@ -29,18 +29,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service android:name=".utils.MyFirebaseMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-        <service android:name=".utils.MyFirebaseInstanceIDService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-
         <activity android:name=".amigoPointForm" />
         <activity android:name=".amigoLoanForm" />
         <activity android:name=".positivePointForm" />
@@ -63,10 +51,6 @@
             android:name=".MainNav"
             android:label="@string/title_activity_main_nav"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ChatNav"
-            android:label="@string/title_activity_chat_nav"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".createChat" />
 
         <service
@@ -74,7 +58,6 @@
             android:enabled="true" />
 
         <activity android:name=".requestAccount" />
-        <activity android:name=".createAccountant" />
         <activity android:name=".SettingsStore" />
         <activity android:name=".maintenanceActivity" />
         <activity android:name=".complexPrayer" />
@@ -82,8 +65,29 @@
         <activity android:name=".viewRoles" />
         <activity android:name=".staffPanel" />
         <activity android:name=".editUserStats" />
-        <activity android:name=".AdminEventsView" />
-        <activity android:name=".dinosaur"></activity>
+        <activity android:name=".dinosaur" />
+        <activity android:name=".chatUsers.chatUserList" />
+        <activity android:name=".feedUtils.uploadToFeed" />
+        <activity android:name=".feedUtils.feedCommentsView" />
+        <activity android:name=".info.infoDefs" />
+        <activity android:name=".info.garyBook" />
+        <activity
+            android:name="com.folioreader.ui.folio.activity.FolioActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name" />
+        <activity android:name=".feedUtils.seePhoto" />
+        <activity android:name=".noties" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="57f3ac4eb599fd15201ad5ef003c60d7bbf07174" />
+
+        <service
+            android:name=".utils.NotificationExtender"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".whatsnew"></activity>
     </application>
 
 </manifest>

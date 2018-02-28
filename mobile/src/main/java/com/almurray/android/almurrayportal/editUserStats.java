@@ -161,6 +161,7 @@ public class editUserStats extends AppCompatActivity {
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        SharedPreferences prefs = getApplicationContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
                         dataSnapshot.child("AmigoPoints").getRef().setValue(newAmigoPoints.getText().toString());
                         getStats("");
                     }

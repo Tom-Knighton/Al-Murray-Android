@@ -45,9 +45,9 @@ public class prayerRoom extends AppCompatActivity {
                 SharedPreferences prefs = getApplicationContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor prefsEditor = prefs .edit();
                 if(prefs.getBoolean("snowState", true)) {
-                    prayerSnow.setVisibility(View.VISIBLE);
+                    prayerSnow.setVisibility(View.GONE);
                 } else {
-                    prayerSnow.setVisibility(View.INVISIBLE);
+                    prayerSnow.setVisibility(View.GONE);
                 }
 
 

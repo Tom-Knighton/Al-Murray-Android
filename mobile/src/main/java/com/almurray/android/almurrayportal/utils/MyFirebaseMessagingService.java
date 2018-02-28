@@ -24,22 +24,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.almurray.android.almurrayportal.ChatNav;
 import com.almurray.android.almurrayportal.MainNav;
-import com.almurray.android.almurrayportal.chatfragment;
 import com.almurray.android.almurrayportal.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.sendbird.android.SendBird;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
 

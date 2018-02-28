@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.almurray.android.almurrayportal.feeds.feedMain">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <TextView
+
+        android:layout_alignParentTop="true"
+        android:id="@+id/unableFeedText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Unable to load feed for ~Team AM~"
+        android:textAlignment="center"/>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/feedRecycler"
+        android:layout_marginTop="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical">
+
+
+
+
+
+    </android.support.v7.widget.RecyclerView>
+
+
+
+
+
+
+
+
+
+</RelativeLayout>

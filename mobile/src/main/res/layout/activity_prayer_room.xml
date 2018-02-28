@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Santa's Prayer\n Grotto"
+        android:text="Prayer Room"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textStyle="bold"
@@ -63,7 +63,9 @@
         app:snowflakeSpeedMin="4"
         app:snowflakesAlreadyFalling="false"
         app:snowflakesFadingEnabled="true"
-        app:snowflakesNum="250" />
+        app:snowflakesNum="250"
+        android:visibility="gone"
+        />
 
 
 </RelativeLayout>
